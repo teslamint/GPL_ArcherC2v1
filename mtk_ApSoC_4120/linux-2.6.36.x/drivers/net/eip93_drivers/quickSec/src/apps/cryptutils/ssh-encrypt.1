@@ -1,0 +1,137 @@
+.\"  -*- nroff -*-
+.\"
+.\" ssh-encrypt.1
+.\"
+.\" Author:	Timo J. Rinne <tri@ssh.fi>
+.\"
+.\" Copyright (c) 2002, 2003 SFNT Finland Oy.
+.\" All rights reserved
+.\"
+
+.TH SSH-ENCRYPT 1 "November 24, 1998" "SSH-ENCRYPT" "SSH-ENCRYPT"
+
+.SH NAME
+ssh-encrypt, ssh-decrypt \- calculate hash values with various algorithms
+
+.SH SYNOPSIS
+.B ssh-encrypt
+[\c
+.BI -E | -D\c
+]
+\c
+.BI \-c \ cipher\ \fR\c
+\c
+[\c
+.BI \-k \ key\ \fR\c
+|
+.BI \-p \ passphrase\fR\c
+\c
+]
+[\c
+.BI \-i \ initialization-vector\fR\c
+\c
+]
+[[\c
+.IR input-file \c
+]
+.IR output-file \c
+\c
+]
+
+.B ssh-decrypt
+[\c
+.BI -D | -E\c
+]
+\c
+.BI \-c \ cipher\ \fR\c
+\c
+[\c
+.BI \-k \ key\ \fR\c
+|
+.BI \-p \ passphrase\fR\c
+\c
+]
+[\c
+.BI \-i \ initialization-vector\fR\c
+\c
+]
+[[\c
+.IR input-file \c
+]
+.IR output-file \c
+\c
+]
+
+.B ssh-encrypt
+\c
+.BI \-t \c
+\c
+.BI \ \-c \ (cipher|-a)\ \fR\c
+\c
+.br
+
+.B ssh-decrypt
+\c
+.BI \-t \c
+\c
+.BI \ \-c \ (cipher|-a)\ \fR\c
+\c
+
+.SH DESCRIPTION 
+.LP
+.B Ssh-encrypt
+encrypts or decrypts user submitted data stream with given cipher
+algorithm.
+
+.SH OPTIONS
+.TP
+.BI \-E
+Encrypt data.  This is default, if program is started by
+.B ssh-encrypt
+command.
+.ne 3
+.TP
+.BI \-D
+Decrypt data.  This is default, if program is started by
+.B ssh-decrypt
+command.
+.ne 3
+.TP
+.BI \-c "\ cipher
+Use given cipher algorithm.
+.ne 3
+.TP
+.BI \-k "\ key
+Use given key.  Key is given as a hex string.
+.ne 3
+.TP
+.BI \-p "\ passphrase
+Use key extracted from the passphrase.
+.ne 3
+.TP
+.BI \-i "\ initialization-vector
+Use given initialization vector.  Iv is given as a hex string.  Iv can
+have various effects on encryption operation depending on algorithm
+and cipher chaining mode.
+.ne 3
+.TP
+.BI \-a
+Instead of one specific algorithm, use all algorithms.  This option
+can only be used in speed test mode.
+.ne 3
+.TP
+.BI \-t
+Perform a speed test on one or several ciphers.  In test mode, key and
+iv can be omitted.  In this case, program generates them automatically.
+.ne 3
+
+.SH AUTHORS
+.LP
+
+SFNT Finland Oy.
+
+For more information, see http://www.safenet-inc.com
+
+.SH SEE ALSO
+.BR ssh-hash (1),
+.BR ssh-keytool (1)

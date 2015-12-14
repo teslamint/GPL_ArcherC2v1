@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE quicksec PUBLIC "quicksec:dtd" "quicksec.dtd">
+
+
+<!-- Peer-to-peer setup with hosta using certificate and hostb using PSK. -->
+<!-- Related: hostb-raw-rsa-keys.xml -->
+<quicksec>
+  <params>
+
+  <!--  To generate raw RSA keys used in this sample, execute 
+       '../../../apps/certutils/ssh-certmake cert_template.rsa' in 
+       the ipsec/quicksec/samples directory. This will generate the
+       private key 'rsauser1.prv' in a internal format. This private key 
+       must be converted to a private and public key pair in PKCS #1 encoded 
+       format. To do this use the ../../../apps/certutils/ssh-keytool
+       utility.  
+
+ ../../../apps/certutils/ssh-keytool -o pkcs1    :b:rsauser1.prv :b:rawrsa.prv
+ ../../../apps/certutils/ssh-keytool -d -o pkcs1 :b:rsauser1.prv :b:rawrsa.pub
+
+      This generates the raw RSA private key 'rawrsa.prv' and the raw RSA 
+      public key 'rawrsa.pub'.
+
+      In this sample, the local end authenticates using raw RSA keys and 
+      the remote end authenticates uses pre-shared keys. In order to 
+      configure this, the raw RSA private key must be set to the tunnel 
+      object in this policy file. In the corresponding policy file for 
+      the remote peer, hostb-raw-rsa-keys.xml, the raw RSA public key 
+      must be set to the tunnel object.
+  --> 
+
+  <!-- Authentication domain specifies IKE authentication
+       parameters -->
+  <auth-domain>
+    <!-- shared secret and identity of remote IKE peer -->
+    <remote-secret id-type="email" 
+                   id="b@safenet-inc.com">very-bad-secret</remote-secret>
+
+    <!-- Raw RSA private key in PKCS1 encoded format. -->
+    <private-key file="rawrsa.prv"/>
+  </auth-domain>
+  </params>
+  <policy>
+
+    <tunnel name="host-to-host">
+      <!-- local identity sent to the remote IKE peer -->
+      <identity id-type="email" id="a@safenet-inc.com"/>
+    </tunnel>
+
+    <rule to-tunnel="host-to-host">
+      <src>ipv4(172.30.4.189)</src>
+      <dst>ipv4(172.30.4.167)</dst>
+    </rule>
+
+    <rule from-tunnel="host-to-host">
+      <src>ipv4(172.30.4.167)</src>
+      <dst>ipv4(172.30.4.189)</dst>
+    </rule>
+
+    <rule>
+      <src>ipv4(0.0.0.0/0)</src>
+      <dst>ipv4(0.0.0.0/0)</dst>
+    </rule>
+
+  </policy>
+</quicksec>

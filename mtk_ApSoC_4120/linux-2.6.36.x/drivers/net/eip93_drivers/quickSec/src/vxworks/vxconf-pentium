@@ -1,0 +1,105 @@
+# vxconf-pentium
+#
+# Copyright (c) SFNT-Finland 2004
+#
+# Usage: source vxconf-pentium
+#
+# This script prepares the environment for running ./configure
+# with cross compiling support for VxWorks.
+#
+# Run the WindRiver environment setup script (torVars or wrenv) before
+# executing this script. Alternatively, change the variables here to
+# reflect your VxWorks configuration, e.g. target CPU and compiler.
+# Default values are for Cygwin, Tornado 2.2.1/VxWorks 5.5.1 and
+# Pentium PC target. Sample values for Sun Solaris host are in comments.
+#
+#  See also: vxworks/README_QUICKSEC.txt
+#
+
+echo ""
+echo "Setting environment variables right..."
+
+# In Cygwin (Windows) environment, these can be set from
+# Control Panel -> System -> Advanced -> Environment Variables
+# For example:
+# WIND_BASE=C:/Tornado2.2.1
+# WIND_HOST_TYPE=x86-win32
+
+# For the Workbench development environment, specify also
+# WIND_GNU_PATH. For example Workbench on Linux:
+# WIND_BASE=/opt/windriver/vxworks-6.1
+# WIND_HOST_TYPE=x86-linux
+# WIND_GNU_PATH=/opt/windriver/gnu/3.3.2-vxworks61/x86-linux2/bin
+
+# If variables are not set, they are set from this file
+
+if [ "X$WIND_BASE" = "X" ]; then
+	WIND_BASE=C:/Tornado2.2.1
+	# Solaris WIND_BASE=/opt/Tornado2.2.1
+	export WIND_BASE
+	echo "WIND_BASE unset, initializing to $WIND_BASE"
+fi
+WIND_BASE=`echo "$WIND_BASE" | sed -e 's/\\\\/\\//g'`
+
+if [ "X$WIND_HOST_TYPE" = "X" ]; then
+	WIND_HOST_TYPE=x86-win32
+	# Solaris WIND_HOST_TYPE=sun4-solaris2
+	export WIND_HOST_TYPE
+	echo "WIND_HOST_TYPE unset, initializing to $WIND_HOST_TYPE"
+fi
+
+# This file uses complete path name to tools, so PATH does not have to be set
+if [ "X$WIND_GNU_PATH" != "X" ]; then
+	TOOLS_DIR=$WIND_GNU_PATH/$WIND_HOST_TYPE/bin
+else
+	TOOLS_DIR=$WIND_BASE/host/$WIND_HOST_TYPE/bin
+fi
+
+CC=$TOOLS_DIR/ccpentium
+CPP="$CC -E"
+export CC CPP
+
+CPU="PENTIUM"
+export CPU
+
+CPPFLAGS="-DTOOL_FAMILY=gnu -DTOOL=gnu \
+-I$WIND_BASE/target/h -I$WIND_BASE/target/h/wrn/coreip \
+-I$WIND_BASE/target/config/all \
+-I$WIND_BASE/target/config/pcPentium"
+export CPPFLAGS
+
+CFLAGS="-march=pentium -fno-builtin -fno-defer-pop"
+LDFLAGS="-nostdlib"
+export CFLAGS LDFLAGS
+
+RANLIB=$TOOLS_DIR/ranlibpentium 
+AR=$TOOLS_DIR/arpentium 
+LD=$TOOLS_DIR/ldpentium 
+NM=$TOOLS_DIR/nmpentium
+NM_PATH=$WIND_BASE/host/$WIND_HOST_TYPE/bin
+export RANLIB AR LD NM NM_PATH
+
+echo "OK"
+
+# Remove config.cache to give the settings a fresh start.
+
+rm -rf config.cache
+
+echo "Now run configure with:";
+echo "VxWorks 5.4 and 5.5:";
+echo "./configure --enable-profile=quicksec-server --target=pentium-wrs-vxworks --enable-compiler-optimizations"
+echo "VxWorks 5.5.1:";
+echo "./configure --enable-profile=quicksec-server --target=pentium-wrs-vxworks --with-kernel-version=5.5.1 --enable-compiler-optimizations"
+echo "VxWorks PNE 2.0:";
+echo "./configure --enable-profile=quicksec-server --target=pentium-wrs-vxworks --with-kernel-version=PNE --enable-compiler-optimizations"
+echo "VxWorks PNE 2.2 with IPV4/IPV6 stack:";
+echo "./configure --enable-profile=quicksec-server --target=pentium-cygwin-vxworks --with-kernel-version=PNE_2.2 --enable-compiler-optimizations"
+echo "VxWorks PCD 1.1 with IPV4/IPV6 stack:";
+echo "./configure --enable-profile=quicksec-server --target=pentium-wrs-vxworks --with-kernel-version=PCD_1.1 --enable-compiler-optimizations"
+echo ""
+echo "To enable debug, add option: --enable-debug"
+echo "";
+echo "When cross-compiling under linux, you must define --host=<host_type>, e.g. --host=i686-linux";
+echo "";
+echo "If 'ln -s' does not work on Cygwin, use --target=pentium-cygwin-vxworks";
+echo "";

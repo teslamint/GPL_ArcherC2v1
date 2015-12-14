@@ -1,0 +1,105 @@
+# -*- makefile -*-
+#
+#  apps/caviumocteon/Makefile.cavium.fragment
+#
+#  Makefile for generating a Cavium style makefile 
+#  for building application
+#
+CAV_TARGET_MAKEFILE_NAME := makefile.cavium
+CAV_TARGET_DIR := $(CURDIR)
+CAV_TARGET_MAKEFILE := "$(CURDIR)/$(CAV_TARGET_MAKEFILE_NAME)"
+CAV_CFLAGS_LOCAL = -g -O2 -W -Wall -Wno-unused-parameter -I$(top_srcdir)/ipsec/quicksec/fastpath/caviumocteon -I$(top_srcdir)/include -I$(top_srcdir)/ipsec -I$(top_srcdir)/interceptor/include
+CAV_CONFIG_DIR = config
+
+
+
+default: makefile
+
+
+
+
+# Clear all targets
+%:
+
+include Makefile
+
+APP_SRCS:=$(FASTPATH_OCTEON_COMMON_SRCS) $(OCTEON_FASTPATH_CONTROL_SRC)
+
+LN_SRCS:= $(FASTPATH_OCTEON_COMMON_SRCS)
+LN_SRCS:=$(LN_SRCS:%.c=$(top_srcdir)/ipsec/quicksec/fastpath/caviumocteon/%.c)
+LN_SRCS:=$(LN_SRCS:%.h=$(top_srcdir)/ipsec/quicksec/fastpath/caviumocteon/%.h)
+LN_SRCS:=$(sort $(LN_SRCS))
+
+
+APP_SRCS:=$(APP_SRCS:%.h=)
+APP_OBJS:=$(APP_SRCS:%.c="\$$\(OBJ_DIR\)"/%.o)
+
+
+#
+# Targets
+#
+
+ECHO=/bin/echo
+
+.PHONY: makefile ln_srcs
+
+makefile:
+ifdef OCTEON_ROOT
+	$(SHELL) -c '$(ECHO) "#" > $(CAV_TARGET_MAKEFILE); \
+	$(ECHO) "# Makefile for Cavium specific compilation" >> $(CAV_TARGET_MAKEFILE); \
+	$(ECHO) "#"  >> $(CAV_TARGET_MAKEFILE); \
+	$(ECHO) "" >> $(CAV_TARGET_MAKEFILE); \
+	$(ECHO) "default: application-target" >> $(CAV_TARGET_MAKEFILE); \
+	$(ECHO) "" >> $(CAV_TARGET_MAKEFILE); \
+	$(ECHO) "# standard common Makefile fragment" >> $(CAV_TARGET_MAKEFILE); \
+	$(ECHO) "" >> $(CAV_TARGET_MAKEFILE); \
+	$(ECHO) -n -e "include $$" >> $(CAV_TARGET_MAKEFILE); \
+	$(ECHO) "(OCTEON_ROOT)/common.mk" >> $(CAV_TARGET_MAKEFILE);\
+	$(ECHO) "" >> $(CAV_TARGET_MAKEFILE);\
+	$(ECHO) "#standard component Makefile fragments" >> $(CAV_TARGET_MAKEFILE);\
+	$(ECHO) "" >> $(CAV_TARGET_MAKEFILE);\
+        $(ECHO) -n -e "dir := $$" >> $(CAV_TARGET_MAKEFILE); \
+	$(ECHO) "(OCTEON_ROOT)/executive" >> $(CAV_TARGET_MAKEFILE); \
+	$(ECHO) -n -e "include $$" >> $(CAV_TARGET_MAKEFILE); \
+	$(ECHO) "(dir)/cvmx.mk" >> $(CAV_TARGET_MAKEFILE);\
+	$(ECHO) "" >> $(CAV_TARGET_MAKEFILE);\
+	$(ECHO) -n -e "TARGET = qs_se_ctrl$$" >> $(CAV_TARGET_MAKEFILE); \
+	$(ECHO) "(PREFIX)" >> $(CAV_TARGET_MAKEFILE);\
+	$(ECHO) -n -e "OBJS = " >> $(CAV_TARGET_MAKEFILE); \
+	$(ECHO) "$(APP_OBJS)" >> $(CAV_TARGET_MAKEFILE);\
+	$(ECHO) "" >> $(CAV_TARGET_MAKEFILE);\
+	$(ECHO) "CFLAGS_LOCAL = $(CAV_CFLAGS_LOCAL)" >> $(CAV_TARGET_MAKEFILE);\
+	$(ECHO) "" >> $(CAV_TARGET_MAKEFILE);\
+	$(ECHO) -e -n "include $$" >> $(CAV_TARGET_MAKEFILE);\
+	$(ECHO) "(OCTEON_ROOT)/application.mk" >> $(CAV_TARGET_MAKEFILE);\
+	$(ECHO) "" >> $(CAV_TARGET_MAKEFILE);\
+	$(ECHO) "#clean target" >> $(CAV_TARGET_MAKEFILE);\
+	$(ECHO) "clean:" >> $(CAV_TARGET_MAKEFILE);\
+	$(ECHO) -n -e "\trm -f $$" >> $(CAV_TARGET_MAKEFILE);\
+	$(ECHO) "(TARGET)" >> $(CAV_TARGET_MAKEFILE);\
+	$(ECHO) -n -e "\trm -f $$" >> $(CAV_TARGET_MAKEFILE);\
+	$(ECHO) "(CVMX_CONFIG)" >> $(CAV_TARGET_MAKEFILE); \
+	$(ECHO) -n -e "\trm -fr $$" >> $(CAV_TARGET_MAKEFILE);\
+	$(ECHO) "(OBJ_DIR)" >> $(CAV_TARGET_MAKEFILE);'
+else
+	$(SHELL) -c '$(ECHO) "#" > $(CAV_TARGET_MAKEFILE); \
+	$(ECHO) "# Makefile for Cavium specific compilation" >> $(CAV_TARGET_MAKEFILE);\
+	$(ECHO) "#" >> $(CAV_TARGET_MAKEFILE);\
+	$(ECHO) "# This directory cannot be built without Octeon SDK." >> $(CAV_TARGET_MAKEFILE);\
+	$(ECHO) "#" >> $(CAV_TARGET_MAKEFILE);\
+	$(ECHO) "do_nothing:" >> $(CAV_TARGET_MAKEFILE);\
+	$(ECHO) "" >> $(CAV_TARGET_MAKEFILE); \
+	$(ECHO) "clean:" >> $(CAV_TARGET_MAKEFILE);\
+	$(ECHO) "" >> $(CAV_TARGET_MAKEFILE);'
+endif
+
+$(CAV_CONFIG_DIR):
+ifdef OCTEON_ROOT
+	if [ ! -d $(CAV_CONFIG_DIR) ]; then mkdir $(CAV_CONFIG_DIR); fi
+endif
+
+ln_srcs: $(CAV_CONFIG_DIR)
+ifdef OCTEON_ROOT
+	$(SHELL) -c 'ln -s -f ../$(top_srcdir)/ipsec/quicksec/fastpath/caviumocteon/executive-config.h config/'
+	$(SHELL) -c 'ln -s -f $(LN_SRCS) .'
+endif

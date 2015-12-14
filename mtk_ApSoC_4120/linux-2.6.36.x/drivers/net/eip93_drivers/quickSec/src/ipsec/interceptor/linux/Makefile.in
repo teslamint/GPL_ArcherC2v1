@@ -1,0 +1,509 @@
+# Makefile.in generated automatically by automake 1.4-p6 from Makefile.am
+
+# Copyright (C) 1994, 1995-8, 1999, 2001 Free Software Foundation, Inc.
+# This Makefile.in is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+#
+# src/ipsec/interceptor/linux/Makefile.am.raw
+#
+# Copyright:
+#       Copyright (c) 2002-2004 SFNT Finland Oy.
+#       All rights reserved
+#
+
+
+# -*- makefile -*-
+#
+# interceptor/libkernelutil/Makefile.fragment
+#
+
+
+# -*- makefile -*-
+#
+# interceptor/libkernelutil/Makefile.fragment
+#
+
+
+# -*- makefile -*-
+#
+# ipsec/interceptor/tests/Makefile.fragment
+#
+
+
+SHELL = @SHELL@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+VPATH = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+libdir = @libdir@
+infodir = @infodir@
+mandir = @mandir@
+includedir = @includedir@
+oldincludedir = /usr/include
+
+DESTDIR =
+
+pkgdatadir = $(datadir)/@PACKAGE@
+pkglibdir = $(libdir)/@PACKAGE@
+pkgincludedir = $(includedir)/@PACKAGE@
+
+top_builddir = ../../..
+
+ACLOCAL = @ACLOCAL@
+AUTOCONF = @AUTOCONF@
+AUTOMAKE = @AUTOMAKE@
+AUTOHEADER = @AUTOHEADER@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@ $(AM_INSTALL_PROGRAM_FLAGS)
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+transform = @program_transform_name@
+
+NORMAL_INSTALL = :
+PRE_INSTALL = :
+POST_INSTALL = :
+NORMAL_UNINSTALL = :
+PRE_UNINSTALL = :
+POST_UNINSTALL = :
+build_alias = @build_alias@
+build_triplet = @build@
+host_alias = @host_alias@
+host_triplet = @host@
+target_alias = @target_alias@
+target_triplet = @target@
+ADDR_MODEL = @ADDR_MODEL@
+AR = @AR@
+AV_ALG_INCLUDES = @AV_ALG_INCLUDES@
+AV_ALG_LIBS = @AV_ALG_LIBS@
+BUILD_CC = @BUILD_CC@
+COPY_INCLUDE = @COPY_INCLUDE@
+ENGINE_ASM_OBJS = @ENGINE_ASM_OBJS@
+FASTPATH_CONFIGURED_DIRECTORY = @FASTPATH_CONFIGURED_DIRECTORY@
+FASTPATH_CONFIGURED_INCLUDES = @FASTPATH_CONFIGURED_INCLUDES@
+FASTPATH_CONFIGURED_OBJS = @FASTPATH_CONFIGURED_OBJS@
+FASTPATH_CONFIGURED_SRCS = @FASTPATH_CONFIGURED_SRCS@
+GRANDLIBARCMD = @GRANDLIBARCMD@
+GRANDLIBRANLIBCMD = @GRANDLIBRANLIBCMD@
+HWACCEL_CONFIGURED_DIRECTORY = @HWACCEL_CONFIGURED_DIRECTORY@
+HWACCEL_CONFIGURED_INCLUDES = @HWACCEL_CONFIGURED_INCLUDES@
+HWACCEL_CONFIGURED_OBJS = @HWACCEL_CONFIGURED_OBJS@
+HWACCEL_CONFIGURED_SRCS = @HWACCEL_CONFIGURED_SRCS@
+HWACCEL_VPATH = @HWACCEL_VPATH@
+IPSEC_ARCH_INTC = @IPSEC_ARCH_INTC@
+IPSEC_ARCH_ROUTE = @IPSEC_ARCH_ROUTE@
+KERN_CC = @KERN_CC@
+KERN_CFLAGS = @KERN_CFLAGS@
+KERN_LDFLAGS = @KERN_LDFLAGS@
+KERN_LIBS = @KERN_LIBS@
+LD = @LD@
+LN_S = @LN_S@
+M4 = @M4@
+MAKEINFO = @MAKEINFO@
+MATH_CONF_OBJS = @MATH_CONF_OBJS@
+NM_PATH = @NM_PATH@
+OCTEONFLAGS = @OCTEONFLAGS@
+OCTEON_OBJS = @OCTEON_OBJS@
+OCTEON_SRCS = @OCTEON_SRCS@
+OCTEON_VPATH = @OCTEON_VPATH@
+PACKAGE = @PACKAGE@
+PERL = @PERL@
+PURIFY = @PURIFY@
+QS_ADDRSPACE = @QS_ADDRSPACE@
+QS_EXTRALIBS = @QS_EXTRALIBS@
+QS_FASTPATH = @QS_FASTPATH@
+QS_FASTPATH_CRYPTO_ASM_LNSRC = @QS_FASTPATH_CRYPTO_ASM_LNSRC@
+QS_FASTPATH_CRYPTO_ASM_OBJS = @QS_FASTPATH_CRYPTO_ASM_OBJS@
+QS_FASTPATH_SRCS = @QS_FASTPATH_SRCS@
+QUICKSEC_ASM_OBJS = @QUICKSEC_ASM_OBJS@
+QUICKSEC_CONF_OBJS = @QUICKSEC_CONF_OBJS@
+RANLIB = @RANLIB@
+ROUTE_CONFIGURED_SRCS = @ROUTE_CONFIGURED_SRCS@
+RXP_PLATFORM_NAME = @RXP_PLATFORM_NAME@
+SAFENETFLAGS = @SAFENETFLAGS@
+SAFENET_UDM_OBJS = @SAFENET_UDM_OBJS@
+SAFENET_UDM_SRCS = @SAFENET_UDM_SRCS@
+SAFENET_UDM_VPATH = @SAFENET_UDM_VPATH@
+SSHCIPHER_CONF_OBJS = @SSHCIPHER_CONF_OBJS@
+SSHHASH_CONF_OBJS = @SSHHASH_CONF_OBJS@
+SSH_ENGINE_KERNEL_TARGET = @SSH_ENGINE_KERNEL_TARGET@
+SSH_ENGINE_USERMODE_TARGET = @SSH_ENGINE_USERMODE_TARGET@
+SSH_INTERCEPTOR_CPPFLAGS = @SSH_INTERCEPTOR_CPPFLAGS@
+SSH_INTERCEPTOR_ETHER_OBJS = @SSH_INTERCEPTOR_ETHER_OBJS@
+SSH_INTERCEPTOR_KERNEL_TARGETS = @SSH_INTERCEPTOR_KERNEL_TARGETS@
+SSH_INTERCEPTOR_MACHINE_DIR = @SSH_INTERCEPTOR_MACHINE_DIR@
+SSH_INTERCEPTOR_MACHINE_SUBDIR = @SSH_INTERCEPTOR_MACHINE_SUBDIR@
+SSH_INTERCEPTOR_NONETHER_OBJS = @SSH_INTERCEPTOR_NONETHER_OBJS@
+SSH_INTERCEPTOR_OBJS = @SSH_INTERCEPTOR_OBJS@
+SSH_INTERCEPTOR_SYMCHECK = @SSH_INTERCEPTOR_SYMCHECK@
+SSH_INTERCEPTOR_TARGETS = @SSH_INTERCEPTOR_TARGETS@
+SSH_IPM_MACHINE_OBJS = @SSH_IPM_MACHINE_OBJS@
+SSH_KB_LINUX_CONFIG_HEADER = @SSH_KB_LINUX_CONFIG_HEADER@
+SSH_KB_LINUX_KERNEL_INCLUDE = @SSH_KB_LINUX_KERNEL_INCLUDE@
+THREAD_OBJS = @THREAD_OBJS@
+THREAD_SYSTEM_OBJS = @THREAD_SYSTEM_OBJS@
+VERSION = @VERSION@
+
+AUTOMAKE_OPTIONS = 1.0 foreign dist-zip no-dependencies
+
+AUTODIST_OPTIONS = lnsrcs lnsrcs lnsrcs lnsrcs
+WINCONF_OPTIONS = ignore maintainer=sponkanen@safenet-inc.com
+
+DEFS = -DSSH_BUILD_IPSEC 	-DINTERCEPTOR_PROVIDES_INTERFACE_INFORMATION 	-DINTERCEPTOR_PROVIDES_IP_ROUTING 	-DINTERCEPTOR_PROVIDES_VIRTUAL_ADAPTERS
+
+
+CFLAGS = $(KERN_CFLAGS) $(SSH_INTERCEPTOR_CPPFLAGS)
+LIBS = 
+CC = $(KERN_CC) -o $@
+
+LIBENGINE =   $(top_builddir)/ipsec/quicksec/@QS_ADDRSPACE@/libengine.a  $(top_builddir)/ipsec/quicksec/@QS_ADDRSPACE@/libfastpath-software.a  $(top_builddir)/ipsec/quicksec/@QS_ADDRSPACE@/libfastpath.a
+
+
+LIBKERNEL =   $(top_builddir)/ipsec/quicksec/@QS_ADDRSPACE@/libaccelerator.a  $(top_builddir)/ipsec/quicksec/@QS_ADDRSPACE@/libkernel.a
+
+
+LIBKERNEL_NONE =   $(top_builddir)/ipsec/quicksec/@QS_ADDRSPACE@/libaccelerator-none.a  $(top_builddir)/ipsec/quicksec/@QS_ADDRSPACE@/libkernel.a
+
+
+QS_ENGINE_LIBS = $(LIBENGINE) $(LIBKERNEL) @QS_EXTRALIBS@
+
+INCLUDES =  	-I. -I$(srcdir) 	-I$(top_builddir) -I$(top_srcdir) 	-I$(top_builddir)/include 	-I$(top_srcdir)/interceptor/include 	-I$(top_srcdir)/interceptor/linux 	-I$(top_srcdir)/interceptor/libkernelutil 	-I$(top_srcdir)/interceptor/usermode 	-I$(top_srcdir)/interceptor 	-I$(top_srcdir)/ipsec 	-I$(top_srcdir)/ipsec/hwaccel 	$(INTERCEPTOR_TESTER_INCLUDES) 
+
+
+CLEANFILES = $(cleanfiles) $(SSH_INTERCEPTOR_TARGETS) */*.o
+
+DISTCLEANFILES = $(shell find -P . -name \*.[chS] -and -type l) 		kbuild/Makefile kbuild/.*.cmd 		./kbuild/Module.markers ./kbuild/*.ko 		./kbuild/quicksec.mod.c 		./kbuild/quicksec_usermode.mod.c 		./kbuild/Module.symvers 		./kbuild/modules.order
+
+
+icept_kernel_ldflags = -nodefaultlibs -nostdlib -nostartfiles -Wl,-r
+
+EXTRA_PROGRAMS =          quicksec.o                      sshipsec_tester.o       	sshipsec_tester_ipm     	quicksec_usermode.o
+
+
+quicksec_o_SOURCES = $(LINUX_IPSEC_COMMON_LNSRCS)
+
+quicksec_o_LDADD =          $(QS_ENGINE_LIBS)
+
+
+quicksec_o_LDFLAGS = $(icept_kernel_ldflags)
+quicksec_o_DEPENDENCIES = $(quicksec_o_LDADD)
+
+sshipsec_tester_o_SOURCES =          $(LINUX_IPSEC_COMMON_LNSRCS)          $(INTERCEPTOR_TESTER_LNSRCS)
+
+
+sshipsec_tester_o_LDADD = $(LIBKERNEL)
+sshipsec_tester_o_LDFLAGS = $(icept_kernel_ldflags)
+sshipsec_tester_o_DEPENDENCIES = $(sshipsec_tester_o_LDADD)
+
+sshipsec_tester_ipm_SOURCES = $(INTERCEPTOR_TESTER_IPM_LNSRCS)
+sshipsec_tester_ipm_LDFLAGS = @LIBS@
+sshipsec_tester_ipm_LDADD = -L../../../lib -lssh
+
+quicksec_usermode_o_SOURCES =  	$(LINUX_IPSEC_COMMON_LNSRCS) 	$(USERMODE_INTERCEPTOR_KERNEL_LNSRCS)
+
+
+quicksec_usermode_o_LDADD = $(LIBKERNEL_NONE)
+quicksec_usermode_o_LDFLAGS = $(icept_kernel_ldflags)
+quicksec_usermode_o_DEPENDENCIES = $(quicksec_usermode_o_LDADD)
+
+LINUX_IPSEC_COMMON_LNSRCS =          linux_debug.c                   linux_iface.c                   linux_ipm.c                     linux_kernel_alloc.c            linux_main.c                    linux_misc.c                    linux_mutex.c                   linux_packet.c                  linux_procfs.c                  linux_route.c                   linux_timeout.c                 linux_ip_glue.c                 linux_hook_magic.c      	linux_octeon_intercept.c         linux_pcihw.c                   linux_virtual_adapter.c 
+
+
+EXTRA_DIST =          README INSTALL                   	kbuild/Makefile.kbuild.fragment
+
+
+kbuild_srcdir = $(shell (cd $(srcdir)/kbuild/; pwd))
+
+KERNEL_UTIL_SRCS =  	kernel_alloc.c 	kernel_encode.c 	kernel_encode.h 	packet_utils.c
+
+
+KERNEL_UTIL_INCLUDES =  	-I$(top_srcdir)/interceptor/libkernelutil
+
+
+KERNEL_UTIL_LNSRCS =  	kernel_alloc.c 	kernel_encode.c 	packet_utils.c
+
+
+KERNEL_UTIL_HDR_LNSRCS =  	kernel_encode.h
+
+
+USERMODE_INTERCEPTOR_INCLUDES =  	-I$(top_srcdir)/interceptor/usermode
+
+
+USERMODE_INTERCEPTOR_SRCS =  	usermode_packet.c 	usermode_util.c 	usermodeforwarder.c 	usermodeforwarder.h 	usermodeinterceptor.c 	usermodeinterceptor.h 	virtual_adapter.c 	platform_kernel_alloc.h 	platform_kernel_mutex.h
+
+
+USERMODE_INTERCEPTOR_KERNEL_LNSRCS =  	usermodeforwarder.c
+
+
+USERMODE_INTERCEPTOR_USER_LNSRCS =  	virtual_adapter.c 	usermode_packet.c 	usermode_util.c 	usermodeinterceptor.c
+
+
+INTERCEPTOR_TESTER_SRCS =  	interceptor_tester.c 	interceptor_tester.h 	interceptor_tester_ipm.c
+
+
+INTERCEPTOR_TESTER_LNSRCS =  	interceptor_tester.c
+
+
+INTERCEPTOR_TESTER_IPM_LNSRCS =  	interceptor_tester_ipm.c
+
+
+INTERCEPTOR_TESTER_INCLUDES =  	-I$(top_srcdir)/ipsec/interceptor/tests
+
+mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+CONFIG_HEADER = ../../../sshconf.h
+CONFIG_CLEAN_FILES = 
+CPPFLAGS = @CPPFLAGS@
+LDFLAGS = @LDFLAGS@
+quicksec_o_OBJECTS =  linux_debug.o linux_iface.o linux_ipm.o \
+linux_kernel_alloc.o linux_main.o linux_misc.o linux_mutex.o \
+linux_packet.o linux_procfs.o linux_route.o linux_timeout.o \
+linux_ip_glue.o linux_hook_magic.o linux_octeon_intercept.o \
+linux_pcihw.o linux_virtual_adapter.o
+sshipsec_tester_o_OBJECTS =  linux_debug.o linux_iface.o linux_ipm.o \
+linux_kernel_alloc.o linux_main.o linux_misc.o linux_mutex.o \
+linux_packet.o linux_procfs.o linux_route.o linux_timeout.o \
+linux_ip_glue.o linux_hook_magic.o linux_octeon_intercept.o \
+linux_pcihw.o linux_virtual_adapter.o interceptor_tester.o
+sshipsec_tester_ipm_OBJECTS =  interceptor_tester_ipm.o
+sshipsec_tester_ipm_DEPENDENCIES = 
+quicksec_usermode_o_OBJECTS =  linux_debug.o linux_iface.o linux_ipm.o \
+linux_kernel_alloc.o linux_main.o linux_misc.o linux_mutex.o \
+linux_packet.o linux_procfs.o linux_route.o linux_timeout.o \
+linux_ip_glue.o linux_hook_magic.o linux_octeon_intercept.o \
+linux_pcihw.o linux_virtual_adapter.o usermodeforwarder.o
+COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
+DIST_COMMON =  README INSTALL Makefile.am Makefile.in
+
+
+DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+
+TAR = tar
+GZIP_ENV = --best
+SOURCES = $(quicksec_o_SOURCES) $(sshipsec_tester_o_SOURCES) $(sshipsec_tester_ipm_SOURCES) $(quicksec_usermode_o_SOURCES)
+OBJECTS = $(quicksec_o_OBJECTS) $(sshipsec_tester_o_OBJECTS) $(sshipsec_tester_ipm_OBJECTS) $(quicksec_usermode_o_OBJECTS)
+
+all: all-redirect
+.SUFFIXES:
+.SUFFIXES: .S .c .o .s
+$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) $(top_srcdir)/interceptor/libkernelutil/Makefile.fragment $(top_srcdir)/interceptor/usermode/Makefile.fragment $(top_srcdir)/ipsec/interceptor/tests/Makefile.fragment
+	cd $(top_srcdir) && $(AUTOMAKE) --foreign ipsec/interceptor/linux/Makefile
+
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) \
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+
+.c.o:
+	$(COMPILE) -c $<
+
+.s.o:
+	$(COMPILE) -c $<
+
+.S.o:
+	$(COMPILE) -c $<
+
+mostlyclean-compile:
+	-rm -f *.o core *.core
+
+clean-compile:
+
+distclean-compile:
+	-rm -f *.tab.c
+
+maintainer-clean-compile:
+
+quicksec.o: $(quicksec_o_OBJECTS) $(quicksec_o_DEPENDENCIES)
+	@rm -f quicksec.o
+	$(LINK) $(quicksec_o_LDFLAGS) $(quicksec_o_OBJECTS) $(quicksec_o_LDADD) $(LIBS)
+
+sshipsec_tester.o: $(sshipsec_tester_o_OBJECTS) $(sshipsec_tester_o_DEPENDENCIES)
+	@rm -f sshipsec_tester.o
+	$(LINK) $(sshipsec_tester_o_LDFLAGS) $(sshipsec_tester_o_OBJECTS) $(sshipsec_tester_o_LDADD) $(LIBS)
+
+sshipsec_tester_ipm: $(sshipsec_tester_ipm_OBJECTS) $(sshipsec_tester_ipm_DEPENDENCIES)
+	@rm -f sshipsec_tester_ipm
+	$(LINK) $(sshipsec_tester_ipm_LDFLAGS) $(sshipsec_tester_ipm_OBJECTS) $(sshipsec_tester_ipm_LDADD) $(LIBS)
+
+quicksec_usermode.o: $(quicksec_usermode_o_OBJECTS) $(quicksec_usermode_o_DEPENDENCIES)
+	@rm -f quicksec_usermode.o
+	$(LINK) $(quicksec_usermode_o_LDFLAGS) $(quicksec_usermode_o_OBJECTS) $(quicksec_usermode_o_LDADD) $(LIBS)
+
+ID: $(HEADERS) $(SOURCES) $(LISP)
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	here=`pwd` && cd $(srcdir) \
+	  && mkid -f$$here/ID $$unique $(LISP)
+
+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) $(LISP)
+	tags=; \
+	here=`pwd`; \
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
+	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags  $$unique $(LISP) -o $$here/TAGS)
+
+mostlyclean-tags:
+
+clean-tags:
+
+distclean-tags:
+	-rm -f TAGS ID
+
+maintainer-clean-tags:
+
+distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
+
+subdir = ipsec/interceptor/linux
+
+distdir: $(DISTFILES)
+	$(mkinstalldirs) $(distdir)/kbuild
+	@for file in $(DISTFILES); do \
+	  d=$(srcdir); \
+	  if test -d $$d/$$file; then \
+	    cp -pr $$d/$$file $(distdir)/$$file; \
+	  else \
+	    test -f $(distdir)/$$file \
+	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
+	    || cp -p $$d/$$file $(distdir)/$$file || :; \
+	  fi; \
+	done
+info-am:
+info: info-am
+dvi-am:
+dvi: dvi-am
+check-am: all-am
+check: check-am
+installcheck-am:
+installcheck: installcheck-am
+install-exec-am:
+install-exec: install-exec-am
+
+install-data-am:
+install-data: install-data-am
+
+install-am: all-am
+	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+install: install-am
+uninstall-am:
+uninstall: uninstall-am
+all-am: Makefile all-local
+all-redirect: all-am
+install-strip:
+	$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install
+installdirs:
+
+
+mostlyclean-generic:
+
+clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
+
+distclean-generic:
+	-rm -f Makefile $(CONFIG_CLEAN_FILES)
+	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
+	-test -z "$(DISTCLEANFILES)" || rm -f $(DISTCLEANFILES)
+
+maintainer-clean-generic:
+mostlyclean-am:  mostlyclean-compile mostlyclean-tags \
+		mostlyclean-generic
+
+mostlyclean: mostlyclean-am
+
+clean-am:  clean-compile clean-tags clean-generic mostlyclean-am
+
+clean: clean-am
+
+distclean-am:  distclean-compile distclean-tags distclean-generic \
+		clean-am
+
+distclean: distclean-am
+
+maintainer-clean-am:  maintainer-clean-compile maintainer-clean-tags \
+		maintainer-clean-generic distclean-am
+	@echo "This command is intended for maintainers to use;"
+	@echo "it deletes files that may require special tools to rebuild."
+
+maintainer-clean: maintainer-clean-am
+
+.PHONY: mostlyclean-compile distclean-compile clean-compile \
+maintainer-clean-compile tags mostlyclean-tags distclean-tags \
+clean-tags maintainer-clean-tags distdir info-am info dvi-am dvi check \
+check-am installcheck-am installcheck install-exec-am install-exec \
+install-data-am install-data install-am install uninstall-am uninstall \
+all-local all-redirect all-am all installdirs mostlyclean-generic \
+distclean-generic clean-generic maintainer-clean-generic clean \
+mostlyclean distclean maintainer-clean
+
+
+distclean: extra-dist-clean
+
+.PHONY: extra-dist-clean
+
+extra-dist-clean:
+	rm -fr kbuild/.deps kbuild/.tmp_versions 
+
+all-local: $(SSH_INTERCEPTOR_TARGETS) kbuild/Makefile
+	${MAKE} -C kbuild
+
+quicksec_usermode.ko: quicksec_usermode.o
+	rm -f quicksec_usermode.ko
+	cp quicksec_usermode.o quicksec_usermode.ko
+
+quicksec.ko: quicksec.o
+	rm -f quicksec.ko
+	cp quicksec.o quicksec.ko
+
+sshipsec_tester.ko: sshipsec_tester.o
+	rm -f sshipsec_tester.ko
+	cp sshipsec_tester.o sshipsec_tester.ko
+
+kbuild/Makefile: $(kbuild_srcdir)/Makefile.kbuild.fragment
+	install -d kbuild
+	cd kbuild && $(MAKE) -f $^
+
+includes:
+
+tags:
+
+kernel_encode.h kernel_alloc.c kernel_encode.c packet_utils.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/interceptor/libkernelutil/$@ .
+
+virtual_adapter.c usermode_packet.c usermode_util.c usermodeinterceptor.c usermodeforwarder.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/interceptor/usermode/$@ .
+
+interceptor_tester.c interceptor_tester_ipm.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/ipsec/interceptor/tests/$@ .
+
+linux_debug.c linux_iface.c linux_ipm.c linux_kernel_alloc.c linux_main.c linux_misc.c linux_mutex.c linux_packet.c linux_procfs.c linux_route.c linux_timeout.c linux_ip_glue.c linux_hook_magic.c linux_octeon_intercept.c linux_pcihw.c linux_virtual_adapter.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/interceptor/linux/$@ .
+
+# Tell versions [3.59,3.63) of GNU make to not export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:

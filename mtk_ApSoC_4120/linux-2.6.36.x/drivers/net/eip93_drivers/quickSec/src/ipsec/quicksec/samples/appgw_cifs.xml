@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE quicksec PUBLIC "quicksec:dtd" "quicksec.dtd">
+<quicksec>
+  <policy>
+    <!-- NOTE! Your Windows hosts needing to access domain controller located
+               behind a QuickSec firewall should use LMHOSTS file for PDC
+               name resolution. The LMHOSTS file should contain at least the 
+               following definitions.
+
+    EXAMPLE:
+
+     10.1.1.1   PDC-SERVER   #DOM:YOURDOM       #PRE
+     10.1.1.1   "YOURDOM        \0x1b"  #PRE
+
+    Where:
+        - "10.1.1.1" is the IP4 address of your Primary Domain Controller 
+        - "PDC-SERVER" is the NetBIOS name of the PDC.
+        - "YOURDOM" is the name of your domain. Notice that there domain name 
+          must be padded with spaces (when necessary) so the name will be 
+          exactly 15 chatacters long.
+
+    You can test your LMHOSTS file by entering the following commands on your
+    Windows host's command prompt:
+
+        nbtstat -R    (flushes the NetBIOS name cache and reloads LMHOSTS file)
+
+        nbtstat -c    (displays the contents of NetBIOS name cache)
+
+    If everything works correctly, you will see the following output:
+
+        Name              Type       Host Address        Life [sec]
+    ================================================================
+    PDC-SERVER     <1C>  GROUP       10.1.1.1                 -1
+    PDC-SERVER     <1B>  UNIQUE      10.1.1.1                 -1
+    YOURDOM        <03>  UNIQUE      10.1.1.1                 -1
+    YOURDOM        <00>  UNIQUE      10.1.1.1                 -1
+    YOURDOM        <20>  UNIQUE      10.1.1.1                 -1
+    -->
+
+    <!-- CIFS over NetBIOS over TCP/IP application gateway. -->
+    <service name="cifs-nbt">
+      <appgw id="alg-cifs@ssh.com"/>
+    </service>
+
+    <!-- CIFS over Microsoft Direct SMB Hosting Service application gateway. -->
+    <service name="cifs-msds">
+      <appgw id="alg-cifs@ssh.com"/>
+    </service>
+
+    <!-- Netbios Datagram application gateway. -->
+    <service name="netbios-dgm">
+      <appgw id="alg-netbios-dgm@ssh.com"/>
+    </service>
+
+    <!-- WINS application gateway. -->
+    <service name="wins">
+      <appgw id="alg-wins@ssh.com"/>
+    </service>
+
+    <!-- DNS application gateway. -->
+    <service name="dns">
+      <appgw id="alg-dns@ssh.com"/>
+    </service>
+
+    <!-- Application gateways. -->
+    <rule log="connections" service="cifs-nbt">
+      <src>ipv4(tcp,0.0.0.0/0)</src>
+      <dst>ipv4(tcp:139,0.0.0.0/0)</dst>
+    </rule>
+    <rule log="connections" service="cifs-msds">
+      <src>ipv4(tcp,0.0.0.0/0)</src>
+      <dst>ipv4(tcp:445,0.0.0.0/0)</dst>
+    </rule>
+    <rule log="connections" service="wins">
+      <src>ipv4(udp,0.0.0.0/0)</src>
+      <dst>ipv4(udp:137,0.0.0.0/0)</dst>
+    </rule>
+    <rule log="connections" service="dns">
+      <src>ipv4(udp,0.0.0.0/0)</src>
+      <dst>ipv4(udp:53,0.0.0.0/0)</dst>
+    </rule>
+    <rule log="connections" service="netbios-dgm">
+      <src>ipv4(udp,0.0.0.0/0)</src>
+      <dst>ipv4(udp:138,0.0.0.0/0)</dst>
+    </rule>
+
+    <!-- Pass everything else in plain-text. -->
+    <rule>
+      <src>ipv4(0.0.0.0/0)</src>
+      <dst>ipv4(0.0.0.0/0)</dst>
+    </rule>
+
+    <rule>
+      <src>ipv6(::/0)</src>
+      <dst>ipv6(::/0)</dst>
+    </rule>
+
+    <!-- Pass everything else from the local stack in plain-text. -->
+    <rule>
+      <src>ipv4(0.0.0.0/0)</src>
+      <dst>ipv4(0.0.0.0/0)</dst>
+      <local-stack direction="from"/>
+    </rule>
+  </policy>
+</quicksec>

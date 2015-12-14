@@ -1,0 +1,118 @@
+
+; --------------------------------------------------------------------------
+; Primary installation script for SafeNet QuickSec kernel-mode driver for 
+; Windows 2000, Windows XP and Windows Server 2003 platforms.
+;
+; This installation script installs a network filter driver (quicksec.sys)
+; above Ethernet and dial-up connections. This driver intercepts all IP
+; traffic flowing through these connections. The traffic of other protocols
+; is not intercepted. 
+;
+; Copyright (c) 2009 SFNT Finland Oy.
+; --------------------------------------------------------------------------
+;
+[Version]
+Signature  = "$Windows NT$"
+Class      = NetService
+ClassGUID  = {4D36E974-E325-11CE-BFC1-08002BE10318}
+Provider   = %SFNT%
+CatalogFile = qs-setup.cat
+DriverVer  = 09/25/2009,5.1.0.0
+
+[Manufacturer]
+%SFNT% = SAFENET.INSTALL,NTx86,NTamd64
+
+[ControlFlags]
+
+[SAFENET.INSTALL]
+%SAFENET_QUICKSEC_DESC% = SAFENET_QUICKSEC.NDI, sfnt_quicksec
+
+[SAFENET.INSTALL.NTx86]
+%SAFENET_QUICKSEC_DESC% = SAFENET_QUICKSEC.NDI, sfnt_quicksec
+
+[SAFENET.INSTALL.NTamd64]
+%SAFENET_QUICKSEC_DESC% = SAFENET_QUICKSEC.NDI, sfnt_quicksec
+
+[SAFENET_QUICKSEC.NDI]
+AddReg = SAFENET_QUICKSEC.NDI.ADD_REG, SAFENET_QUICKSEC.ADD_REG
+Characteristics = 0x410 ; NCF_FILTER | NCF_NO_SERVICE
+CopyFiles = SAFENET_QUICKSEC.COPY_FILES.SYS
+CopyInf = quicksec.inf
+
+[SourceDisksNames]
+0=%SAFENET_QUICKSEC_DISK%,"",,
+
+[SourceDisksFiles]
+quicksec.sys=0
+quicksec.inf=0
+
+[DestinationDirs]
+DefaultDestDir = 12
+SAFENET_QUICKSEC.COPY_FILES.SYS = 12  ; %windir%\System32\drivers
+SAFENET_QUICKSEC.COPY_FILES.INF = 17  ; %windir%\inf
+
+[SAFENET_QUICKSEC.COPY_FILES.SYS]
+quicksec.sys,,,4
+
+[SAFENET_QUICKSEC.NDI.ADD_REG]
+HKR, Ndi, HelpText, , %SAFENET_QUICKSEC_HELP%
+
+;-------------------------------------------------------------------------------
+; Note:
+; 1. Other components may also have UpperRange/LowerRange but for filters
+;    the value of both of them must be noupper/nolower
+;
+; 2. The value FilterClass is required.
+;    This value of a filter determines its order in a stack of filters.
+;
+;    Only one filter of a specific class can exist in a layered stack
+;    of filters. For example, two filters of FilterClass schedule cannot
+;    exist in a stack simultaneously.
+;
+; 3. The value Service is required
+;
+; 4. FilterDeviceInfId is the Id of the filter device (miniport) that will
+;    be installed for each filtered adapter.
+;    In this case this is quicksec_filter (refer to quicksec.inf)
+;
+; 5. The value LowerExclude is optional (It contains the adapters that are 
+;                                        not filtered)
+;-------------------------------------------------------------------------------
+;
+HKR, Ndi,            FilterClass,         , sfnt
+HKR, Ndi,            FilterDeviceInfId,   , quicksec_filter
+HKR, Ndi,            Service,             , quicksec
+HKR, Ndi\Interfaces, UpperRange,          , noupper
+HKR, Ndi\Interfaces, LowerRange,          , nolower
+HKR, Ndi\Interfaces, LowerExclude,        , "ndisatm, ndiscowan, ndiswan, ndiswanasync, ndiswanbh, ndiswannbf, ndiswanipx, ndiswanatalk, ndis5_nbf, ndis5_ipx, ndis5_atalk, ndis5_dlc, ndis5_streams"
+HKR, Ndi\Interfaces, FilterMediaTypes,    , "ethernet, wan"
+
+[SAFENET_QUICKSEC.ADD_REG]
+;
+; Debug trace. Uncomment (and modify) these when you want to install QuickSec with debug tracing enabled.
+;
+; HKLM,System\CurrentControlSet\Services\QuickSec\Parameters,TraceEnable,0x00010001,1
+; HKLM,System\CurrentControlSet\Services\QuickSec\Parameters,TraceString,0x00010000,"*Interceptor*=99,*Engine*=99"
+; HKLM,System\CurrentControlSet\Services\QuickSec\Parameters,TraceDirectory,0x00010000,"\??\C:\temp\"
+; HKLM,System\CurrentControlSet\Services\QuickSec\Parameters,TraceMaxSize,0x00010001,100
+;
+; Event logging.
+;
+HKLM, System\CurrentControlSet\Services\EventLog\System\quicksec,EventMessageFile,%REG_EXPAND_SZ%,"%%SystemRoot%%\system32\netevent.dll;%%SystemRoot%%\system32\drivers\quicksec.sys"
+HKLM, System\CurrentControlSet\Services\EventLog\System\quicksec,TypesSupported,%REG_DWORD%, 0x00000007
+
+[SAFENET_QUICKSEC.NDI.REMOVE.SERVICES]
+DelService = quicksec
+DelReg = SAFENET_QUICKSEC.DEL_REG
+
+[SAFENET_QUICKSEC.DEL_REG]
+HKLM, System\CurrentControlSet\Services\EventLog\System\quicksec
+
+[Strings]
+SFNT = "SFNT Finland Oy"
+SAFENET_QUICKSEC_DISK = "SafeNet QuickSec Installation Disk"
+SAFENET_QUICKSEC_DESC = "SafeNet QuickSec"
+SAFENET_QUICKSEC_HELP = "SafeNet QuickSec"
+REG_EXPAND_SZ = 0x00020000
+REG_DWORD = 0x00010001
+REG_MULTI_SZ = 0x00010000

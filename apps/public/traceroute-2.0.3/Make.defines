@@ -1,0 +1,41 @@
+#  The name of this distributive (used in tarballs name bodies etc.).
+# *MUST* be defined here...
+#
+NAME = traceroute
+
+#  An additional non-`lib*'-matching subdirs to be treated as libdirs.
+# All `lib*' subdirs treated as LIBDIRS automatically.
+#
+#LIBDIRS =
+
+#  A list of libdirs with libraries to be placed last in LIBDIRS list,
+# with the order specified. Useful, when some library should be
+# specified last because of referencing from another library...
+#
+LIBLAST = libsupp
+
+#  An additional non-`include*'-matching and not libdir subdirs to be
+# treated as includedirs. All `include*' subdirs treated as INCLUDEDIRS
+# automatically. Also all LIBDIRS would be used as includedirs too.
+#
+#INCLUDEDIRS =
+
+#  An additional non-`mod*'-matching subdirs to be treated as moduledirs.
+# All `mod*' subdirs treated as MODDIRS automatically.
+#
+#MODDIRS =
+
+#  Subdirs of executables which will use modules at run-time linking.
+#
+#MODUSERS =
+
+#  Subdirs of executables to be installed in `*/sbin' instead of `*/bin'.
+#
+#SBINUSERS = traceroute
+
+#  A postinstall script. Use one line (`\' to continue, `;' to separate...).
+# For example: POSTINSTALL = chmod 04755 foo ; ln -s foo bar
+#
+#POSTINSTALL = 
+
+#override CFLAGS += -D_GNU_SOURCE

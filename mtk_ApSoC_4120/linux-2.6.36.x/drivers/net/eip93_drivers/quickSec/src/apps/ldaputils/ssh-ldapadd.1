@@ -1,0 +1,166 @@
+.\"  -*- nroff -*-
+.\"
+.\" ssh-ldapadd.1
+.\"
+.\" Author:	Tero Kivinen <kivinen@ssh.fi>
+.\"
+.\" Copyright (c) 2002, 2003 SFNT Finland Oy.
+.\" Copyright (c) 1999 SSH Communications Security, Finland
+.\" All rights reserved
+.\"
+.TH SSH-LDAPADD 1 "March 31, 1999" "SSH-LDAPADD" "SSH-LDAPADD"
+
+.SH NAME
+ssh-ldapadd \- Add and remove entries in the ldap server
+
+.SH SYNOPSIS
+.B ssh-ldapadd
+[\c
+.BR \-r \c
+]
+[\c
+.BR \-R \c
+]
+[\c
+.BI \-b \ base_dn\fR\c
+]
+[\c
+.BI \-d \ debug_options\fR\c
+]
+[\c
+.BI \-s \ ldap_server_hostname\fR\c
+]
+[\c
+.BI \-p \ ldap_server_port\fR\c
+]
+[\c
+.BI \-u \ username\fR\c
+]
+[\c
+.BI \-P \ password\fR\c
+]
+[\c
+.BI \-S \ socks_url\fR\c
+]
+.I attribute_name\c
+=\c
+.I attribute_value
+|
+.I attribute_name\c
+=:[\c
+.I pbh\c
+]:\c
+.I filename ...
+.br
+
+.SH DESCRIPTION 
+.LP
+.B Ssh-ldapadd
+adds entries to ldap server. It can also be used to remove and modify
+entries from the ldap server.
+.LP
+The
+.I attribute_name
+is the attribute to add to the given base distinguished name. The
+value can have two different forms. If it doesn't start with colon (:)
+then it is assumed to be the direct value to be stored to the
+attribute. If it starts with colon, format character and another
+colon, then the value is read from the file, which name is given after
+the second colon. The format character can be one of the
+\'\c
+.B p\c
+\', \'\c
+.B b\c
+\', or \'\c
+.B h\c
+\'.
+.LP
+The format character of \'\c
+.B p\c
+\' means that the file contains pem encoded object (base 64 encoded).
+The format character of \'\c
+.B b\c
+\' means just binary file, and \'\c
+.B h\c
+\' means that the file is in same format that the
+.B hexl
+program prints out. 
+
+.SH OPTIONS
+.TP
+.BI \-b \ base_dn\fR\c
+Sets the base distinguished name for the add. The new entry will added
+to this node. This value defaults to
+\fR"\fBo=SSH Communications Security, c=FI\fR".
+.ne 3
+.TP
+.BI \-d \ debug_options\fR\c
+Print extensive debug information to stderr. debug_level is either a
+number, from 0 to 99, where 99 specifies that all debug information
+should be displayed, or a comma-separated list of assignments
+\fR"\fBModulePattern=debug_level\fR". This value defaults to
+\fR"\fBSshLdap*=6\fR".
+.ne 3
+.TP
+.BI \-p \ ldap_server_port\fR\c
+Port number of the ldap server. This value defaults to \fR"\fB389\fR".
+.ne 3
+.TP
+.BI \-P \ password\fR\c
+Password used when creating connection to the ldap server. Most of the
+ldap servers require authentication via username and password before
+allowing modifications to the ldap server. This defaults to anonymous
+bind.
+.ne 3
+.TP
+.B \-r
+Replace. This removes the old entry before adding new one. If old
+entry doesn't exists then print error, but still continue.
+.ne 3
+.TP
+.B \-R
+Remove. This just removes the old entry, but do not add new one.
+.ne 3
+.TP
+.BI \-s \ ldap_server_hostname\fR\c
+Host name of the ldap server where to connect. This value defaults to
+\fR"\fBldap\fR".
+.ne 3
+.TP
+.BI \-S \ socks_url\fR\c
+If SOCKS is used, it is configured with this option.
+The format of the option is
+.I socks://username@socks_server:port/network/netmask,network/netmask ...
+for example by setting environment variable 
+.B SSH_SOCKS_SERVER
+to
+.I socks://mylogin@socks.ssh.fi:1080/203.123.0.0/16,198.74.23.0/24
+uses host 
+.I socks.ssh.fi
+port
+.I 1080
+as your SOCKS server if connection is attempted outside of
+networks 
+.I 203.123.0.0
+(16 bit domain) and
+.I 198.74.23.0
+(8 bit domain) which are connected directly.
+.ne 3
+.TP
+.BI \-u \ username\fR\c
+Username used when creating connection to the ldap server. Most of the
+ldap servers require authentication via username and password before
+allowing modifications to the ldap server. This defaults to anonymous
+bind.
+.ne 3
+
+.SH AUTHORS
+.LP
+
+
+SFNT Finland Oy.
+
+For more information, see http://www.safenet-inc.com
+
+.SH SEE ALSO
+.BR ssh-ldapclient (1)

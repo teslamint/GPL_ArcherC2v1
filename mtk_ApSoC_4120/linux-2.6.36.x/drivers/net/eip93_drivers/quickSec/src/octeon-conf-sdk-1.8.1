@@ -1,0 +1,35 @@
+#!/bin/bash
+
+
+# Usage: source octeon-conf
+
+echo "Configuring Quicksec for cross compilation to Cavium Octeon SDK 1.8 platform..."
+
+if test $OCTEON_ROOT
+then
+  OCTEON_ROOT=$OCTEON_ROOT
+else
+# Modify this appropiately if the Cavium SDK is not installed under /usr/local/Cavium_Networks
+  OCTEON_ROOT=/usr/local/Cavium_Networks/OCTEON-SDK
+fi
+  
+KDIR=$OCTEON_ROOT/linux/kernel_2.6/linux
+
+CROSS=mips64-octeon-linux-gnu
+
+CFLAGS="-Wall -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -G 0 -pipe -finline-limit=100000 -mabi=64 -march=octeon -Wa,--trap -I$OCTEON_ROOT/target/include -I$OCTEON_ROOT/executive -mlong-calls -DOCTEON_MODEL=${OCTEON_MODEL}" \
+KERN_CFLAGS="-nostdinc -isystem $OCTEON_ROOT/tools-gcc-4.1/bin/../lib/gcc/mips64-octeon-linux-gnu/4.1.2/include -D__KERNEL__ -Iinclude  -include $KDIR/include/linux/autoconf.h -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -ffreestanding -O2 -fomit-frame-pointer -g  -G 0 -mno-abicalls -fno-pic -pipe -msoft-float  -mabi=64 -march=octeon -Wa,--trap -I$KDIR/include/asm-mips/mach-cavium-octeon -I$KDIR/include/asm-mips/mach-generic -Wdeclaration-after-statement -Wno-pointer-sign -I$KDIR/drivers/net/cavium-ethernet -I$KDIR/arch/mips/cavium-octeon/gpl-executive/config -I$OCTEON_ROOT/target/include -DOCTEON_MODEL=${OCTEON_MODEL}" \
+KERN_LDFLAGS="-m elf64btsmip" \
+CC=$CROSS-gcc \
+CPP=$CROSS-cpp \
+LD=$CROSS-ld \
+AR=$CROSS-ar \
+NM=$CROSS-nm \
+RANLIB=$CROSS-ranlib \
+./configure \
+        --enable-profile=quicksec-server \
+        --disable-debug \
+        --host=mips64-octeon-linux-gnu \
+        --with-kernel-version=2.6.21 \
+        --with-kernel-headers=$KDIR/include \
+        --with-fastpath=caviumocteon

@@ -1,0 +1,133 @@
+Installing Linux 2.x Packet Interceptor
+---------------------------------------
+
+
+
+Linux-2.6
+-------------
+    
+   The packet interceptor attaches itself to the Netfilter's hooks.
+   You need to compile Linux 2.6.x kernel with following options
+   selected:
+
+       * Network packet filtering (CONFIG_NETFILTER)
+
+   Kernel requires these options and Interceptor will not work unless
+   firewall support is compiled into the kernel.
+
+   IPv6 support does not require any changes in the kernel to work.
+   However, if you compile IPv6 support - The IPv6 protocol (CONFIG_IPV6) -
+   as a module, you HAVE to load the module BEFORE installing the
+   interceptor.
+
+
+
+Compiling
+---------
+
+   Before compiling the Quicksec toolkit, make sure that the linux kernel
+   headers in /usr/include/linux are compatible with the target kernel 
+   headers.
+
+   There are two alternative ways for compiling the linux interceptor module:
+
+   1) The normal compilation:
+
+      ./configure && make
+
+      This will compile the quicksec.ko and quicksec_usermode.ko modules
+      with default compiler options. Extra options can be specified using
+      the environment variables CFLAGS and KERN_CFLAGS. The resulting
+      modules are in ipsec/interceptor/linux/.
+
+   2) The kbuild compilation:
+      
+      ./configure && make
+      cd ipsec/interceptor/linux/; make kbuild/Makefile; cd kbuild; make
+
+      This will compile the quicksec.ko and quicksec_usermode.ko modules
+      with compiler flags that were used for compiling the linux kernel.
+      The resulting modules are in ipsec/interceptor/linux/kbuild/.
+
+      Note that before compiling the modules using the kbuild compilation,
+      the toolkit must be first configured and compiled the normal way.
+
+   The kbuild compiled modules should be preferred on all x86_64 platforms,
+   on montavista linux and on montavista mobilinux.
+
+
+
+Installation
+------------
+
+   1.  Load Interceptor into the kernel.
+
+       On linux-2.6:
+       /sbin/insmod ./quicksec.ko
+
+       For optional insmod parameters, see README or output of 
+       '/sbin/modinfo quicksec.ko'.
+
+   2.  Create a new configuration file or edit an existing one (eg. 
+       quicksec.xml).
+
+   3.  Start the Policy Manager.
+
+       ./quicksecpm
+
+       or if special configuration file is created (other than
+       quicksec.xml) use command:
+
+       ./quicksecpm -f <configfile>
+
+
+
+Uninstalling
+------------
+
+   Interceptor module maybe unloaded at any time from the system.  Module
+   can be unloaded with command:
+
+       /sbin/rmmod quicksec
+
+   
+   However, it must be noted that the Policy Manager cannot be running
+   at the same time when unloading the module.  Modules usage count must
+   be set to zero by stopping the Policy Manager.  After this the module
+   may be unloaded from the kernel.
+
+   To see if the Packet Interceptor is currently loaded into the kernel
+   use command:
+
+       /sbin/lsmod
+
+
+
+Run-time statistics
+-------------------
+
+   The packet interceptor provides run-time statistics of the network
+   traffic passed through the interceptor. This statistics is available
+   in the /proc filesystem. Other information is also available from the
+   /proc filesystem. The following files are available:
+
+       * /proc/quicksec/statistics
+
+           Provides statistics of the interceptor.  Use command
+           `cat /proc/quicksec/statistics´ to view the statistics.
+
+       * /proc/quicksec/version
+
+           Shows the version of the Packet Interceptor and the IPsec
+           Engine.  Use command `cat /proc/quicksec/version´ to view 
+           the version.
+
+       * /proc/quicksec/debug
+
+           Present only on debug builds. Can be used for setting the	
+	   kernel debug string. Use for example command 
+	   `echo "*Interceptor*=99" > /proc/quicksec/debug´ to set
+	   the debug string.
+
+   There are other files as well, however, they are only used by the
+   Policy Manager and should not be touched otherwise.

@@ -1,0 +1,27 @@
+ # -*- makefile -*-
+#
+# ipsec/quicksec/fastpath/Makefile.fragment
+#
+# See configure.in.inc; it defines QS_FASTPATH and QS_FASTPATH_SRCS
+#
+
+FASTPATH_INCLUDES = \
+	@FASTPATH_CONFIGURED_INCLUDES@ \
+	-I$(top_srcdir)/ipsec/quicksec/fastpath/@QS_FASTPATH@ \
+	-I$(top_srcdir)/ipsec/quicksec/fastpath/software \
+	-I$(top_srcdir)/ipsec/quicksec/fastpath
+
+FASTPATH_INCLUDES_windelta = \
+	-@FASTPATH_CONFIGURED_INCLUDES@ \
+	--I$(top_srcdir)/ipsec/quicksec/fastpath/@QS_FASTPATH@ \
+	+-I$(top_srcdir)/ipsec/quicksec/fastpath/software	
+
+include $(top_srcdir)/ipsec/quicksec/fastpath/software/Makefile.fragment
+
+
+
+
+include	$(top_srcdir)/ipsec/quicksec/fastpath/caviumocteon/Makefile.fragment
+
+
+

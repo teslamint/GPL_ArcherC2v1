@@ -1,0 +1,302 @@
+.\"  -*- nroff -*-
+.\"
+.\" t-ikev2.1
+.\"
+.\" Author:	Tero Kivinen <kivinen@iki.fi>
+.\"
+.\" Copyright (c) 2004 SFNT Finland Oy.
+.\" All rights reserved. 
+.\"
+.TH T-IKEV2 1 "December 14, 2004" "T-IKEV2" "T-IKEV2"
+
+.SH NAME
+t-ikev2 \- IKEv2 test program
+
+.SH SYNOPSIS
+.B t-ikev2
+[\c
+.B -c\c
+|\c
+.B -s\c
+]
+[\c
+.BI \-d \ debug_options\fR\c
+]
+[\c
+.BI \-i \ local_ip\fR\c
+]
+[\c
+.BI \-I \ remote_ip\fR\c
+]
+[\c
+.BI \-p \ local_port\fR\c
+]
+[\c
+.BI \-P \ remote_port\fR\c
+]
+[\c
+.BI \-n \ local_nat_port\fR\c
+]
+[\c
+.BI \-N \ remote_nat_port\fR\c
+]
+[\c
+.BI \-t \ local_traffic_selector\fR\c
+]
+[\c
+.BI \-T \ remote_traffic_selector\fR\c
+]
+[\c
+.BI \-f \ policy\fR\c
+]
+[\c
+.B -e\c
+]
+[\c
+.B -x\c
+]
+[\c
+.BI \-r \ radius_url\fR\c
+]
+[\c
+.BI \-y \ accelerator_type\fR\c
+]
+[\c
+.BI \-Y \ accelerator_init_info\fR\c
+]
+[\c
+.BI \-g \ certificates_config\fR\c
+]
+.br
+
+.SH DESCRIPTION 
+.LP
+.B t-ikev2
+acts as an IKEv2 test program. If the 
+.B -c
+option is given, it acts as a client, and initiates a connection to
+the specified IP address and port. if the 
+.B -s
+option is given, it acts as a server, and waits for incoming
+connections until killed. If neither of the
+.B -c
+or
+.B -s
+options is given, then it will fork both a client and a server, 
+and run one basic exchange against itself and then exit. 
+.SH OPTIONS
+.TP
+.B -c
+Act as a client. This means that the default port is 1501, and the 
+default NAT-T port is 4501. The default remote port is 1500 and
+default remote NAT-T port is 4500. The
+.B t-ikev2
+will also automatically start negotiating one IKE SA and then create
+another child IPsec SA after the IKE SA (and the initial IPsec SA with
+it) has been created.
+.ne 3
+
+.TP
+.B -s
+Act as a server. This means that the default port is 1500, and the 
+default NAT-T port is 4500. The default remote port is 1501 and remote
+nat-t port is 4501 (although they are not used). The 
+.B t-ikev2
+will stay waiting for connections, and will exit after receiving
+a SIGINT or SIGHUP signal.
+.ne 3
+
+.TP
+.BI \-d \ debug_options\fR\c
+Print extensive debug information to stderr. debug_level is either a
+number (from 0 to 99, where 99 specifies that all debug information
+should be displayed), or a comma-separated list of assignments
+\fR"\fBModulePattern=debug_level\fR". This value defaults to
+\fR"\fBMain=9,SshIkev2*=4,TestIkev2*=4\fR". Useful modules are
+\fR"\fBSshIkev2*\fR" (all IKEv2 library code), \fR"\fBMain\fR" (main
+test program), and \fR"\fBTestIkev2*\fR" (all test policy code). Level
+3 will list high level failures, level 4 will list high level
+successes, higher values above that will print more and more debug
+output. Value 99 will print all packet dumps etc. 
+.ne 3
+
+.TP
+.BI \-i \ local_ip\fR\c
+The local IP address used. This can be either an IPv4 or an IPv6 address, 
+and the default value is \fR"\fB127.0.0.1\fR". This is used when binding 
+the UDP sockets. 
+.ne 3
+
+.TP
+.BI \-I \ remote_ip\fR\c
+The remote IP address used. This can be either an IPv4 or an IPv6 address, 
+and the default value is \fR"\fB127.0.0.1\fR". This is used starting 
+an IKE SA to the remote host on the client. 
+.ne 3
+
+.TP
+.BI \-p \ local_port\fR\c
+The local UDP port to use for listening. The default depends whether the 
+.B -c
+or
+.B -s
+option is given to the
+.B t-ikev2
+program. 
+.ne 3
+
+.TP
+.BI \-P \ remote_port\fR\c
+The local UDP port to use when initiating the connection to the remote
+host. The default depends whether the 
+.B -c
+or
+.B -s
+option is given to the
+.B t-ikev2
+program. 
+.ne 3
+
+.TP
+.BI \-n \ local_nat_port\fR\c
+The local UDP port to use for changing port after NAT is detected. The
+default depends on whether the 
+.B -c
+or
+.B -s
+option is given to the
+.B t-ikev2
+program. 
+.ne 3
+
+.TP
+.BI \-N \ remote_nat_port\fR\c
+The remote UDP port to use for changing port after NAT is detected. The
+default depends on whether the 
+.B -c
+or
+.B -s
+option is given to the
+.B t-ikev2
+program. 
+.ne 3
+
+.TP
+.BI \-t \ local_traffic_selector\fR\c
+.TP
+.BI \-T \ remote_traffic_selector\fR\c
+The traffic selectors to send to the other end. These are only usable
+in the client end. The format is a list of entries having 
+\fR"\fBipv4\fR" or \fR"\fBipv6\fR" items. The format of each item is
+\fR"\fBipv\fR{\fI4\fR,\fI6\fR}\fB(\c
+\fR[\fIproto\fB:\fR][\fIstart_port\fR[\fB-\fIend_port\fR]\fB,\fR]\c
+\fIstart_ip\fR[\fB-\fIend_ip\fR]\fB)\fR".
+
+Valid examples are:
+\fB
+ipv4(192.168.2.1)
+.br
+ipv4(udp,192.168.2.1)
+.br
+ipv4(tcp:22,192.168.2.1)
+.br
+ipv4(tcp:1024-65535,192.168.2.1)
+.br
+ipv4(192.168.2.0-192.168.2.255)
+.br
+ipv4(tcp:1024-65535,192.168.2.0-192.168.2.255)
+.br
+ipv6(tcp:1234,3ffe:501:ffff::33)
+.br
+ipv4(192.168.2.1),ipv4(10.0.0.0-10.0.0.255)
+\fR
+.ne 3
+
+.TP
+.BI \-f \ policy\fR\c
+(not yet implemented)
+.ne 3
+
+#ifdef SSHDIST_IKE_EAP_AUTH
+.TP
+.B \-e
+Enable EAP for the client.
+.ne 3
+#endif SSHDIST_IKE_EAP_AUTH
+
+#ifdef SSHDIST_IKE_MOBIKE
+.TP
+.B \-m
+Enable MOBIKE for this SA.
+.ne 3
+#endif SSHDIST_IKE_MOBIKE
+
+#ifdef SSHDIST_IKE_CERT_AUTH
+.TP
+.B \-x
+Use certificates when authenticating.
+.ne 3
+#endif SSHDIST_IKE_CERT_AUTH
+
+.TP
+.BI \-r \ radius_url\fR\c
+URL for the radius server.
+.ne 3
+
+.TP
+.BI \-y \ accelerator_type\fR\c
+The type of the accelerator to use for the public key operations. For
+example \fR"\fBgenacc\fR" for the generic accelerator library.
+.ne 3
+
+.TP
+.BI \-Y \ accelerator_init_info\fR\c
+The initialization string for the accelerator. For
+\fR"\fBgenacc\fR" it is \fR"\fBname(dummy)\fR" or similar.
+.ne 3
+
+.TP
+.BI \-g \ certificates_config\fR\c
+Configuration file for the certificates and the pre-shared keys. This
+file consist of 5 different blocks:
+
+\fB[ca]
+.br
+[rsa-key]
+.br
+[dsa-key]
+.br
+[certificates]
+.br
+[pre-shared-key]
+\fR
+
+Each of those block can have \fIkeyword\fR = \fIvalue\fR lines. Valid
+keywords for the \fB[ca]\fR, and \fB[certificates]\fR blocks is:
+\fBcertificate\fR. Valid keywords for the \fB[rsa-key]\fR, and
+\fB[dsa-key]\fR blocks are: \fBprivate-key\fR, \fBcertificate\fR, and
+id-keywords. Valid keywords for the \fB[pre-shared-key]\fR are:
+\fBkey\fR and id-keywords. Valid id-keywords are: \fBipv4\fR,
+\fBipv6\fR, \fBip\fR, \fBfqdn\fR, \fBemail\fR, and \fBkeyid\fB.
+
+.ne 3
+
+.SH AUTHORS
+.LP
+
+SFNT Finland Oy.
+
+For more information, see http://www.safenet-inc.com/. 
+
+.SH SEE ALSO
+.BR t-isakmp (1)
+
+.SH BUGS
+
+Some of the IKEv2 functionality is still unimplemeted. Some parts of
+the library cannot be tested, as they cannot be configured or the
+dummy policy code for them is missing. 
+
+Reading the policy from a configuration file is not yet implemented. 
+Instead the policy is compiled into the test program.  
+

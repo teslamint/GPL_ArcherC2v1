@@ -1,0 +1,246 @@
+.\" Copyright (c)  2006   Dmitry Butskoy (dmitry@butskoy.name)
+.\" License: GPL
+.\" See COPYING for the status of this software
+.TH TRACEROUTE 8 "11 October 2006" "Fedora Project" "Fedora Core Linux"
+.\" .UC 6
+.SH NAME
+traceroute \- print the route packets trace to network host
+.SH SYNOPSIS
+.na
+.BR traceroute " [" \-46dFITUnrAV "] [" "\-f first_ttl" "] [" "\-g gate,..." ]
+.br
+.ti +8
+.BR "" [ "-i device" "] [" "-m max_ttl" "] [" "-p port" "] [" "-s src_addr" ]
+.br
+.ti +8
+.BR "" [ "-q nqueries" "] [" "-N squeries" "] [" "-t tos" ]
+.br
+.ti +8
+.BR "" [ "-l flow_label" "] [" "-w waittime" "] [" "-z sendwait" ]
+.br
+.ti +8
+.BR host " [" "packetlen" "]"
+.br
+.BR traceroute6
+.RI " [" options ]
+.br
+.BR tracert
+.RI " [" options ]
+.br
+.BR tcptraceroute
+.RI " [" options ]
+.ad
+.SH DESCRIPTION
+.I traceroute
+tracks the route packets take across an IP network on their
+way to a given host. It utilizes the IP protocol's time to live (TTL) field
+and attempts to elicit an ICMP TIME_EXCEEDED response from each gateway
+along the path to the host.
+.P
+.I traceroute6
+equivalents to
+.I traceroute
+.B \-6
+.br
+.I tracert
+equivalents to
+.I traceroute
+.B -I
+.br
+.I tcptraceroute
+equivalents to
+.I traceroute
+.B -T -p 80
+.SH OPTIONS
+The only required parameter is the name or IP address of the
+destination host. This paremeter can be followed by the size of the
+probing packet sent to that host (40 by default). Varying the
+size of the packet in conjunction with the
+.B \-F
+parameter can be used to obtain information about the MTU of
+individual network hops. (The size parameter is useless for TCP probes).
+.PP
+Additional options are:
+.TP
+.BI \--help
+Print help info and exit.
+.TP
+.BR \-4 ", " \-6
+Explicitly force IPv4 or IPv6 traceouting. By default, the program
+will try to resolve the name given, and choose the appropriate
+protocol automatically. If resolving a host name returns both
+IPv4 and IPv6 addresses,
+.I traceroute
+will use IPv4.
+.TP
+.B \-I
+Use ICMP ECHO for probes
+.TP
+.B \-T
+Use TCP SYN for probes
+.TP
+.B \-U
+Use UDP datagrams for probes (it is default). Only UDP method is allowed
+for unprivileged users.
+.TP
+.B \-d
+Enable socket level debugging (when the Linux kernel supports it)
+.TP
+.B \-F
+Set the "Don't Fragment" bit. This tells intermediate routers not
+to fragment the packet when they find it's too big for a network
+hop's MTU.
+.TP
+.BI \-f " first_ttl
+Specifies with what TTL to start. Defaults to 1.
+.TP
+.BI \-g " gateway
+Tells traceroute to add an IP source routing option to the outgoing
+packet that tells the network to route the packet through the
+specified
+.IR gateway .
+Not very useful, because most routers have disabled source routing
+for security reasons.
+.TP
+.BI \-i " interface
+Specifies the interface through which
+.I traceroute
+should send packets. By default, the interface is selected
+according to the routing table.
+.TP
+.BI \-m " max_ttl
+Specifies the maximum number of hops (max time-to-live value)
+.I traceroute
+will probe. The default is 30.
+.TP
+.BI \-N " squeries
+Specifies the number of probe packets sent out simultaneously.
+Sending several probes concurrently can speed up
+.I traceroute
+considerably. The default value is 16.
+.br
+Note that some routers and hosts can use ICMP rate throttling. In such
+a situation specifying too large number can lead to loss of some responses.
+.TP
+.BI \-n
+Do not try to map IP addresses to host names when displaying them.
+.TP
+.BI \-p " port
+For UDP tracing, specifies the destination port base
+.I traceroute
+will use (the destination port number will be incremented by each probe).
+.br
+For ICMP tracing, specifies the initial icmp sequence value (incremented
+by each probe too).
+.br
+For TCP specifies just the (constant) destination
+port to connect.
+.TP
+.BI \-t " tos
+For IPv4, set the Type of Service (TOS) and Precedence value. Useful values
+are 16 (low delay) and 8 (high throughput). Note that in order to use
+some TOS precendence values, you have to be super user.
+.br
+For IPv6, set the Traffic Control value.
+.TP
+.BI \-w " waittime
+Set the time (in seconds) to wait for a response to a probe (default 5.0 sec).
+.TP
+.BI \-q " nqueries
+Sets the number of probe packets per hop. The default is 3.
+.TP
+.BI \-r
+Bypass the normal routing tables and send directly to a host on
+an attached network.  If the host is not on a directly-attached
+network, an error is returned.  This option can be used to ping a
+local host through an interface that has no route through it.
+.TP
+.BI \-s " source_addr
+Chooses an alternative source address. Note that you must select the
+address of one of the interfaces.
+By default, the address of the outgoing interface is used.
+.TP
+.BI \-z " sendwait
+Minimal time interval between probes (default 0).
+If the value is more than 10, then it specifies a number in milliseconds,
+else it is a number of seconds (float point values allowed too).
+Useful when some routers use rate-limit for icmp messages.
+.TP
+.BI \-A
+Perform AS path lookups in routing registries and print results
+directly after the corresponding addresses
+.TP
+.BI \-V
+Print the version and exit.
+.PP
+This program attempts to trace the route an IP packet would follow to some
+internet host by launching a probe
+packets with a small ttl (time to live) then listening for an
+ICMP "time exceeded" reply from a gateway.  We start our probes
+with a ttl of one and increase by one until we get an ICMP "port
+unreachable" (or TCP reset), which means we got to "host", or hit a max (which
+defaults to 30 hops). Three (by default) probes are sent at each ttl setting
+and a line is printed showing the ttl, address of the gateway and
+round trip time of each probe.  If the probe answers come from
+different gateways, the address of each responding system will
+be printed.  If there is no response within a 5.0 (default) seconds,
+a "*" is printed for that probe.
+.PP
+We don't want the destination host to process the UDP probe packets
+so the destination port is set to an unlikely value (you can change it with the
+.B \-p
+flag). There is no such problem for ICMP or TCP tracerouting (for TCP we
+close sessions immediately after connect).
+.PP
+After the time some additional annotation can be printed:
+.BR !H ,
+.BR !N ,
+or
+.B !P
+(host, network or protocol unreachable),
+.B !S
+(source route failed),
+.B !F
+(fragmentation needed),
+.B !X
+(communication administratively prohibited),
+.B !V
+(host precedence violation),
+.B !C
+(precedence cutoff in effect), or
+.B !<num>
+(ICMP unreachable code <num>).
+If almost all the probes result in some kind of unreachable, traceroute
+will give up and exit.
+.SH NOTES
+.PP
+To speed up work, normally several probes are sent simultaneously.
+On the other hand, it creates some "storm of packages", especially
+in the reply direction. Routers can throttle the rate of icmp responses,
+and some of replies can be lost. To avoid this, decrease the number
+of simultaneous probes, or even set it to 1 (like in initial traceroute
+implementation), i.e.
+.B \-N 1
+.PP
+The final (target) host can drop some of the simultaneous probes,
+and even answer to the latest ones only. It can lead to extra
+"looks like expired" hops near the final hop. We use a smart algorithm
+to auto-detect such a situation, but if it cannot help in your case, just use
+.B \-N 1
+too.
+.PP
+For even greater stability you can slow down the program's work by
+.B \-z
+option, for example use
+.B \-z 0.5
+for half-second pause between probes.
+.PP
+If some hops report nothing for every method, the last chance to obtain
+something is to use
+.B ping -R
+command (IPv4, and for nearest 8 hops only).
+.SH SEE ALSO
+.BR ping (8),
+.BR ping6 (8),
+.BR tracepath (8),
+.BR netstat (8).

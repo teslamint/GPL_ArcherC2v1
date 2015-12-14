@@ -1,0 +1,77 @@
+# -*- makefile -*-
+#
+# ipsec/util/Makefile.fragment
+#
+
+AUTODIST_OPTIONS += lnsrcs
+
+IPSEC_UTIL_SRCS = 			\
+        ip_cksum.c                      \
+        ip_cksum.h                      \
+        ip_cksum_packet.c               \
+        ip_interfaces.c                 \
+        ip_interfaces.h
+
+IPSEC_UTIL_INCLUDES = -I$(top_srcdir)/ipsec/util
+
+PLATFORM_UTILITY_LNSRCS = \
+	sshencodetypes.c     \
+        sshrand.c     \
+        sshustr.c     \
+        sshmatch.c    \
+        sshmemcmp.c   \
+        sshdebug.c    \
+        sshfatal.c    \
+        sshsnprintf.c \
+        sshenum.c     \
+        sshinetbits.c   \
+        sshinetether.c  \
+        sshinethash.c   \
+        sshinetmapped.c \
+        sshinetmask.c   \
+        sshinetmerge.c  \
+        sshinetprint.c  \
+        sshinetproto.c  \
+        sshinetrender.c \
+        sshinetencode.c
+
+PLATFORM_UTILITY_INCLUDES = 			\
+	-I$(top_srcdir)/lib/sshutil/sshcore	\
+	-I$(top_srcdir)/lib/sshutil/sshnet
+
+
+VIRTUAL_ADAPTER_SRCS = 			\
+        virtual_adapter_arp.c           \
+        virtual_adapter_internal.h      \
+        virtual_adapter_misc.c          \
+        virtual_adapter_util.c
+VIRTUAL_ADAPTER_INCLUDES = -I$(top_srcdir)/ipsec/util
+
+
+
+
+
+ROUTE_SRCS_SOLARIS = iproute.c iproute.h
+
+ROUTE_SRCS_WINDOWS = iproute.c iproute.h
+
+ROUTE_SRCS_DEFAULT =
+
+ROUTE_SRCS = @ROUTE_CONFIGURED_SRCS@
+ROUTE_INCLUDES = -I$(top_srcdir)/ipsec/util
+
+ROUTE_SRCS_windelta = \
+	-@ROUTE_CONFIGURED_SRCS@
+
+sshencodetypes.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/lib/sshutil/sshstrutil/$@ .
+
+sshrand.c sshustr.c sshmatch.c sshmemcmp.c sshdebug.c sshfatal.c sshsnprintf.c sshenum.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/lib/sshutil/sshcore/$@ .
+
+sshinetbits.c sshinetether.c sshinethash.c sshinetmapped.c sshinetmask.c sshinetmerge.c sshinetprint.c sshinetproto.c sshinetrender.c sshinetencode.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/lib/sshutil/sshnet/$@ .
+

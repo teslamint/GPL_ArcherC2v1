@@ -1,0 +1,29 @@
+# File: 1742x86-conf-pec-debug
+#
+
+# Configuration on x86 
+
+# configure path to 1742 verification driver top directory
+
+export PEC_DIR=/home/abykov/1742/
+export KERNEL_VERSION=2.6.24
+export KERNEL_DIR=/home/abykov/linux-2.6.24
+
+
+export KERN_CFLAGS=
+export CFLAGS=
+
+#export KERN_CFLAGS="-I$KERNEL_DIR/arch/x86 -Os -fno-strict-aliasing -fno-common -fomit-frame-pointer"
+#export CFLAGS="-D_GNU_SOURCE -Os -Wno-pointer-sign -Wall -Wno-unknown-pragmas"
+
+
+./configure --build=i686-pc-linux-gnu \
+--enable-debug \
+--enable-ip-word-align \
+--enable-compiler-optimizations=size \
+--with-kernel-version=$KERNEL_VERSION \
+--with-kernel-headers=$KERNEL_DIR/include \
+--with-safenet-pec=$PEC_DIR \
+--with-hwaccel="safenet-pe-pec-1742" \
+--enable-profile=quicksec-server 
+

@@ -1,0 +1,102 @@
+/*
+ *
+ * qsinfo.rc
+ *
+*  Copyright:
+*          Copyright (c) 2007 SFNT Finland Oy.
+ *               All rights reserved.
+ *
+ * Adapter info utility for Windows CE.
+ *
+ */
+
+#ifdef _WIN32_WCE
+
+#include <windows.h>
+#include <commctrl.h>
+#if defined(WIN32_PLATFORM_WFSP) || defined(WIN32_PLATFORM_PSPC)
+#include <aygshell.h>
+#endif
+#include "qsinfo.h"
+
+#if defined(WIN32_PLATFORM_WFSP)
+
+/*
+ * SmartPhone
+ */
+
+IDR_MENU MENU
+{
+	MENUITEM "Refresh", IDM_REFRESH
+	POPUP "Menu"
+	{
+		MENUITEM "Save", IDM_SAVE
+		MENUITEM "Quit", IDM_QUIT
+	}
+}
+
+IDR_MENU RCDATA
+{
+	IDR_MENU, 2,
+	I_IMAGENONE, IDM_REFRESH, TBSTATE_ENABLED, TBSTYLE_AUTOSIZE, IDS_REFRESH, 0, NOMENU
+	I_IMAGENONE, IDM_MENU, TBSTATE_ENABLED, TBSTYLE_DROPDOWN | TBSTYLE_AUTOSIZE, IDS_MENU, 0, 1
+}
+
+STRINGTABLE
+{
+	IDS_REFRESH "Refresh"
+	IDS_MENU "Menu"
+}
+
+#elif defined(WIN32_PLATFORM_PSPC)
+
+/*
+ * PocketPC
+ */
+
+IDR_MENU MENU
+{
+	MENUITEM "Refresh", IDM_REFRESH
+	POPUP "Menu"
+	{
+		MENUITEM "Save", IDM_SAVE
+		MENUITEM "Quit", IDM_QUIT
+	}
+}
+
+IDR_MENU RCDATA
+{
+    IDR_MENU, 2,
+    I_IMAGENONE, IDM_REFRESH, TBSTATE_ENABLED, TBSTYLE_AUTOSIZE, IDS_REFRESH, 0, NOMENU
+    I_IMAGENONE, IDM_MENU, TBSTATE_ENABLED, TBSTYLE_DROPDOWN | TBSTYLE_AUTOSIZE, IDS_MENU, 0, 1
+}
+
+STRINGTABLE
+{
+	IDS_REFRESH "Refresh"
+	IDS_MENU "Menu"
+}
+
+#else
+
+/*
+ * Standard CE
+ */
+
+IDR_ACCEL ACCELERATORS
+{
+	"R", IDM_REFRESH, VIRTKEY, CONTROL, NOINVERT
+	"S", IDM_SAVE, VIRTKEY, CONTROL, NOINVERT
+	"Q", IDM_QUIT, VIRTKEY, CONTROL, NOINVERT
+}
+
+IDR_MENU MENU
+{
+	MENUITEM "&Refresh", IDM_REFRESH
+	MENUITEM "&Save", IDM_SAVE
+	MENUITEM "&Quit", IDM_QUIT
+}
+
+#endif
+
+#endif /* _WIN32_WCE */

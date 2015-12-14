@@ -1,0 +1,60 @@
+# File: 440epx-grx-conf
+#
+# Copyright (c) 2006-2007 SFNT Finland Oy -
+#            All rights reserved.
+#
+# Run this script from the top level Quicksec directory
+#
+# Usage: source ipsec/hwaccel/safenet1x41/440epx-grx-conf
+#
+# This script prepares the environment and runs configure with
+# cross compiling support for Quicksec with the 
+# 440EPx/GRx HW platform using EIP94 hardware accelerator.
+#
+#
+# Change the variables in setup_env script to reflect your configuration. Below it is 
+# assumed the UDM driver sources are located in $UDM_PATH
+# directory, and the Linux kernel sources are located under $KERNEL_DIR.
+#
+
+# Configuration for the 440epx board
+if [ $CROSS_COMPILE = ppc_4xxFP- ]; then
+
+export CC=ppc_4xxFP-gcc
+export AR=ppc_4xxFP-ar
+export LD=ppc_4xxFP-ld
+export NM=ppc_4xxFP-nm
+export RANLIB=ppc_4xxFP-ranlib
+export AS=ppc_4xxFP-as
+
+# Configuration for the 440grx board
+elif [ $CROSS_COMPILE = ppc_4xx- ]; then
+
+export CC=ppc_4xx-gcc
+export AR=ppc_4xx-ar
+export LD=ppc_4xx-ld
+export NM=ppc_4xx-nm
+export RANLIB=ppc_4xx-ranlib
+export AS=ppc_4xx-as
+
+else
+
+  echo CROSS_COMPILE variable is not defined properly. Run 440epx/grx environment setup script, please.
+  exit
+fi
+
+export KERN_CFLAGS="-I$KERNEL_DIR/arch/ppc -DSSH_SAFENET_AMCC_SUPPORT -Os -fno-strict-aliasing -fno-common -fomit-frame-pointer"
+export CFLAGS="-D_GNU_SOURCE -Os -Wno-pointer-sign -Wall -Wno-unknown-pragmas"
+
+./configure --build=i686-pc-linux-gnu \
+	--disable-debug \
+	--enable-ip-word-align \
+	--host=powerpc-linux \
+	--target=powerpc-linux \
+	--enable-compiler-optimizations=size \
+	--with-safenet-slad=$SLAD_PATH\
+	--with-hwaccel="safenet-pe-slad-405EX" \
+	--with-kernel-version=$KERNEL_VERSION \
+	--with-kernel-headers=$KERNEL_DIR/include \
+	--enable-eth-packet-hook \
+	--enable-profile=quicksec-server \

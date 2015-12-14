@@ -1,0 +1,197 @@
+# -*- makefile -*-
+#
+# ipsec/interceptor/linux/kbuild/Makefile.kbuild.fragment
+#
+# Makefile for generating an alternative 
+# makefile for 'kbuild' compilation of the linux
+# interceptor.
+#
+
+# Common
+KB_TARGET_MAKEFILE := Makefile
+KB_EXTRA_CFLAGS := 
+KB_EXTRA_AFLAGS :=
+
+# Objects for quicksec.ko
+KB_OBJECTS := 
+
+# Objects quicksec_usermode.ko
+UM_OBJECTS :=
+
+# Sources
+KB_SRCS :=
+
+default:	make-kbuild
+
+# Override all targets
+%:
+
+#
+# Include linux specific interceptor objects
+#
+include ../Makefile
+
+abs_top_srcdir:=$(shell (cd ..; cd $(top_srcdir); pwd))
+abs_top_builddir:=$(shell (cd ..; cd $(top_builddir); pwd))
+
+KB_KERNEL_DIR := $(SSH_KB_LINUX_KERNEL_INCLUDE)
+KB_EXTRA_CFLAGS := $(SSH_KB_LINUX_CONFIG_HEADER)
+KB_OBJECTS += $(LINUX_IPSEC_COMMON_LNSRCS:%.c=%.o)
+KB_SRCS += $(LINUX_IPSEC_COMMON_LNSRCS:%.c=../%.c)
+
+#
+# Include engine, fastpath and utility objects
+#
+include ../../../quicksec/kernel/Makefile
+
+# libkernel
+KB_OBJECTS += $(IPSEC_UTIL_SRCS:%.c=%.o)
+KB_OBJECTS += $(KERNEL_UTIL_SRCS:%.c=%.o)
+KB_OBJECTS += $(PLATFORM_UTILITY_LNSRCS:%.c=%.o)
+KB_OBJECTS += $(VIRTUAL_ADAPTER_SRCS:%.c=%.o)
+KB_OBJECTS += $(ENGINE_DHCP_LNSRCS:%.c=%.o)
+
+KB_SRCS += $(IPSEC_UTIL_SRCS:%.c=$(abs_top_srcdir)/ipsec/util/%.c)
+KB_SRCS += $(KERNEL_UTIL_SRCS:%.c=$(abs_top_srcdir)/interceptor/libkernelutil/%.c)
+KB_SRCS += $(PLATFORM_UTILITY_LNSRCS:%.c=$(abs_top_builddir)/ipsec/quicksec/kernel/%.c)
+KB_SRCS += $(VIRTUAL_ADAPTER_SRCS:%.c=$(abs_top_srcdir)/ipsec/util/%.c)
+KB_SRCS += $(ENGINE_DHCP_LNSRCS:%.c=$(abs_top_srcdir)/ipsec/quicksec/kernel/%.c)
+
+UM_OBJECTS += $(KB_OBJECTS)
+
+# libengine
+KB_OBJECTS += $(filter-out \
+$(ENGINE_DHCP_LNSRCS:%.c=%.o),$(libengine_a_OBJECTS))
+
+KB_ENGINE_SRCS := $(filter-out \
+$(ENGINE_DHCP_LNSRCS:%.c=%.o),$(libengine_a_OBJECTS))
+
+KB_SRCS += $(KB_ENGINE_SRCS:%.o=$(abs_top_srcdir)/ipsec/quicksec/engine/%.c)
+
+FASTPATH_SOFT_LNSRCS_OBJECTS = $(FASTPATH_SOFT_CRYPTO_LNSRCS:.c=.o)
+FASTPATH_SOFT_LNSRCS_OBJECTS += $(FASTPATH_SOFT_COMPRESSION_LNSRCS:.c=.o)
+
+# libfastpath
+KB_FASTPATH_OBJECTS := $(filter-out \
+$(FASTPATH_SOFT_LNSRCS_OBJECTS),$(libfastpath_software_a_OBJECTS))
+
+KB_OBJECTS += $(KB_FASTPATH_OBJECTS)
+KB_OBJECTS += $(FASTPATH_SOFT_CRYPTO_LNSRCS:.c=.o)
+KB_OBJECTS += $(FASTPATH_SOFT_COMPRESSION_LNSRCS:.c=.o)
+KB_OBJECTS += $(QS_FASTPATH_CRYPTO_ASM_OBJS)
+KB_OBJECTS += $(HWACCEL_CONFIGURED_OBJS)
+
+KB_SRCS += $(KB_FASTPATH_OBJECTS:%.o=$(abs_top_srcdir)/ipsec/quicksec/fastpath/software/%.c)
+KB_SRCS += $(FASTPATH_SOFT_CRYPTO_LNSRCS:%=$(abs_top_builddir)/ipsec/quicksec/kernel/%)
+KB_SRCS += $(FASTPATH_SOFT_CRYPTO_ASM_LNSRCS:%=$(abs_top_builddir)/ipsec/quicksec/kernel/%)
+KB_SRCS += $(FASTPATH_SOFT_COMPRESSION_LNSRCS:%=$(abs_top_builddir)/ipsec/quicksec/kernel/%)
+KB_SRCS += $(HWACCEL_CONFIGURED_OBJS:%.o=$(abs_top_srcdir)/ipsec/hwaccel/$(HWACCEL_CONFIGURED_DIRECTORY)/%.c)
+
+KB_SRCS += $(HWACCEL_NONE_SRCS:%.c=$(abs_top_srcdir)/ipsec/hwaccel/none/%.c)
+
+#
+# Usermode interceptor
+#
+UM_OBJECTS += $(HWACCEL_NONE_OBJS)
+UM_OBJECTS += usermodeforwarder.o
+KB_SRCS += $(abs_top_srcdir)/interceptor/usermode/usermodeforwarder.c
+
+#
+# Clean object list
+#
+KB_OBJECTS := $(KB_OBJECTS:%.h= )
+UM_OBJECTS := $(UM_OBJECTS:%.h= )
+
+#
+# Clean sources list
+#
+
+KB_SRCS := $(KB_SRCS:%/sshaudit.c=$(abs_top_builddir)/ipsec/quicksec/kernel/sshaudit.c)
+KB_SRCS := $(KB_SRCS:%/sshmp-xuint.c=$(abs_top_builddir)/ipsec/quicksec/kernel/sshmp-xuint.c)
+KB_SRCS := $(KB_SRCS:%/sshinetcalc.c=$(abs_top_builddir)/ipsec/quicksec/kernel/sshinetcalc.c)
+KB_SRCS := $(KB_SRCS:%.h= )
+
+#
+# Include includes
+#
+KB_EXTRA_CFLAGS += -I$(top_srcdir)/interceptor/include
+KB_EXTRA_CFLAGS += -I$(top_srcdir)/interceptor/linux
+KB_EXTRA_CFLAGS += -I$(top_srcdir)/interceptor/usermode
+KB_EXTRA_CFLAGS += $(INCLUDES)
+KB_EXTRA_CFLAGS += $(HWACCEL_INCLUDES)
+KB_EXTRA_CFLAGS += $(IPSEC_UTIL_INCLUDES)
+KB_EXTRA_CFLAGS += $(KERNEL_UTIL_INCLUDES)
+KB_EXTRA_CFLAGS += $(PLATFORM_UTILITY_INCLUDES)
+KB_EXTRA_CFLAGS += $(ROUTE_INCLUDES)
+KB_EXTRA_CFLAGS += $(ENGINE_INCLUDES)
+KB_EXTRA_CFLAGS += $(FASTPATH_INCLUDES)
+KB_EXTRA_CFLAGS += -I$(abs_top_builddir)/include
+KB_EXTRA_CFLAGS += -I$(abs_top_builddir)/ipsec/include
+KB_EXTRA_CFLAGS := $(subst $(top_srcdir),$(abs_top_srcdir),$(KB_EXTRA_CFLAGS))
+KB_EXTRA_CFLAGS := $(sort $(KB_EXTRA_CFLAGS))
+
+KB_EXTRA_AFLAGS := $(KB_EXTRA_CFLAGS)
+
+#
+# Set Quicksec specific C flags
+#
+
+# -fno-unit-at-a-time is enabled on --with-4k-stacks builds
+KB_EXTRA_CFLAGS += $(filter -fno-unit-at-a-time, $(KERN_CFLAGS))
+
+# -fno-schedule-insns is enabled on Mobilinux ARM builds
+KB_EXTRA_CFLAGS += $(filter -fno-schedule-insns, $(KERN_CFLAGS))
+
+
+
+
+
+
+KB_EXTRA_CFLAGS += -DKERNEL -D_KERNEL_ -D__KERNEL__
+KB_EXTRA_CFLAGS += -D\"KBUILD_MODNAME=KBUILD_STR(quicksec)\"
+KB_EXTRA_CFLAGS += -DSSH_LINUX_KBUILD_COMPILATION
+KB_EXTRA_CFLAGS += -DSSH_BUILD_IPSEC
+KB_EXTRA_CFLAGS += -DINTERCEPTOR_PROVIDES_INTERFACE_INFORMATION
+KB_EXTRA_CFLAGS += -DINTERCEPTOR_PROVIDES_IP_ROUTING
+KB_EXTRA_CFLAGS += -DINTERCEPTOR_PROVIDES_VIRTUAL_ADAPTERS
+
+#
+# Targets
+#
+
+ECHO=/bin/echo
+
+make-kbuild:	ln_srcs
+	$(SHELL) -c '$(ECHO) "#" > $(KB_TARGET_MAKEFILE); \
+	$(ECHO) "# Makefile for Quicksec kbuild compilation" >> $(KB_TARGET_MAKEFILE); \
+	$(ECHO) "#" >> $(KB_TARGET_MAKEFILE); \
+	$(ECHO) "" >> $(KB_TARGET_MAKEFILE); \
+	$(ECHO) "obj-m := quicksec.o quicksec_usermode.o" >> $(KB_TARGET_MAKEFILE); \
+	$(ECHO) "" >> $(KB_TARGET_MAKEFILE); \
+	$(ECHO) "quicksec-objs := $(KB_OBJECTS)" >> $(KB_TARGET_MAKEFILE); \
+	$(ECHO) "" >> $(KB_TARGET_MAKEFILE); \
+	$(ECHO) "quicksec_usermode-objs := $(UM_OBJECTS)" >> $(KB_TARGET_MAKEFILE); \
+	$(ECHO) "" >> $(KB_TARGET_MAKEFILE); \
+	$(ECHO) "KDIR := $(KB_KERNEL_DIR)" >> $(KB_TARGET_MAKEFILE); \
+	$(ECHO) "" >> $(KB_TARGET_MAKEFILE); \
+	$(ECHO) "EXTRA_CFLAGS += $(KB_EXTRA_CFLAGS) " >> $(KB_TARGET_MAKEFILE); \
+	$(ECHO) "" >> $(KB_TARGET_MAKEFILE); \
+	$(ECHO) "EXTRA_AFLAGS += $(KB_EXTRA_AFLAGS)" >> $(KB_TARGET_MAKEFILE); \
+	$(ECHO) "" >> $(KB_TARGET_MAKEFILE); \
+	$(ECHO) "" >> $(KB_TARGET_MAKEFILE); \
+	$(ECHO) "" >> $(KB_TARGET_MAKEFILE); \
+	$(ECHO) "all:" >> $(KB_TARGET_MAKEFILE); \
+	$(ECHO) -n -e "\t+$(MAKE) -C $$" >> $(KB_TARGET_MAKEFILE); \
+	$(ECHO) "(KDIR) M=$(CURDIR) V=1 modules" >> $(KB_TARGET_MAKEFILE); \
+	$(ECHO) "" >> $(KB_TARGET_MAKEFILE); \
+	$(ECHO) "clean:" >> $(KB_TARGET_MAKEFILE); \
+	$(ECHO) -n -e "\t+$(MAKE) -C $$" >> $(KB_TARGET_MAKEFILE); \
+	$(ECHO) "(KDIR) M=$(CURDIR) V=1 clean" >> $(KB_TARGET_MAKEFILE); \
+	$(ECHO) "" >> $(KB_TARGET_MAKEFILE); \
+	$(ECHO) "distclean:" >> $(KB_TARGET_MAKEFILE); \
+	$(ECHO) -e "\t$(SHELL) -c \"rm *.c *.S $(KB_TARGET_MAKEFILE)\" " >> $(KB_TARGET_MAKEFILE); \
+	$(ECHO) -e "\t$(SHELL) -c \"rm -rf .deps .*.cmd *.ko *.o *.symvers\" " >> $(KB_TARGET_MAKEFILE);'
+
+ln_srcs:
+	$(SHELL) -c 'ln -s -f $(KB_SRCS) .'
+

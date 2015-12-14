@@ -1,0 +1,45 @@
+# -*- makefile -*-
+#
+# ipsec/quicksec/fastpath/caviumocteon/Makefile.fragment
+#
+
+AUTODIST_OPTIONS += lnsrcs
+
+FASTPATH_OCTEON_COMMON_SRCS = \
+	octeon_se_fastpath_flow_lookup.c \
+	octeon_se_fastpath_shared.h \
+	octeon_se_fastpath_params.h
+
+FASTPATH_OCTEON_SRCS = \
+	octeon_accel_fastpath.c \
+	octeon_accel_fastpath_internal.h \
+	octeon_fastpath_impl.h \
+	$(FASTPATH_OCTEON_COMMON_SRCS)
+
+FASTPATH_OCTEON_OBJS = \
+	octeon_accel_fastpath.o \
+	octeon_se_fastpath_flow_lookup.o	
+
+SE_FASTPATH_SRCS = \
+	octeon_se_fastpath.c \
+	octeon_se_fastpath_init.c \
+	octeon_se_fastpath_transform_in.c \
+	octeon_se_fastpath_transform_out.c \
+	octeon_se_fastpath_internal.h \
+	octeon_se_fastpath_transform.c \
+	octeon_se_fastpath_transform_i.h \
+	octeon_se_fastpath_frag.c \
+	octeon_se_fastpath_inline.h \
+	executive-config.h \
+	$(FASTPATH_OCTEON_COMMON_SRCS)
+
+FASTPATH_OCTEON_INCLUDES = \
+	-I$(top_srcdir)/ipsec/quicksec/fastpath/caviumocteon
+
+SE_FASTPATH_OCTEON_INCLUDES = \
+	-I$(top_srcdir)/ipsec/quicksec/fastpath/caviumocteon
+
+#
+# END: caviumocteon fastpath
+######################################################################
+

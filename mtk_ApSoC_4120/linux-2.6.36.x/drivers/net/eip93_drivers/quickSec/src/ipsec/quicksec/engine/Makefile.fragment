@@ -1,0 +1,120 @@
+# -*- makefile -*-
+#
+# ipsec/quicksec/engine/Makefile.fragment
+#
+
+AUTODIST_OPTIONS += lnsrcs
+
+# Actual engine source files on this directory
+ENGINE_IMPL_SRCS =                      \
+        core_pm_shared.h                \
+        ipsec_pm_shared.h               \
+        quicksec_pm_shared.h            \
+        engine_pm_api.h                 \
+        engine_pme.h                    \
+        engine_fastpath.h               \
+        engine_fastpath_types.h         \
+        engine_fastpath_util.h          \
+        engine_internal.h               \
+        engine_arp.h                    \
+        engine_arp.c                    \
+        engine_pmtu.c                   \
+	engine_packet_handler.c         \
+        engine_audit.c                  \
+        engine_flow_id.c                \
+        engine_flows.c                  \
+        engine_next_hop.c               \
+        engine_transform.c              \
+        engine_icmp.h                   \
+        engine_icmp.c                   \
+        engine_init.c                   \
+	engine_alloc.c                  \
+        engine_interfaces.c             \
+        engine_mediatypes.c             \
+        engine_nat.c                    \
+        engine_pm_api_marshal.h         \
+        engine_pm_api_engine.c          \
+        engine_pm_api_util.c            \
+        engine_pme.c                    \
+        engine_route.c                  \
+        engine_rule_execute.c           \
+        engine_rule_lookup.c            \
+        engine_rule_lookup.h            \
+        engine_rule_lookup_list.c       \
+        engine_rule_lookup_tree.c       \
+        engine_rules.c                  \
+        engine_udp.h                    \
+        engine_udp.c                    \
+        engine_tcp.h                    \
+        engine_tcp.c                    \
+        engine_tcp_rst.c                \
+        engine_timeout.c                \
+        engine_trigger.c                \
+        engine_audit_pkt.c              \
+        engine_rate_limit.c             \
+        engine_random.c                 \
+        engine_natt_keepalive.c         \
+        engine_asyncop.c		\
+	engine_pm_api_tcp_encaps.c	\
+	engine_pm_api_tcp_encaps.h	\
+        version.h                       \
+        versioni.h
+
+
+
+
+
+
+
+ENGINE_OTHER_LNSRCS = \
+         sshaudit.c \
+         sshinetcalc.c \
+         sshmp-xuint.c
+
+ENGINE_SRCS = \
+	$(ENGINE_IMPL_SRCS) \
+	$(ENGINE_OTHER_LNSRCS)
+
+ENGINE_INCLUDES = \
+	-I$(top_srcdir)/ipsec			\
+	-I$(top_srcdir)/ipsec/include		\
+	-I$(top_builddir)/ipsec/include		\
+	-I$(top_srcdir)/ipsec/quicksec		\
+	-I$(top_srcdir)/interceptor/include	\
+	-I$(top_srcdir)/ipsec/quicksec/engine 	\
+	-I$(top_srcdir)/include			\
+	-I$(top_builddir)/include		\
+	-I$(top_srcdir)/lib/sshcrypto		\
+	-I$(top_srcdir)/lib/sshcrypto/sshcipher	\
+	-I$(top_srcdir)/lib/sshcrypto/sshhash	\
+	-I$(top_srcdir)/lib/sshcrypto/sshmac	\
+	-I$(top_srcdir)/lib/zlib		\
+	-I$(top_srcdir)/interceptor/@SSH_INTERCEPTOR_MACHINE_DIR@ \
+	-I$(top_srcdir)/interceptor/@SSH_INTERCEPTOR_MACHINE_DIR@/@SSH_INTERCEPTOR_MACHINE_SUBDIR@ \
+	-I$(top_srcdir)/ipsec/interceptor/@SSH_INTERCEPTOR_MACHINE_DIR@ \
+	-I$(top_srcdir)/ipsec/interceptor/@SSH_INTERCEPTOR_MACHINE_DIR@/@SSH_INTERCEPTOR_MACHINE_SUBDIR@
+
+
+
+
+
+
+ENGINE_INCLUDES_windelta = \
+	--I$(top_srcdir)/interceptor/@SSH_INTERCEPTOR_MACHINE_DIR@ \
+	--I$(top_srcdir)/interceptor/@SSH_INTERCEPTOR_MACHINE_DIR@/@SSH_INTERCEPTOR_MACHINE_SUBDIR@ \
+	--I$(top_srcdir)/ipsec/interceptor/@SSH_INTERCEPTOR_MACHINE_DIR@ \
+	--I$(top_srcdir)/ipsec/interceptor/@SSH_INTERCEPTOR_MACHINE_DIR@/@SSH_INTERCEPTOR_MACHINE_SUBDIR@ \
+	+-I$(top_srcdir)/interceptor/windows
+
+sshinetcalc.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/lib/sshutil/sshnet/$@ .
+
+sshaudit.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/lib/sshutil/sshaudit/$@ .
+
+sshmp-xuint.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/lib/sshmath/$@ .
+

@@ -1,0 +1,76 @@
+# -*- makefile -*-
+
+make-makefile-includes : Makefile.includes
+
+public_headers += 
+private_headers += 
+noinst_HEADERS = $(public_headers) $(private_headers)
+
+Makefile.includes : Makefile
+	echo "# Generated file, do not edit" > Makefile.includes; \
+	targets=""; \
+        if test "X`pwd | grep ipsec/lib; true`" = X; then \
+	   targetdir="$(top_builddir)/include"; \
+        else \
+	   targetdir="$(top_builddir)/ipsec/include"; \
+        fi; \
+	(for f in $(public_headers); \
+	do \
+	  targets="$$targets ___$$targetdir/$$f"; \
+	done; \
+	echo "ALL_INCLUDES = $$targets") | sed 's/___/\\#	/g' | tr '#' '\012' >> Makefile.includes; \
+	echo 'all : $$(ALL_INCLUDES)' >> Makefile.includes; \
+	for f in $(public_headers); \
+	do \
+	  source=$(srcdir)/$$f; target=$$targetdir/$$f; \
+	  (echo "$$target : $$source"; \
+	   echo "	@ln $$source $$target </dev/null 2>/dev/null || (rm -f $$target; cp -p $$source $$target ; chmod a-w $$target;);";\
+	   echo;) >> Makefile.includes; \
+	done; \
+	echo "clean : " >> Makefile.includes; \
+	echo '	rm -f $$(ALL_INCLUDES)' >> Makefile.includes
+
+
+
+
+
+
+real-includes: make-makefile-includes
+	@$(MAKE) -f Makefile.includes
+
+local-includes :
+	@if test "$(public_headers)"; then $(MAKE) real-includes; fi
+
+all-local: local-includes
+
+.PHONY : includes local-includes real-includes make-makefile-includes clean-makefile-includes
+
+clean-generic : clean-makefile-includes
+
+clean-makefile-includes:
+	-rm -f Makefile.includes
+
+includes: local-includes
+	@for d in . $(SUBDIRS); \
+        do \
+	  if test "$$d" != "."; \
+          then \
+	    (cd $$d && $(MAKE) includes); \
+          fi; \
+        done
+
+
+
+
+
+
+
+
+
+
+
+echo-TESTS:
+	@echo $(TESTS)
+
+echo-TESTS_LIGHT:
+	@echo $(TESTS_LIGHT)

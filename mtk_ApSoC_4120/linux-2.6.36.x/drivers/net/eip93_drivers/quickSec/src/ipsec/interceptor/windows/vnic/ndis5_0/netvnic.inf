@@ -1,0 +1,85 @@
+;; -- NETVNIC.INF --
+;; 
+;; SafeNet QuickSec Virtual Adapter
+;; 
+;; Copyright (c) 2002-2009, SafeNet Finland Oy.
+;;
+
+[Version]
+Class = Net
+ClassGUID = {4D36E972-E325-11CE-BFC1-08002BE10318}
+Signature = "$Windows NT$"
+Compatible = 1
+Provider = %SFNT%
+DriverVer = 09/25/2009,5.1.0.0 
+CatalogFile = qsvnic5.cat
+
+[Manufacturer]
+%SFNT% = SFNT,NTamd64
+
+[SFNT]
+%SFNTVNIC_Desc% = qsvnic.Install, SFNT_VNIC
+
+[SFNT.NTamd64]
+%SFNTVNIC_Desc% = qsvnic.Install, SFNT_VNIC
+
+;; ---
+;; Install section
+;;
+[qsvnic.Install.NT]
+AddReg = qsvnic.AddReg.NT
+;; BusType = 1
+Characteristics = 0x1 ; NCF_VIRTUAL
+;; Characteristics = 0x9 ; NCF_VIRTUAL | NCF_HIDDEN
+CopyFiles = qsvnic.CopyFiles.NT
+
+
+;; ---
+;; File copy
+;;
+[SourceDisksNames]
+1=%DiskDescription%,"",,
+
+[SourceDisksFiles]
+qsvnic5.sys=1,,
+
+[DestinationDirs]
+qsvnic.CopyFiles.NT = 12   ; %windir%\System32\drivers
+DefaultDestDir = 11
+
+
+[qsvnic.CopyFiles.NT]
+qsvnic5.sys
+
+;; ---
+;; Install.Services
+;;
+[qsvnic.Install.NT.Services]
+AddService =  qsvnic, 2, qsvnic.Service
+
+;; ---
+;; AddService section
+;;
+[qsvnic.Service]
+DisplayName = %SFNTVNIC_Desc%
+ServiceType = 1 ; SERVICE_KERNEL_DRIVER
+StartType = 3 ; SERVICE_DEMAND_START
+ErrorControl = 1 ; SERVICE_ERROR_NORMAL
+ServiceBinary = %12%\qsvnic5.sys ; path to binary
+LoadOrderGroup = NDIS ; 
+ 
+;; ---
+;; AddRegistry section
+;;
+[qsvnic.AddReg.NT]
+HKR, Ndi, HelpText, 0, %SFNTVNIC_HELP%
+HKR, Ndi, Service,  0, "qsvnic"
+
+HKR, Ndi\Interfaces, UpperRange, 0, "ndis5"
+HKR, Ndi\Interfaces, LowerRange, 0, "ethernet"
+
+[Strings]
+DiskDescription = "SafeNet QuickSec Virtual Adapter Disk" 
+SFNT = "SFNT Finland Oy"
+SFNTVNIC_Desc = "SafeNet QuickSec Virtual Adapter"
+SFNTVNIC_HELP = "SafeNet QuickSec Virtual Adapter"

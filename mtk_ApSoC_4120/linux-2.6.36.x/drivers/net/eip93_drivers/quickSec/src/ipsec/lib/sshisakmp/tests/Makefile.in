@@ -1,0 +1,583 @@
+# Makefile.in generated automatically by automake 1.4-p6 from Makefile.am
+
+# Copyright (C) 1994, 1995-8, 1999, 2001 Free Software Foundation, Inc.
+# This Makefile.in is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+# Added by filter_add_makefile_libextra_stuff
+# To keep automake silent about public and private headers
+# not been set when something is added to them
+
+
+# -*- makefile -*-
+
+
+SHELL = @SHELL@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+VPATH = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+libdir = @libdir@
+infodir = @infodir@
+mandir = @mandir@
+includedir = @includedir@
+oldincludedir = /usr/include
+
+DESTDIR =
+
+pkgdatadir = $(datadir)/@PACKAGE@
+pkglibdir = $(libdir)/@PACKAGE@
+pkgincludedir = $(includedir)/@PACKAGE@
+
+top_builddir = ../../../..
+
+ACLOCAL = @ACLOCAL@
+AUTOCONF = @AUTOCONF@
+AUTOMAKE = @AUTOMAKE@
+AUTOHEADER = @AUTOHEADER@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@ $(AM_INSTALL_PROGRAM_FLAGS)
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+transform = @program_transform_name@
+
+NORMAL_INSTALL = :
+PRE_INSTALL = :
+POST_INSTALL = :
+NORMAL_UNINSTALL = :
+PRE_UNINSTALL = :
+POST_UNINSTALL = :
+build_alias = @build_alias@
+build_triplet = @build@
+host_alias = @host_alias@
+host_triplet = @host@
+target_alias = @target_alias@
+target_triplet = @target@
+ADDR_MODEL = @ADDR_MODEL@
+AR = @AR@
+AV_ALG_INCLUDES = @AV_ALG_INCLUDES@
+AV_ALG_LIBS = @AV_ALG_LIBS@
+BUILD_CC = @BUILD_CC@
+CC = @CC@
+COPY_INCLUDE = @COPY_INCLUDE@
+ENGINE_ASM_OBJS = @ENGINE_ASM_OBJS@
+FASTPATH_CONFIGURED_DIRECTORY = @FASTPATH_CONFIGURED_DIRECTORY@
+FASTPATH_CONFIGURED_INCLUDES = @FASTPATH_CONFIGURED_INCLUDES@
+FASTPATH_CONFIGURED_OBJS = @FASTPATH_CONFIGURED_OBJS@
+FASTPATH_CONFIGURED_SRCS = @FASTPATH_CONFIGURED_SRCS@
+GRANDLIBARCMD = @GRANDLIBARCMD@
+GRANDLIBRANLIBCMD = @GRANDLIBRANLIBCMD@
+HWACCEL_CONFIGURED_DIRECTORY = @HWACCEL_CONFIGURED_DIRECTORY@
+HWACCEL_CONFIGURED_INCLUDES = @HWACCEL_CONFIGURED_INCLUDES@
+HWACCEL_CONFIGURED_OBJS = @HWACCEL_CONFIGURED_OBJS@
+HWACCEL_CONFIGURED_SRCS = @HWACCEL_CONFIGURED_SRCS@
+HWACCEL_VPATH = @HWACCEL_VPATH@
+IPSEC_ARCH_INTC = @IPSEC_ARCH_INTC@
+IPSEC_ARCH_ROUTE = @IPSEC_ARCH_ROUTE@
+KERN_CC = @KERN_CC@
+KERN_CFLAGS = @KERN_CFLAGS@
+KERN_LDFLAGS = @KERN_LDFLAGS@
+KERN_LIBS = @KERN_LIBS@
+LD = @LD@
+LIBS = @LIBS@
+LN_S = @LN_S@
+M4 = @M4@
+MAKEINFO = @MAKEINFO@
+MATH_CONF_OBJS = @MATH_CONF_OBJS@
+NM_PATH = @NM_PATH@
+OCTEONFLAGS = @OCTEONFLAGS@
+OCTEON_OBJS = @OCTEON_OBJS@
+OCTEON_SRCS = @OCTEON_SRCS@
+OCTEON_VPATH = @OCTEON_VPATH@
+PACKAGE = @PACKAGE@
+PERL = @PERL@
+PURIFY = @PURIFY@
+QS_ADDRSPACE = @QS_ADDRSPACE@
+QS_EXTRALIBS = @QS_EXTRALIBS@
+QS_FASTPATH = @QS_FASTPATH@
+QS_FASTPATH_CRYPTO_ASM_LNSRC = @QS_FASTPATH_CRYPTO_ASM_LNSRC@
+QS_FASTPATH_CRYPTO_ASM_OBJS = @QS_FASTPATH_CRYPTO_ASM_OBJS@
+QS_FASTPATH_SRCS = @QS_FASTPATH_SRCS@
+QUICKSEC_ASM_OBJS = @QUICKSEC_ASM_OBJS@
+QUICKSEC_CONF_OBJS = @QUICKSEC_CONF_OBJS@
+RANLIB = @RANLIB@
+ROUTE_CONFIGURED_SRCS = @ROUTE_CONFIGURED_SRCS@
+RXP_PLATFORM_NAME = @RXP_PLATFORM_NAME@
+SAFENETFLAGS = @SAFENETFLAGS@
+SAFENET_UDM_OBJS = @SAFENET_UDM_OBJS@
+SAFENET_UDM_SRCS = @SAFENET_UDM_SRCS@
+SAFENET_UDM_VPATH = @SAFENET_UDM_VPATH@
+SSHCIPHER_CONF_OBJS = @SSHCIPHER_CONF_OBJS@
+SSHHASH_CONF_OBJS = @SSHHASH_CONF_OBJS@
+SSH_ENGINE_KERNEL_TARGET = @SSH_ENGINE_KERNEL_TARGET@
+SSH_ENGINE_USERMODE_TARGET = @SSH_ENGINE_USERMODE_TARGET@
+SSH_INTERCEPTOR_CPPFLAGS = @SSH_INTERCEPTOR_CPPFLAGS@
+SSH_INTERCEPTOR_ETHER_OBJS = @SSH_INTERCEPTOR_ETHER_OBJS@
+SSH_INTERCEPTOR_KERNEL_TARGETS = @SSH_INTERCEPTOR_KERNEL_TARGETS@
+SSH_INTERCEPTOR_MACHINE_DIR = @SSH_INTERCEPTOR_MACHINE_DIR@
+SSH_INTERCEPTOR_MACHINE_SUBDIR = @SSH_INTERCEPTOR_MACHINE_SUBDIR@
+SSH_INTERCEPTOR_NONETHER_OBJS = @SSH_INTERCEPTOR_NONETHER_OBJS@
+SSH_INTERCEPTOR_OBJS = @SSH_INTERCEPTOR_OBJS@
+SSH_INTERCEPTOR_SYMCHECK = @SSH_INTERCEPTOR_SYMCHECK@
+SSH_INTERCEPTOR_TARGETS = @SSH_INTERCEPTOR_TARGETS@
+SSH_IPM_MACHINE_OBJS = @SSH_IPM_MACHINE_OBJS@
+SSH_KB_LINUX_CONFIG_HEADER = @SSH_KB_LINUX_CONFIG_HEADER@
+SSH_KB_LINUX_KERNEL_INCLUDE = @SSH_KB_LINUX_KERNEL_INCLUDE@
+THREAD_OBJS = @THREAD_OBJS@
+THREAD_SYSTEM_OBJS = @THREAD_SYSTEM_OBJS@
+VERSION = @VERSION@
+
+public_headers =  
+private_headers =  	xauth_demo.h 	test_policy.h
+ 
+
+#
+# ipsec/lib/sshisakmp/tests Makefile.am
+#
+#  Copyright:
+#          Copyright (c) 2002, 2003 SFNT Finland Oy.
+# All rights reserved
+#
+
+AUTOMAKE_OPTIONS = 1.0 foreign dist-zip no-dependencies
+WINCONF_OPTIONS = maintainer=kivinen@ssh.fi
+
+DEFS = -DSSH_BUILD_IPSEC
+
+INCLUDES = -I$(srcdir)/.. -I$(top_srcdir)/ipsec -I$(top_srcdir) -I$(top_builddir)/include
+
+LDADD = ../libsshisakmp.a $(top_builddir)/lib/libssh.a
+
+EXTRA_DIST = certificates.config test.x509 top.m4
+
+TESTS_LIGHT = t-da t-id 
+TESTS = $(TESTS_LIGHT) t-isakmp
+EXTRA_PROGRAMS = t-id t-da t-isakmp
+
+EXTRA_PROGRAMS_windelta =  	-t-isakmp
+
+
+LDAP_SERVER = ryijy.sfnt.local
+# LDAP_SERVER = 2001:670:83:109:2d0:b7ff:fe6a:d95c
+LDAP_USERNAME = cn=root, o=example, c=FI
+LDAP_PASSWORD = kukkuuRESET
+X509_CREATE = $(top_builddir)/apps/certutils/ssh-certmake
+LDAP_ADD = $(top_builddir)/apps/ldaputils/ssh-ldapadd
+CRL_TTL = 00:30
+HOSTNAME = `uname -n`
+
+CLEANFILES =  	master.certconf
+
+
+t_da_SOURCES = t-da.c
+t_da_DEPENDENCIES = $(LDADD)
+
+t_id_SOURCES = t-id.c 	xauth_demo.c 	cert_policy.c 	test_policy.c
+
+
+t_id_DEPENDENCIES = $(LDADD)
+
+t_isakmp_SOURCES = t-isakmp.c 	xauth_demo.c 	cert_policy.c 	test_policy.c
+
+
+t_isakmp_DEPENDENCIES = $(LDADD) 	master.certconf
+
+noinst_HEADERS = $(public_headers) $(private_headers)
+mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+CONFIG_HEADER = ../../../../sshconf.h
+CONFIG_CLEAN_FILES = 
+CPPFLAGS = @CPPFLAGS@
+LDFLAGS = @LDFLAGS@
+t_id_OBJECTS =  t-id.o xauth_demo.o cert_policy.o test_policy.o
+t_id_LDADD = $(LDADD)
+t_id_LDFLAGS = 
+t_da_OBJECTS =  t-da.o
+t_da_LDADD = $(LDADD)
+t_da_LDFLAGS = 
+t_isakmp_OBJECTS =  t-isakmp.o xauth_demo.o cert_policy.o test_policy.o
+t_isakmp_LDADD = $(LDADD)
+t_isakmp_LDFLAGS = 
+CFLAGS = @CFLAGS@
+COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
+HEADERS =  $(noinst_HEADERS)
+
+DIST_COMMON =  Makefile.am Makefile.in
+
+
+DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+
+TAR = tar
+GZIP_ENV = --best
+SOURCES = $(t_id_SOURCES) $(t_da_SOURCES) $(t_isakmp_SOURCES)
+OBJECTS = $(t_id_OBJECTS) $(t_da_OBJECTS) $(t_isakmp_OBJECTS)
+
+all: all-redirect
+.SUFFIXES:
+.SUFFIXES: .S .c .o .s
+$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) $(top_srcdir)/Makefile.libextra
+	cd $(top_srcdir) && $(AUTOMAKE) --foreign ipsec/lib/sshisakmp/tests/Makefile
+
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) \
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+
+.c.o:
+	$(COMPILE) -c $<
+
+.s.o:
+	$(COMPILE) -c $<
+
+.S.o:
+	$(COMPILE) -c $<
+
+mostlyclean-compile:
+	-rm -f *.o core *.core
+
+clean-compile:
+
+distclean-compile:
+	-rm -f *.tab.c
+
+maintainer-clean-compile:
+
+t-id: $(t_id_OBJECTS) $(t_id_DEPENDENCIES)
+	@rm -f t-id
+	$(LINK) $(t_id_LDFLAGS) $(t_id_OBJECTS) $(t_id_LDADD) $(LIBS)
+
+t-da: $(t_da_OBJECTS) $(t_da_DEPENDENCIES)
+	@rm -f t-da
+	$(LINK) $(t_da_LDFLAGS) $(t_da_OBJECTS) $(t_da_LDADD) $(LIBS)
+
+t-isakmp: $(t_isakmp_OBJECTS) $(t_isakmp_DEPENDENCIES)
+	@rm -f t-isakmp
+	$(LINK) $(t_isakmp_LDFLAGS) $(t_isakmp_OBJECTS) $(t_isakmp_LDADD) $(LIBS)
+
+tags: TAGS
+
+ID: $(HEADERS) $(SOURCES) $(LISP)
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	here=`pwd` && cd $(srcdir) \
+	  && mkid -f$$here/ID $$unique $(LISP)
+
+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) $(LISP)
+	tags=; \
+	here=`pwd`; \
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
+	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags  $$unique $(LISP) -o $$here/TAGS)
+
+mostlyclean-tags:
+
+clean-tags:
+
+distclean-tags:
+	-rm -f TAGS ID
+
+maintainer-clean-tags:
+
+distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
+
+subdir = ipsec/lib/sshisakmp/tests
+
+distdir: $(DISTFILES)
+	@for file in $(DISTFILES); do \
+	  d=$(srcdir); \
+	  if test -d $$d/$$file; then \
+	    cp -pr $$d/$$file $(distdir)/$$file; \
+	  else \
+	    test -f $(distdir)/$$file \
+	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
+	    || cp -p $$d/$$file $(distdir)/$$file || :; \
+	  fi; \
+	done
+check-TESTS: $(TESTS)
+	@failed=0; all=0; \
+	srcdir=$(srcdir); export srcdir; \
+	for tst in $(TESTS); do \
+	  if test -f $$tst; then dir=.; \
+	  else dir="$(srcdir)"; fi; \
+	  if $(TESTS_ENVIRONMENT) $$dir/$$tst; then \
+	    all=`expr $$all + 1`; \
+	    echo "PASS: $$tst"; \
+	  elif test $$? -ne 77; then \
+	    all=`expr $$all + 1`; \
+	    failed=`expr $$failed + 1`; \
+	    echo "FAIL: $$tst"; \
+	  fi; \
+	done; \
+	if test "$$failed" -eq 0; then \
+	  banner="All $$all tests passed"; \
+	else \
+	  banner="$$failed of $$all tests failed"; \
+	fi; \
+	dashes=`echo "$$banner" | sed s/./=/g`; \
+	echo "$$dashes"; \
+	echo "$$banner"; \
+	echo "$$dashes"; \
+	test "$$failed" -eq 0
+info-am:
+info: info-am
+dvi-am:
+dvi: dvi-am
+check-am: all-am
+	$(MAKE) $(AM_MAKEFLAGS) check-TESTS
+check: check-am
+installcheck-am:
+installcheck: installcheck-am
+install-exec-am:
+install-exec: install-exec-am
+
+install-data-am:
+install-data: install-data-am
+
+install-am: all-am
+	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+install: install-am
+uninstall-am:
+uninstall: uninstall-am
+all-am: Makefile $(HEADERS) all-local
+all-redirect: all-am
+install-strip:
+	$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install
+installdirs:
+
+
+mostlyclean-generic:
+
+distclean-generic:
+	-rm -f Makefile $(CONFIG_CLEAN_FILES)
+	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
+
+maintainer-clean-generic:
+mostlyclean-am:  mostlyclean-compile mostlyclean-tags \
+		mostlyclean-generic
+
+mostlyclean: mostlyclean-am
+
+clean-am:  clean-compile clean-tags clean-generic mostlyclean-am
+
+clean: clean-am
+
+distclean-am:  distclean-compile distclean-tags distclean-generic \
+		clean-am
+
+distclean: distclean-am
+
+maintainer-clean-am:  maintainer-clean-compile maintainer-clean-tags \
+		maintainer-clean-generic distclean-am
+	@echo "This command is intended for maintainers to use;"
+	@echo "it deletes files that may require special tools to rebuild."
+
+maintainer-clean: maintainer-clean-am
+
+.PHONY: mostlyclean-compile distclean-compile clean-compile \
+maintainer-clean-compile tags mostlyclean-tags distclean-tags \
+clean-tags maintainer-clean-tags distdir check-TESTS info-am info \
+dvi-am dvi check check-am installcheck-am installcheck install-exec-am \
+install-exec install-data-am install-data install-am install \
+uninstall-am uninstall all-local all-redirect all-am all installdirs \
+mostlyclean-generic distclean-generic clean-generic \
+maintainer-clean-generic clean mostlyclean distclean maintainer-clean
+
+
+t-isakmp-pre: crl
+
+master.certconf: $(srcdir)/certificates.config
+	ln -s $(srcdir)/certificates.config master.certconf
+
+ssh-test-ca.bin: $(srcdir)/test.x509 $(X509_CREATE) $(LDAP_ADD)
+	(cd $(srcdir); $(M4) -DIP_NUMBER="127.0.0.1" -DCRL_TTL=$(CRL_TTL) \
+		< test.x509 ) | \
+		$(X509_CREATE) -
+	rm -f ssh-test-ca.bin ssh-test-ca.prv ssh-test-ca.crl
+	rm -f ssh-test-dsa.bin ssh-test-dsa.prv
+	rm -f ssh-test-rsa.bin ssh-test-rsa.prv
+	ln -s ssh-test-ca-$(HOSTNAME).bin ssh-test-ca.bin
+	ln -s ssh-test-ca-$(HOSTNAME).prv ssh-test-ca.prv
+	ln -s ssh-test-ca-$(HOSTNAME).crl ssh-test-ca.crl
+	ln -s ssh-test-rsa-$(HOSTNAME).bin ssh-test-rsa.bin
+	ln -s ssh-test-rsa-$(HOSTNAME).prv ssh-test-rsa.prv
+	ln -s ssh-test-dsa-$(HOSTNAME).bin ssh-test-dsa.bin
+	ln -s ssh-test-dsa-$(HOSTNAME).prv ssh-test-dsa.prv
+	$(LDAP_ADD) -u "$(LDAP_USERNAME)" -P "$(LDAP_PASSWORD)" \
+		-s $(LDAP_SERVER) -r -b \
+		"CN=Test ca-$(HOSTNAME), O=Example, C=FI" \
+		"cn=Test ca-$(HOSTNAME)" \
+		"certificateRevocationList;binary"=:b:ssh-test-ca.crl \
+		objectclass=cRLDistributionPoint \
+		"userCertificate;binary"=:b:ssh-test-ca.bin \
+		objectclass=strongAuthenticationUser
+
+crl:	force-crl-create-time crl-create-time
+
+force-crl-create-time:
+	rm -f crl-create-time
+
+check-crl: force-crl-test-time crl-create-time
+
+force-crl-test-time:
+	rm -f crl-test-time
+
+crl-test-time:
+	touch crl-test-time
+
+crl-create-time: crl-test-time $(X509_CREATE) $(LDAP_ADD)
+	(cd $(srcdir); $(M4) -DNO_KEYS=1 -DNO_CAS=1 \
+		-DIP_NUMBER="127.0.0.1" -DCRL_TTL=$(CRL_TTL) \
+		< test.x509 ) | \
+		$(X509_CREATE) -
+	rm -f ssh-test-ca.bin ssh-test-ca.prv ssh-test-ca.crl
+	rm -f ssh-test-dsa.bin ssh-test-dsa.prv
+	rm -f ssh-test-rsa.bin ssh-test-rsa.prv
+	ln -s ssh-test-ca-$(HOSTNAME).bin ssh-test-ca.bin
+	ln -s ssh-test-ca-$(HOSTNAME).prv ssh-test-ca.prv
+	ln -s ssh-test-ca-$(HOSTNAME).crl ssh-test-ca.crl
+	ln -s ssh-test-rsa-$(HOSTNAME).bin ssh-test-rsa.bin
+	ln -s ssh-test-rsa-$(HOSTNAME).prv ssh-test-rsa.prv
+	ln -s ssh-test-dsa-$(HOSTNAME).bin ssh-test-dsa.bin
+	ln -s ssh-test-dsa-$(HOSTNAME).prv ssh-test-dsa.prv
+	$(LDAP_ADD) -u "$(LDAP_USERNAME)" -P "$(LDAP_PASSWORD)" \
+		-s $(LDAP_SERVER) -r -b \
+		"CN=Test ca-$(HOSTNAME), O=Example, C=FI" \
+		"cn=Test ca-$(HOSTNAME)" \
+		"certificateRevocationList;binary"=:b:ssh-test-ca.crl \
+		objectclass=cRLDistributionPoint \
+		"userCertificate;binary"=:b:ssh-test-ca.bin \
+		objectclass=strongAuthenticationUser
+	TZ=GMT-00:00 touch -t `TZ=GMT-$(CRL_TTL) date +%Y%m%d%H%M` crl-create-time
+
+revoke: $(X509_CREATE) $(LDAP_ADD)
+	(cd $(srcdir); $(M4) -DNO_KEYS=1  -DNO_CAS=1 -DREVOKE_CERTS=1 \
+		-DIP_NUMBER="127.0.0.1" -DCRL_TTL=$(CRL_TTL) \
+		< test.x509 ) | \
+		$(X509_CREATE) -
+	rm -f ssh-test-ca.bin ssh-test-ca.prv ssh-test-ca.crl
+	rm -f ssh-test-dsa.bin ssh-test-dsa.prv
+	rm -f ssh-test-rsa.bin ssh-test-rsa.prv
+	ln -s ssh-test-ca-$(HOSTNAME).bin ssh-test-ca.bin
+	ln -s ssh-test-ca-$(HOSTNAME).prv ssh-test-ca.prv
+	ln -s ssh-test-ca-$(HOSTNAME).crl ssh-test-ca.crl
+	ln -s ssh-test-rsa-$(HOSTNAME).bin ssh-test-rsa.bin
+	ln -s ssh-test-rsa-$(HOSTNAME).prv ssh-test-rsa.prv
+	ln -s ssh-test-dsa-$(HOSTNAME).bin ssh-test-dsa.bin
+	ln -s ssh-test-dsa-$(HOSTNAME).prv ssh-test-dsa.prv
+	$(LDAP_ADD) -u "$(LDAP_USERNAME)" -P "$(LDAP_PASSWORD)" \
+		-s $(LDAP_SERVER) -r -b \
+		"CN=Test ca-$(HOSTNAME), O=Example, C=FI" \
+		"cn=Test ca-$(HOSTNAME)" \
+		"certificateRevocationList;binary"=:b:ssh-test-ca.crl \
+		objectclass=cRLDistributionPoint \
+		"userCertificate;binary"=:b:ssh-test-ca.bin \
+		objectclass=strongAuthenticationUser
+
+net-gen: $(X509_CREATE)
+	(cd $(srcdir); $(M4) -DCRL_TTL=$(CRL_TTL) \
+		< test-net.x509 ) | \
+		$(X509_CREATE) -
+
+net-crl: $(X509_CREATE) $(LDAP_ADD)
+	(cd $(srcdir); $(M4) -DNO_KEYS=1 -DNO_CAS=1 -DCRL_TTL=$(CRL_TTL) \
+		< test-net.x509 ) | \
+		$(X509_CREATE) -
+	$(srcdir)/upload-crls.sh $(LDAP_SERVER)
+
+net-revoke: $(X509_CREATE) $(LDAP_ADD)
+	(cd $(srcdir); $(M4) -DNO_KEYS=1 -DNO_CAS=1 \
+		-DCRL_TTL=$(CRL_TTL) -DREVOKE_CERTS=1 \
+		< test-net.x509 ) | \
+		$(X509_CREATE) -
+	$(srcdir)/upload-crls.sh $(LDAP_SERVER)
+
+$(X509_CREATE):
+	(cd $(top_builddir)/apps/certutils && make ssh-certmake)
+
+$(LDAP_ADD):
+	(cd $(top_builddir)/apps/ldaputils && make ssh-ldapadd)
+
+make-makefile-includes : Makefile.includes
+
+Makefile.includes : Makefile
+	echo "# Generated file, do not edit" > Makefile.includes; \
+	targets=""; \
+        if test "X`pwd | grep ipsec/lib; true`" = X; then \
+	   targetdir="$(top_builddir)/include"; \
+        else \
+	   targetdir="$(top_builddir)/ipsec/include"; \
+        fi; \
+	(for f in $(public_headers); \
+	do \
+	  targets="$$targets ___$$targetdir/$$f"; \
+	done; \
+	echo "ALL_INCLUDES = $$targets") | sed 's/___/\\#	/g' | tr '#' '\012' >> Makefile.includes; \
+	echo 'all : $$(ALL_INCLUDES)' >> Makefile.includes; \
+	for f in $(public_headers); \
+	do \
+	  source=$(srcdir)/$$f; target=$$targetdir/$$f; \
+	  (echo "$$target : $$source"; \
+	   echo "	@ln $$source $$target </dev/null 2>/dev/null || (rm -f $$target; cp -p $$source $$target ; chmod a-w $$target;);";\
+	   echo;) >> Makefile.includes; \
+	done; \
+	echo "clean : " >> Makefile.includes; \
+	echo '	rm -f $$(ALL_INCLUDES)' >> Makefile.includes
+
+real-includes: make-makefile-includes
+	@$(MAKE) -f Makefile.includes
+
+local-includes :
+	@if test "$(public_headers)"; then $(MAKE) real-includes; fi
+
+all-local: local-includes
+
+.PHONY : includes local-includes real-includes make-makefile-includes clean-makefile-includes
+
+clean-generic : clean-makefile-includes
+
+clean-makefile-includes:
+	-rm -f Makefile.includes
+
+includes: local-includes
+	@for d in . $(SUBDIRS); \
+        do \
+	  if test "$$d" != "."; \
+          then \
+	    (cd $$d && $(MAKE) includes); \
+          fi; \
+        done
+
+echo-TESTS:
+	@echo $(TESTS)
+
+echo-TESTS_LIGHT:
+	@echo $(TESTS_LIGHT)
+
+# EOF
+
+# Tell versions [3.59,3.63) of GNU make to not export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:

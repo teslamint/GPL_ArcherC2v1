@@ -1,0 +1,284 @@
+QUICKSEC_FASTPATH ?=
+QUICKSEC_HWACCEL ?= SAFENETPE
+#QUICKSEC_HWACCEL ?=
+KIT_PATH ?= drivers/net/eip93_drivers/cryptoEngine/Kit
+VDRIVER_PATH ?= drivers/net/eip93_drivers/cryptoEngine/V-Driver_93
+
+obj-m := quicksec.o
+SRC_DIR := ../src
+quicksec-y := \
+    $(SRC_DIR)/interceptor/linux/linux_debug.o \
+    $(SRC_DIR)/interceptor/linux/linux_hook_magic.o \
+    $(SRC_DIR)/interceptor/linux/linux_iface.o \
+    $(SRC_DIR)/interceptor/linux/linux_ip_glue.o \
+    $(SRC_DIR)/interceptor/linux/linux_ipm.o \
+    $(SRC_DIR)/interceptor/linux/linux_kernel_alloc.o \
+    $(SRC_DIR)/interceptor/linux/linux_main.o \
+    $(SRC_DIR)/interceptor/linux/linux_misc.o \
+    $(SRC_DIR)/interceptor/linux/linux_mutex.o \
+    $(SRC_DIR)/interceptor/linux/linux_packet.o \
+    $(SRC_DIR)/interceptor/linux/linux_procfs.o \
+    $(SRC_DIR)/interceptor/linux/linux_route.o \
+    $(SRC_DIR)/interceptor/linux/linux_timeout.o \
+    $(SRC_DIR)/interceptor/linux/linux_virtual_adapter.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_alloc.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_arp.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_asyncop.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_audit.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_audit_pkt.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_flow_id.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_flows.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_icmp.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_init.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_interfaces.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_mediatypes.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_nat.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_natt_keepalive.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_next_hop.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_packet_handler.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_pm_api_engine.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_pm_api_tcp_encaps.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_pme.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_pmtu.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_random.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_rate_limit.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_route.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_rule_execute.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_rule_lookup.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_rule_lookup_list.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_rule_lookup_tree.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_rules.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_tcp.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_tcp_rst.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_timeout.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_transform.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_trigger.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_udp.o \
+    $(SRC_DIR)/ipsec/util/ip_cksum.o \
+    $(SRC_DIR)/ipsec/util/ip_cksum_packet.o \
+    $(SRC_DIR)/ipsec/util/virtual_adapter_arp.o \
+    $(SRC_DIR)/ipsec/util/virtual_adapter_misc.o \
+    $(SRC_DIR)/ipsec/quicksec/engine/engine_pm_api_util.o \
+    $(SRC_DIR)/ipsec/util/ip_interfaces.o \
+    $(SRC_DIR)/ipsec/util/virtual_adapter_util.o \
+    $(SRC_DIR)/interceptor/libkernelutil/kernel_alloc.o \
+    $(SRC_DIR)/interceptor/libkernelutil/kernel_encode.o \
+    $(SRC_DIR)/interceptor/libkernelutil/packet_utils.o \
+    $(SRC_DIR)/lib/sshmath/sshmp-xuint.o \
+    $(SRC_DIR)/lib/sshutil/sshaudit/sshaudit.o \
+    $(SRC_DIR)/lib/sshutil/sshcore/sshdebug.o \
+    $(SRC_DIR)/lib/sshutil/sshcore/sshenum.o \
+    $(SRC_DIR)/lib/sshutil/sshcore/sshfatal.o \
+    $(SRC_DIR)/lib/sshutil/sshcore/sshmatch.o \
+    $(SRC_DIR)/lib/sshutil/sshcore/sshmemcmp.o \
+    $(SRC_DIR)/lib/sshutil/sshcore/sshrand.o \
+    $(SRC_DIR)/lib/sshutil/sshcore/sshsnprintf.o \
+    $(SRC_DIR)/lib/sshutil/sshcore/sshustr.o \
+    $(SRC_DIR)/lib/sshutil/sshnet/sshinetbits.o \
+    $(SRC_DIR)/lib/sshutil/sshnet/sshinetcalc.o \
+    $(SRC_DIR)/lib/sshutil/sshnet/sshinetencode.o \
+    $(SRC_DIR)/lib/sshutil/sshnet/sshinetether.o \
+    $(SRC_DIR)/lib/sshutil/sshnet/sshinethash.o \
+    $(SRC_DIR)/lib/sshutil/sshnet/sshinetmapped.o \
+    $(SRC_DIR)/lib/sshutil/sshnet/sshinetmask.o \
+    $(SRC_DIR)/lib/sshutil/sshnet/sshinetmerge.o \
+    $(SRC_DIR)/lib/sshutil/sshnet/sshinetprint.o \
+    $(SRC_DIR)/lib/sshutil/sshnet/sshinetproto.o \
+    $(SRC_DIR)/lib/sshutil/sshnet/sshinetrender.o \
+    $(SRC_DIR)/lib/sshutil/sshstrutil/sshencodetypes.o \
+    $(SRC_DIR)/ipsec/quicksec/fastpath/software/engine_fastpath.o \
+    $(SRC_DIR)/ipsec/quicksec/fastpath/software/engine_fastpath_impl.o \
+    $(SRC_DIR)/ipsec/quicksec/fastpath/software/engine_fragment.o \
+    $(SRC_DIR)/ipsec/quicksec/fastpath/software/engine_tcp_encaps.o \
+    $(SRC_DIR)/ipsec/quicksec/fastpath/software/engine_transform_in.o \
+    $(SRC_DIR)/ipsec/quicksec/fastpath/software/engine_transform_ipcomp.o \
+    $(SRC_DIR)/ipsec/quicksec/fastpath/software/engine_transform_nat.o \
+    $(SRC_DIR)/ipsec/quicksec/fastpath/software/engine_transform_out.o \
+    $(SRC_DIR)/ipsec/quicksec/fastpath/software/engine_transform_utils.o \
+    $(SRC_DIR)/ipsec/quicksec/fastpath/software/fastpath_alloc.o \
+    $(SRC_DIR)/ipsec/quicksec/fastpath/software/fastpath_flow_id.o \
+    $(SRC_DIR)/ipsec/quicksec/fastpath/software/fastpath_flows.o \
+    $(SRC_DIR)/ipsec/quicksec/fastpath/software/fastpath_fragmagic.o \
+    $(SRC_DIR)/ipsec/quicksec/fastpath/software/fastpath_icmp.o \
+    $(SRC_DIR)/ipsec/quicksec/fastpath/software/fastpath_init.o \
+    $(SRC_DIR)/ipsec/quicksec/fastpath/software/fastpath_mediatypes.o \
+    $(SRC_DIR)/ipsec/quicksec/fastpath/software/fastpath_packet_pullup.o \
+    $(SRC_DIR)/ipsec/quicksec/fastpath/software/fastpath_tcp.o \
+    $(SRC_DIR)/ipsec/quicksec/fastpath/software/fastpath_udp.o \
+    $(SRC_DIR)/ipsec/quicksec/fastpath/software/fastpath_utils.o \
+    $(SRC_DIR)/lib/sshcrypto/sshcipher/blowfish.o \
+    $(SRC_DIR)/lib/sshcrypto/sshcipher/des.o \
+    $(SRC_DIR)/lib/sshcrypto/sshcipher/mode-gcm.o \
+    $(SRC_DIR)/lib/sshcrypto/sshcipher/mscapi-cipher.o \
+    $(SRC_DIR)/lib/sshcrypto/sshcipher/octeon-cipher.o \
+    $(SRC_DIR)/lib/sshcrypto/sshcipher/rijndael.o \
+    $(SRC_DIR)/lib/sshcrypto/sshhash/md5.o \
+    $(SRC_DIR)/lib/sshcrypto/sshhash/mscapi-hash.o \
+    $(SRC_DIR)/lib/sshcrypto/sshhash/octeon-hash.o \
+    $(SRC_DIR)/lib/sshcrypto/sshhash/sha.o \
+    $(SRC_DIR)/lib/sshcrypto/sshhash/sha256.o \
+    $(SRC_DIR)/lib/sshcrypto/sshhash/sha512.o \
+    $(SRC_DIR)/lib/sshcrypto/sshmac/hmac.o \
+    $(SRC_DIR)/lib/sshcrypto/sshmac/xcbc-mac.o \
+    $(SRC_DIR)/lib/zlib/adler32.o \
+    $(SRC_DIR)/lib/zlib/deflate.o \
+    $(SRC_DIR)/lib/zlib/infblock.o \
+    $(SRC_DIR)/lib/zlib/infcodes.o \
+    $(SRC_DIR)/lib/zlib/inffast.o \
+    $(SRC_DIR)/lib/zlib/inflate.o \
+    $(SRC_DIR)/lib/zlib/inftrees.o \
+    $(SRC_DIR)/lib/zlib/infutil.o \
+    $(SRC_DIR)/lib/zlib/trees.o \
+    $(SRC_DIR)/lib/zlib/zutil.o
+
+INC_DIR := drivers/net/eip93_drivers/quickSec/src
+EXTRA_CFLAGS += \
+	-I$(KIT_PATH)/DriverFramework/incl \
+	-I$(KIT_PATH)/DMABuf/incl \
+	-I$(VDRIVER_PATH)/incl \
+    -I$(INC_DIR)/../include \
+    -I$(INC_DIR)/. \
+    -I$(INC_DIR)/interceptor/include \
+    -I$(INC_DIR)/interceptor/libkernelutil \
+    -I$(INC_DIR)/ipsec \
+    -I$(INC_DIR)/ipsec/hwaccel \
+    -I$(INC_DIR)/ipsec/lib/sshikev2 \
+    -I$(INC_DIR)/ipsec/lib/sshisakmp \
+    -I$(INC_DIR)/ipsec/lib/sshl2tp \
+    -I$(INC_DIR)/ipsec/lib/sshppp \
+    -I$(INC_DIR)/ipsec/quicksec \
+    -I$(INC_DIR)/ipsec/quicksec/appgw \
+    -I$(INC_DIR)/ipsec/quicksec/apps \
+    -I$(INC_DIR)/ipsec/quicksec/engine \
+    -I$(INC_DIR)/ipsec/quicksec/fastpath \
+    -I$(INC_DIR)/ipsec/quicksec/fastpath/software \
+    -I$(INC_DIR)/ipsec/quicksec/policymanager \
+    -I$(INC_DIR)/ipsec/util \
+    -I$(INC_DIR)/lib/sshapputil \
+    -I$(INC_DIR)/lib/sshasn1 \
+    -I$(INC_DIR)/lib/sshcert \
+    -I$(INC_DIR)/lib/sshcrypto \
+    -I$(INC_DIR)/lib/sshcrypto/sshcipher \
+    -I$(INC_DIR)/lib/sshcrypto/sshcryptocore \
+    -I$(INC_DIR)/lib/sshcrypto/sshhash \
+    -I$(INC_DIR)/lib/sshcrypto/sshmac \
+    -I$(INC_DIR)/lib/sshcrypto/sshpk \
+    -I$(INC_DIR)/lib/sshcrypto/sshrandom \
+    -I$(INC_DIR)/lib/sshcryptoaux \
+    -I$(INC_DIR)/lib/ssheap \
+    -I$(INC_DIR)/lib/sshenroll \
+    -I$(INC_DIR)/lib/sshexternalkey \
+    -I$(INC_DIR)/lib/sshhttp \
+    -I$(INC_DIR)/lib/sshldap \
+    -I$(INC_DIR)/lib/sshmath \
+    -I$(INC_DIR)/lib/sshpkcs \
+    -I$(INC_DIR)/lib/sshradius \
+    -I$(INC_DIR)/lib/sshsim \
+    -I$(INC_DIR)/lib/sshtls \
+    -I$(INC_DIR)/lib/sshutil \
+    -I$(INC_DIR)/lib/sshutil/sshadt \
+    -I$(INC_DIR)/lib/sshutil/sshaudit \
+    -I$(INC_DIR)/lib/sshutil/sshcore \
+    -I$(INC_DIR)/lib/sshutil/ssheloop \
+    -I$(INC_DIR)/lib/sshutil/sshfsm \
+    -I$(INC_DIR)/lib/sshutil/sshmisc \
+    -I$(INC_DIR)/lib/sshutil/sshnet \
+    -I$(INC_DIR)/lib/sshutil/sshpacketstream \
+    -I$(INC_DIR)/lib/sshutil/sshstream \
+    -I$(INC_DIR)/lib/sshutil/sshstrutil \
+    -I$(INC_DIR)/lib/sshutil/sshsysutil \
+    -I$(INC_DIR)/lib/sshutil/sshtestutil \
+    -I$(INC_DIR)/lib/sshvalidator \
+    -I$(INC_DIR)/lib/sshxml \
+    -I$(INC_DIR)/lib/zlib \
+    -I$(INC_DIR)/interceptor/linux \
+    -DSSH_BUILD_IPSEC \
+    -DWITH_IPV6 \
+    -DRETSIGTYPE=void \
+    -DSTDC_HEADERS \
+    -DDEBUG_LIGHT \
+    -DINTERCEPTOR_HAS_MARK_FUNC \
+    -DINTERCEPTOR_HAS_PACKET_COPYIN \
+    -DINTERCEPTOR_HAS_PACKET_COPYOUT \
+    -DINTERCEPTOR_HAS_PACKET_DETACH \
+    -DINTERCEPTOR_HAS_PACKET_INTERNAL_DATA_ROUTINES \
+    -DINTERCEPTOR_HAS_PLATFORM_INCLUDE \
+    -DINTERCEPTOR_HAS_VIRTUAL_ADAPTERS \
+    -DINTERCEPTOR_PROVIDES_INTERFACE_INFORMATION \
+    -DINTERCEPTOR_PROVIDES_IP_ROUTING \
+    -DINTERCEPTOR_PROVIDES_VIRTUAL_ADAPTERS \
+    -DSSH_LINUX_KBUILD_COMPILATION \
+    -DKERNEL \
+    -DSSH_MP_INTEGER_BIT_SIZE_STATIC=0 \
+    -D_KERNEL
+
+ifneq ($(QUICKSEC_HWACCEL),)
+
+quicksec-y += \
+    $(SRC_DIR)/interceptor/linux/linux_pcihw.o
+
+endif
+
+ifeq ($(QUICKSEC_HWACCEL),)
+
+quicksec-y += \
+    $(SRC_DIR)/ipsec/hwaccel/none/hwaccel_none.o
+
+#override EXTRA_CFLAGS += \
+#	-DWORDS_BIGENDIAN
+
+endif
+
+ifeq ($(QUICKSEC_HWACCEL),OCF)
+
+quicksec-y += \
+    $(SRC_DIR)/ipsec/hwaccel/ocf/ocf.o
+
+override EXTRA_CFLAGS += \
+    -DSSH_IPSEC_HWACCEL_CONFIGURED \
+    -DSSH_IPSEC_HWACCEL_NAME=OCF
+
+endif
+
+ifeq ($(QUICKSEC_HWACCEL),SAFENET1X41)
+
+quicksec-y += \
+    $(SRC_DIR)/ipsec/hwaccel/safenet1x41/safenet1x41.o
+
+override EXTRA_CFLAGS += \
+    -I$(INC_DIR)/ipsec/hwaccel/safenet1x41 \
+    -DSSH_IPSEC_HWACCEL_CONFIGURED \
+    -DSSH_IPSEC_HWACCEL_NAME=SafeNetUDM \
+    -DSSH_IPSEC_HWACCEL_SUPPORT_TLS \
+    -DSSH_IPSEC_HWACCEL_USE_COMBINED_TRANSFORM
+
+endif
+
+ifeq ($(QUICKSEC_HWACCEL),SAFENETPE)
+
+quicksec-y += \
+    $(SRC_DIR)/ipsec/hwaccel/safenet_pe/safenet_la.o \
+    $(SRC_DIR)/ipsec/hwaccel/safenet_pe/safenet_la_utils.o \
+    $(SRC_DIR)/ipsec/hwaccel/safenet_pe/safenet_pe_pec.o
+
+#-DWORDS_BIGENDIAN 
+override EXTRA_CFLAGS += \
+    -I$(INC_DIR)/ipsec/hwaccel/safenet_pe \
+    -DSSH_IPSEC_HWACCEL_CONFIGURED \
+    -DSSH_IPSEC_HWACCEL_USE_COMBINED_TRANSFORM \
+	-DSAFENET_PE_PLATFORM_EIP93
+
+endif
+
+ifeq ($(QUICKSEC_HWACCEL),WLUDM)
+
+quicksec-y += \
+    $(SRC_DIR)/ipsec/hwaccel/safenetwludm/safenet_wludm.o
+
+override EXTRA_CFLAGS += \
+    -DSSH_IPSEC_HWACCEL_CONFIGURED \
+    -DSSH_IPSEC_HWACCEL_NAME="SafeNet Wireless UDM"
+
+endif
+
+-include Makefile.inc

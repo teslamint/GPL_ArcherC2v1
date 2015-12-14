@@ -1,0 +1,11 @@
+# -*- makefile -*-
+#
+#
+HWACCEL_SAFENET_WLUDM_SRCS = safenet_wludm.c
+HWACCEL_SAFENET_WLUDM_OBJS = safenet_wludm.o
+HWACCEL_SAFENET_WLUDM_INCLUDES = \
+    -D__FORCE_DWORD_ALIGNMENT -DWLUDM_PLATFORM_LINUX \
+    -DWLUDM_DEVICE_OMAP_REV1 -DCGX_PLATFORM_LINUX \
+    -I$(top_srcdir)/ipsec/hwaccel \
+    -I$(top_srcdir)/ipsec/hwaccel/safenetwludm \
+    -I$(top_srcdir)/cgx/hdrs

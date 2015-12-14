@@ -1,0 +1,52 @@
+; ----------------------------------------------------------------------------
+; Installation script for SafeNet QuickSec Network Filter Device Driver
+;
+; Copyright (c) 2009 SFNT Finland Oy.
+; ----------------------------------------------------------------------------
+
+[Version]
+signature   = "$Windows NT$"
+Class       = Net
+ClassGUID   = {4D36E972-E325-11CE-BFC1-08002BE10318}
+Provider    = %SFNT%
+CatalogFile = quicksec.cat
+DriverVer   = 09/25/2009,5.1.0.0
+
+[ControlFlags]
+ExcludeFromSelect = quicksec_filter
+
+[DestinationDirs]
+DefaultDestDir=12
+
+[Manufacturer]
+%SFNT% = SAFENET.INSTALL,NTx86,NTamd64
+
+[SAFENET.INSTALL]
+%SAFENET_QUICKSEC_DESC% = QUICKSEC.NDI, quicksec_filter
+
+[SAFENET.INSTALL.NTx86]
+%SAFENET_QUICKSEC_DESC% = QUICKSEC.NDI, quicksec_filter
+
+[SAFENET.INSTALL.NTamd64]
+%SAFENET_QUICKSEC_DESC% = QUICKSEC.NDI, quicksec_filter
+
+[QUICKSEC.NDI]
+AddReg = QUICKSEC.NDI.ADD_REG
+Characteristics = 0x01 ;NCF_VIRTUAL
+
+[QUICKSEC.NDI.ADD_REG]
+
+[QUICKSEC.NDI.SERVICES]
+AddService = quicksec, 0x02, QUICKSEC.ADD_SERVICE
+
+[QUICKSEC.ADD_SERVICE]
+DisplayName    = %SAFENET_QUICKSEC_DESC%
+ServiceType    = 1 ;SERVICE_KERNEL_DRIVER
+StartType      = 3 ;SERVICE_DEMAND_START
+ErrorControl   = 1 ;SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\quicksec.sys
+LoadOrderGroup = PNP_TDI
+
+[Strings]
+SFNT = "SFNT Finland Oy"
+SAFENET_QUICKSEC_DESC = "SafeNet QuickSec 5.1.0"

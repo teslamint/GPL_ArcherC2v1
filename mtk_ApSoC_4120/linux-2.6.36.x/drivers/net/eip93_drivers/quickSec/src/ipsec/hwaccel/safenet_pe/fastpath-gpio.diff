@@ -1,0 +1,76 @@
+Only in quicksec-server-4.4+quicksec-client-4.4/ipsec/hwaccel/safenet_pe: fastpath.diff
+Only in quicksec-server-4.4+quicksec-client-4.4/ipsec/hwaccel/safenet_pe: interceptor.diff
+diff -aur quicksec-server-4.4+quicksec-client-4.4/ipsec/quicksec/fastpath/software/engine_fastpath.c quicksec-server-4.4+quicksec-client-4.4-new/ipsec/quicksec/fastpath/software/engine_fastpath.c
+--- quicksec-server-4.4+quicksec-client-4.4/ipsec/quicksec/fastpath/software/engine_fastpath.c	2008-03-17 17:08:02.120449448 +0530
++++ quicksec-server-4.4+quicksec-client-4.4-new/ipsec/quicksec/fastpath/software/engine_fastpath.c	2008-03-17 16:56:14.935957832 +0530
+@@ -19,6 +19,12 @@
+ #include "fastpath_impl.h"
+ #include "fastpath_swi.h"
+ 
++#ifndef USERMODE_ENGINE
++#include "safenet_405ex_gpio.h"
++#else
++#define safenet_linux_gpio_out_high(d) 
++#define safenet_linux_gpio_out_low(d) 
++#endif
+ #define SSH_DEBUG_MODULE "SshEngineFastpath"
+ 
+ 
+@@ -1281,6 +1287,7 @@
+     pc->transform = 0;
+ 
+  execute_transform:
++/*   safenet_linux_gpio_out_high(14); */
+   SSH_DEBUG(SSH_D_LOWSTART,
+             ("executing transform for packet: transform_idx=%08lx "
+              "prev_transform_idx=0x%08lx "
+@@ -1326,6 +1333,7 @@
+ 
+   /* Execute the transform on the packet. */
+   fastpath_execute_transform(pc);
++/*   safenet_linux_gpio_out_low(14); */
+   goto return_unless_recursed;
+ 
+  deinitialize:
+diff -aur quicksec-server-4.4+quicksec-client-4.4/ipsec/quicksec/fastpath/software/engine_transform_in.c quicksec-server-4.4+quicksec-client-4.4-new/ipsec/quicksec/fastpath/software/engine_transform_in.c
+--- quicksec-server-4.4+quicksec-client-4.4/ipsec/quicksec/fastpath/software/engine_transform_in.c	2008-03-17 17:08:02.128448232 +0530
++++ quicksec-server-4.4+quicksec-client-4.4-new/ipsec/quicksec/fastpath/software/engine_transform_in.c	2008-03-17 17:03:02.986924656 +0530
+@@ -28,6 +28,13 @@
+ 
+ #include "fastpath_swi.h"
+ 
++#ifndef USERMODE_ENGINE
++#include "safenet_405ex_gpio.h"
++#else
++#define safenet_linux_gpio_out_high(d) 
++#define safenet_linux_gpio_out_low(d) 
++#endif
++
+ #define SSH_DEBUG_MODULE "SshEngineFastpathTransformIn"
+ 
+ #ifdef SSHDIST_IPSEC_TRANSFORM
+@@ -1383,7 +1390,7 @@
+   SshEngineTransformRun trr;
+   unsigned char *ucp;
+   SshUInt8 ipproto;
+-
++  /*   safenet_linux_gpio_out_high(12); */
+   trr = pc->u.flow.trr;
+ 
+   /* Assign the new packet object to pc. */
+@@ -1468,6 +1475,7 @@
+   /* Return the packet to the transform callback for further processing. */
+   ssh_fastpath_release_transform_context(fastpath, tc);
+   (*pc->u.flow.tr_callback)(pc, SSH_ENGINE_RET_OK, pc->u.flow.tr_context);
++  /*   safenet_linux_gpio_out_low(12); */
+   return;
+ 
+  fail:
+@@ -1478,6 +1486,7 @@
+ 			    pc->pp
+ 			    ? SSH_ENGINE_RET_DROP : SSH_ENGINE_RET_ERROR,
+ 			    pc->u.flow.tr_context);
++  /*   safenet_linux_gpio_out_low(12); */
+ }
+ 
+ void fastpath_transform_in_antireplay_combined(SshInterceptorPacket pp,

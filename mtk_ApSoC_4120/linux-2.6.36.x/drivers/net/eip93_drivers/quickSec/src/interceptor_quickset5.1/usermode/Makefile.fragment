@@ -1,0 +1,39 @@
+# -*- makefile -*-
+#
+# interceptor/libkernelutil/Makefile.fragment
+#
+
+AUTODIST_OPTIONS += lnsrcs
+
+USERMODE_INTERCEPTOR_INCLUDES = \
+	-I$(top_srcdir)/interceptor/usermode
+
+USERMODE_INTERCEPTOR_SRCS = \
+	usermode_packet.c \
+	usermode_util.c \
+	usermodeforwarder.c \
+	usermodeforwarder.h \
+	usermodeinterceptor.c \
+	usermodeinterceptor.h \
+	virtual_adapter.c \
+	platform_kernel_alloc.h \
+	platform_kernel_mutex.h
+
+
+
+USERMODE_INTERCEPTOR_KERNEL_LNSRCS = \
+	usermodeforwarder.c
+
+USERMODE_INTERCEPTOR_USER_LNSRCS = \
+	virtual_adapter.c \
+	usermode_packet.c \
+	usermode_util.c \
+	usermodeinterceptor.c
+
+
+
+
+virtual_adapter.c usermode_packet.c usermode_util.c usermodeinterceptor.c usermodeforwarder.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/interceptor/usermode/$@ .
+

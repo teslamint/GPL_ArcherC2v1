@@ -1,0 +1,17 @@
+menu "TPLINK Model"
+
+choice
+       prompt "TP-LINK Product MODEL"
+       default TP_MODEL_C2V1
+
+config TP_MODEL_C20iV1
+       bool "Build ArcherC20i V1"
+
+config TP_MODEL_C2V1
+       bool "Build ArcherC2 V1"
+	   
+endchoice
+
+
+endmenu
+

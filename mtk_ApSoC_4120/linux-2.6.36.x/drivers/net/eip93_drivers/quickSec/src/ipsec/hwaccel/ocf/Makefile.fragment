@@ -1,0 +1,8 @@
+# -*- makefile -*-
+#
+#
+HWACCEL_OCF_SRCS = ocf.c
+HWACCEL_OCF_OBJS = ocf.o
+HWACCEL_OCF_INCLUDES = \
+    -I$(top_srcdir)/ipsec/hwaccel \
+    -I$(top_srcdir)/ipsec/hwaccel/ocf

@@ -1,0 +1,69 @@
+# -*- makefile -*-
+#
+# ipsec/interceptor/tests/Makefile.fragment
+#
+
+AUTODIST_OPTIONS += lnsrcs
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+INTERCEPTOR_TESTER_SRCS = \
+	interceptor_tester.c \
+	interceptor_tester.h \
+	interceptor_tester_ipm.c
+
+INTERCEPTOR_TESTER_LNSRCS = \
+	interceptor_tester.c
+
+INTERCEPTOR_TESTER_IPM_LNSRCS = \
+	interceptor_tester_ipm.c
+
+INTERCEPTOR_TESTER_INCLUDES = \
+	-I$(top_srcdir)/ipsec/interceptor/tests
+
+interceptor_tester.c interceptor_tester_ipm.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/ipsec/interceptor/tests/$@ .
+

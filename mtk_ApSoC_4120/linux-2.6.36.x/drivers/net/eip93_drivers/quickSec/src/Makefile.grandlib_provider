@@ -1,0 +1,26 @@
+# -*-makefile-*-
+
+grandlib : grandlib_objs
+
+grandlib_objs : Makefile
+	rm -f grandlib_objs; \
+	touch grandlib_objs; \
+	if test "x$(GRANDLIB_OBJECTS)" != "x" ; then \
+		for o in _ $(GRANDLIB_OBJECTS) ; \
+		do \
+		  test "$$o" != "_" && echo "$$o" >> grandlib_objs; \
+		done ;\
+	fi
+
+clean-generic: clean-grandlib
+
+clean-grandlib:
+	-rm -f grandlib_objs
+	-@if test "x$(EXTRA_PROGRAMS)" != "x"; then \
+	   echo rm -f $(EXTRA_PROGRAMS); \
+	   rm -f $(EXTRA_PROGRAMS); \
+	fi
+	-@if test "x$(CLEANFILES)" != "x"; then \
+	   echo rm -f $(CLEANFILES); \
+	   rm -f $(CLEANFILES); \
+	fi

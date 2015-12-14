@@ -1,0 +1,37 @@
+# File: 440epx-conf
+#
+# Copyright (c) 2006-2007 SFNT Finland Oy -
+#            All rights reserved.
+#
+# Run this script from the top level Quicksec directory
+#
+# Usage: source ipsec/hwaccel/safenet1x41/440epx-conf
+#
+# This script prepares the environment and runs configure with
+# cross compiling support for Quicksec with the 
+# 440EPx HW platform using EIP94 hardware accelerator.
+#
+#
+# Change the variables here to reflect your configuration. Below it is 
+# assumed the UDM driver sources are located in the /opt/udm
+# directory, and the Linux kernel sources are located under 
+# /opt/linux-2.6.14
+# 
+CC=ppc_4xxFP-gcc
+AR=ppc_4xxFP-ar
+LD=ppc_4xxFP-ld
+NM=ppc_4xxFP-nm
+RANLIB=ppc_4xxFP-ranlib
+AS=ppc_4xxFP-as
+
+export CC AR NM LD RANLIB AS
+
+./configure --disable-debug               \
+            --with-hwaccel="safenet-1x41" \
+            --with-safenet-udm=/opt/udm   \
+            --enable-ip-word-align        \
+	    --build=i686-pc-linux-gnu     \
+	    --host=powerpc-linux          \
+            --target=powerpc-linux        \
+            --with-kernel-version=2.6.14  \
+            --with-kernel-headers="/opt/linux-2.6.14/include -I/opt/linux-2.6.14/arch/ppc -I/opt/eldk/linux-2.6.14/arch/ppc/include -I/opt/linux-2.6.14/include/linux"

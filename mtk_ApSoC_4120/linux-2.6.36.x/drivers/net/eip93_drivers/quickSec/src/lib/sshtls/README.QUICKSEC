@@ -1,0 +1,5 @@
+ This almost empty directory is included in SSH QuickSec customer
+ distributions. It's purpose is to serve as a placeholder for TLS
+ toolkit option. The TLS toolkit contains actual Makefile and source
+ files. Having this directory includes, enables adding option without
+ need to change upper level Makefile.

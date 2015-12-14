@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE quicksec PUBLIC "quicksec:dtd" "quicksec.dtd">
+<!--
+The format of the FTP ALG config data is:
+
+  <!ELEMENT alg-ftp             (disable|content-filter)*>
+
+    client-can-change-ip server-can-change-ip
+  <!ATTLIST alg-ftp
+            flags               NMTOKENS        #IMPLIED>
+
+  <!ELEMENT disable             (#PCDATA)>
+  <!ELEMENT content-filter      (#PCDATA)>
+
+ -->
+<quicksec>
+  <policy>
+    <!-- FTP application gateway. -->
+    <service name="ftp">
+      <appgw id="alg-ftp@ssh.com">
+        <!-- Configuration data for FTP appgw. -->
+        <alg-ftp>
+          <disable>UPLOAD</disable>
+          <content-filter>MD5</content-filter>
+        </alg-ftp>
+      </appgw>
+    </service>
+
+    <!-- Application gateway for FTP traffic. -->
+    <rule service="ftp" log="connections">
+      <src>ipv4(tcp,0.0.0.0/0)</src>
+      <dst>ipv4(tcp:21,0.0.0.0/0)</dst>
+    </rule>
+    <rule service="ftp" log="connections">
+      <src>ipv6(tcp,::/0)</src>
+      <dst>ipv6(tcp:21,::/0)</dst>
+    </rule>
+
+    <!-- Pass everything else in plain-text from the private interface. -->
+    <rule>
+      <src>ipv4(0.0.0.0/0)</src>
+      <dst>ipv4(0.0.0.0/0)</dst>
+    </rule>
+    <rule>
+      <src>ipv4(0.0.0.0/0)</src>
+      <dst>ipv4(0.0.0.0/0)</dst>
+      <local-stack direction="from"/>
+    </rule>
+  </policy>
+</quicksec>

@@ -1,0 +1,32 @@
+% SSH test certificates
+%
+% This file is supposed to be run through m4 (it may require gnu-m4)
+%
+% Input variables:
+%
+% `IP_NUMBER'           IP number to put in certificates. Defaults to real ip
+% `REVOKE_CERTS'        If set to 1 then revoke both rsa and dsa certs
+% `NO_CAS'              If set to 1 then do not create ca keys
+% `NO_KEYS'             If set to 1 then do not create keys
+% `NO_CRLS'             If set to 1 then do not create crls
+% `KEY_BITS_CA'         Number of bits used in CA key
+% `KEY_BITS_KEY'        Number of bits used in RSA key
+% `SERIAL_START'        Start of serial number
+% `CRL_TTL'             CRL time to live (hh:mm)
+% `FILE_NAME_PREFIX'    Prefix for all file names
+
+divert(-1)dnl
+include(top.m4)
+
+CA_CERT_DEF(ca-HOSTNAME,SERIAL_NUMBER)
+define(CA_SERIAL_NUMBER,INT_SERIAL_NUMBER)dnl
+
+CERT_DEF(rsa-HOSTNAME,ca-HOSTNAME,IP ::= IP_NUMBER,SERIAL_NUMBER)
+define(RSA_SERIAL_NUMBER,INT_SERIAL_NUMBER)dnl
+
+CERT_DEF(dsa-HOSTNAME,ca-HOSTNAME,IP ::= IP_NUMBER,SERIAL_NUMBER,,dsaEncryption)
+define(DSA_SERIAL_NUMBER,INT_SERIAL_NUMBER)dnl
+
+CRL_DEF(ca-HOSTNAME,RSA_SERIAL_NUMBER,DSA_SERIAL_NUMBER)
+
+% The end. 

@@ -1,0 +1,60 @@
+# -*- makefile -*-
+#
+# ipsec/quicksec/appgw/Makefile.fragment
+#
+
+APPGW_LIB_SRCS = \
+	wins_packet.c \
+	appgw_cifs.c \
+	appgw_cifs_internal.h \
+	appgw_cifs_st_msds.c \
+	appgw_cifs_st_nbt.c \
+	appgw_cifs_st_parser.c \
+	appgw_cifs_st_request.c \
+	appgw_cifs_st_response.c \
+	appgw_dns.c \
+	appgw_dns.h \
+	appgw_dns_config.c \
+	appgw_ftp.c \
+	appgw_ftp.h \
+	appgw_http.c \
+	appgw_http.h \
+	appgw_http_config.c \
+	appgw_http_internal.h \
+	appgw_http_state.c \
+	appgw_netbios_dgm.c \
+	appgw_pass_through_tcp.c \
+	appgw_pass_through_tcp.h \
+	appgw_sip.c \
+	appgw_sip.h \
+	appgw_sip_config.c \
+	appgw_sip_packet.c \
+	appgw_sip_ports.c \
+	appgw_socksify.c \
+	appgw_socksify.h \
+	appgw_wins.c \
+	appgw_wins_internal.h \
+	dce_rpc_pdu.c \
+	dce_rpc_pdu.h \
+	appgw_av.h \
+	appgw_av.c \
+	wins_packet.c \
+	wins_packet.h
+
+
+
+
+
+
+
+
+
+
+
+
+APPGW_LIB_INCLUDES = \
+	-I$(top_srcdir)/ipsec/quicksec/appgw \
+	@AV_ALG_INCLUDES@ \
+	-I$(top_srcdir)/ipsec/quicksec/policymanager
+
+

@@ -1,0 +1,716 @@
+# Makefile.in generated automatically by automake 1.4-p6 from Makefile.am
+
+# Copyright (C) 1994, 1995-8, 1999, 2001 Free Software Foundation, Inc.
+# This Makefile.in is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+# Added by filter_add_makefile_libextra_stuff
+# To keep automake silent about public and private headers
+# not been set when something is added to them
+
+
+# -*-makefile-*-
+
+
+# -*- makefile -*-
+
+
+SHELL = @SHELL@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+VPATH = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+libdir = @libdir@
+infodir = @infodir@
+mandir = @mandir@
+includedir = @includedir@
+oldincludedir = /usr/include
+
+DESTDIR =
+
+pkgdatadir = $(datadir)/@PACKAGE@
+pkglibdir = $(libdir)/@PACKAGE@
+pkgincludedir = $(includedir)/@PACKAGE@
+
+top_builddir = ../../..
+
+ACLOCAL = @ACLOCAL@
+AUTOCONF = @AUTOCONF@
+AUTOMAKE = @AUTOMAKE@
+AUTOHEADER = @AUTOHEADER@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@ $(AM_INSTALL_PROGRAM_FLAGS)
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+transform = @program_transform_name@
+
+NORMAL_INSTALL = :
+PRE_INSTALL = :
+POST_INSTALL = :
+NORMAL_UNINSTALL = :
+PRE_UNINSTALL = :
+POST_UNINSTALL = :
+build_alias = @build_alias@
+build_triplet = @build@
+host_alias = @host_alias@
+host_triplet = @host@
+target_alias = @target_alias@
+target_triplet = @target@
+ADDR_MODEL = @ADDR_MODEL@
+AR = @AR@
+AV_ALG_INCLUDES = @AV_ALG_INCLUDES@
+AV_ALG_LIBS = @AV_ALG_LIBS@
+BUILD_CC = @BUILD_CC@
+CC = @CC@
+COPY_INCLUDE = @COPY_INCLUDE@
+ENGINE_ASM_OBJS = @ENGINE_ASM_OBJS@
+FASTPATH_CONFIGURED_DIRECTORY = @FASTPATH_CONFIGURED_DIRECTORY@
+FASTPATH_CONFIGURED_INCLUDES = @FASTPATH_CONFIGURED_INCLUDES@
+FASTPATH_CONFIGURED_OBJS = @FASTPATH_CONFIGURED_OBJS@
+FASTPATH_CONFIGURED_SRCS = @FASTPATH_CONFIGURED_SRCS@
+GRANDLIBARCMD = @GRANDLIBARCMD@
+GRANDLIBRANLIBCMD = @GRANDLIBRANLIBCMD@
+HWACCEL_CONFIGURED_DIRECTORY = @HWACCEL_CONFIGURED_DIRECTORY@
+HWACCEL_CONFIGURED_INCLUDES = @HWACCEL_CONFIGURED_INCLUDES@
+HWACCEL_CONFIGURED_OBJS = @HWACCEL_CONFIGURED_OBJS@
+HWACCEL_CONFIGURED_SRCS = @HWACCEL_CONFIGURED_SRCS@
+HWACCEL_VPATH = @HWACCEL_VPATH@
+IPSEC_ARCH_INTC = @IPSEC_ARCH_INTC@
+IPSEC_ARCH_ROUTE = @IPSEC_ARCH_ROUTE@
+KERN_CC = @KERN_CC@
+KERN_CFLAGS = @KERN_CFLAGS@
+KERN_LDFLAGS = @KERN_LDFLAGS@
+KERN_LIBS = @KERN_LIBS@
+LD = @LD@
+LIBS = @LIBS@
+LN_S = @LN_S@
+M4 = @M4@
+MAKEINFO = @MAKEINFO@
+MATH_CONF_OBJS = @MATH_CONF_OBJS@
+NM_PATH = @NM_PATH@
+OCTEONFLAGS = @OCTEONFLAGS@
+OCTEON_OBJS = @OCTEON_OBJS@
+OCTEON_SRCS = @OCTEON_SRCS@
+OCTEON_VPATH = @OCTEON_VPATH@
+PACKAGE = @PACKAGE@
+PERL = @PERL@
+PURIFY = @PURIFY@
+QS_ADDRSPACE = @QS_ADDRSPACE@
+QS_EXTRALIBS = @QS_EXTRALIBS@
+QS_FASTPATH = @QS_FASTPATH@
+QS_FASTPATH_CRYPTO_ASM_LNSRC = @QS_FASTPATH_CRYPTO_ASM_LNSRC@
+QS_FASTPATH_CRYPTO_ASM_OBJS = @QS_FASTPATH_CRYPTO_ASM_OBJS@
+QS_FASTPATH_SRCS = @QS_FASTPATH_SRCS@
+QUICKSEC_ASM_OBJS = @QUICKSEC_ASM_OBJS@
+QUICKSEC_CONF_OBJS = @QUICKSEC_CONF_OBJS@
+RANLIB = @RANLIB@
+ROUTE_CONFIGURED_SRCS = @ROUTE_CONFIGURED_SRCS@
+RXP_PLATFORM_NAME = @RXP_PLATFORM_NAME@
+SAFENETFLAGS = @SAFENETFLAGS@
+SAFENET_UDM_OBJS = @SAFENET_UDM_OBJS@
+SAFENET_UDM_SRCS = @SAFENET_UDM_SRCS@
+SAFENET_UDM_VPATH = @SAFENET_UDM_VPATH@
+SSHCIPHER_CONF_OBJS = @SSHCIPHER_CONF_OBJS@
+SSHHASH_CONF_OBJS = @SSHHASH_CONF_OBJS@
+SSH_ENGINE_KERNEL_TARGET = @SSH_ENGINE_KERNEL_TARGET@
+SSH_ENGINE_USERMODE_TARGET = @SSH_ENGINE_USERMODE_TARGET@
+SSH_INTERCEPTOR_CPPFLAGS = @SSH_INTERCEPTOR_CPPFLAGS@
+SSH_INTERCEPTOR_ETHER_OBJS = @SSH_INTERCEPTOR_ETHER_OBJS@
+SSH_INTERCEPTOR_KERNEL_TARGETS = @SSH_INTERCEPTOR_KERNEL_TARGETS@
+SSH_INTERCEPTOR_MACHINE_DIR = @SSH_INTERCEPTOR_MACHINE_DIR@
+SSH_INTERCEPTOR_MACHINE_SUBDIR = @SSH_INTERCEPTOR_MACHINE_SUBDIR@
+SSH_INTERCEPTOR_NONETHER_OBJS = @SSH_INTERCEPTOR_NONETHER_OBJS@
+SSH_INTERCEPTOR_OBJS = @SSH_INTERCEPTOR_OBJS@
+SSH_INTERCEPTOR_SYMCHECK = @SSH_INTERCEPTOR_SYMCHECK@
+SSH_INTERCEPTOR_TARGETS = @SSH_INTERCEPTOR_TARGETS@
+SSH_IPM_MACHINE_OBJS = @SSH_IPM_MACHINE_OBJS@
+SSH_KB_LINUX_CONFIG_HEADER = @SSH_KB_LINUX_CONFIG_HEADER@
+SSH_KB_LINUX_KERNEL_INCLUDE = @SSH_KB_LINUX_KERNEL_INCLUDE@
+THREAD_OBJS = @THREAD_OBJS@
+THREAD_SYSTEM_OBJS = @THREAD_SYSTEM_OBJS@
+VERSION = @VERSION@
+
+public_headers =  	sshsad.h 	sshikev2-initiator.h 	sshikev2-exchange.h 	sshikev2-sad.h 	sshikev2-pad.h 	sshikev2-spd.h 	sshikev2-payloads.h 	sshikev2-util.h		sshikev2-fallback.h
+ 
+private_headers =  	ikev2-internal.h 	ikev2-fb.h 	ikev2-fb-st.h
+ 
+
+#
+# ipsec/lib/sshikev2 Makefile.am
+#
+# Copyright:
+#       Copyright (c) 2004, 2005 SFNT Finland Oy.
+# 	All rights reserved
+#
+
+AUTOMAKE_OPTIONS = 1.0 foreign dist-zip no-dependencies
+DEFS = -DSSH_BUILD_IPSEC
+
+# This library does not depend on any other ipsec/lib library, thus
+# autodist_ipsec_lib stuff is not needed
+INCLUDES =  	-I$(top_srcdir) 				-I$(top_builddir)/include 			-I$(top_srcdir)/ipsec 				-I$(top_srcdir)/ipsec/lib/sshisakmp 	
+
+
+WINCONF_OPTIONS = maintainer=kivinen@safenet-inc.com,tmononen@safenet-inc.com
+
+noinst_LIBRARIES = libsshikev2.a
+
+libsshikev2_a_SOURCES =  	ikev2-auth-init-in.c 	ikev2-auth-init-out.c 	ikev2-auth-resp-in.c 	ikev2-auth-resp-out.c 	ikev2-child-init-in.c 	ikev2-child-init-out.c 	ikev2-child-resp-in.c 	ikev2-child-resp-out.c 	ikev2-confutil.c 	ikev2-common-info.c 	ikev2-crypto.c 	ikev2-decode.c 	ikev2-eap-auth.c 	ikev2-mobike.c 	ikev2-encode.c 	ikev2-groups.c 	ikev2-init.c 	ikev2-ike-rekey-init-in.c 	ikev2-ike-rekey-init-out.c 	ikev2-ike-rekey-resp-in.c 	ikev2-ike-rekey-resp-out.c 	ikev2-info-init-in.c 	ikev2-info-init-out.c 	ikev2-info-resp-in.c 	ikev2-info-resp-out.c 	ikev2-init-ike-sa.c 	ikev2-init-info-sa.c 	ikev2-init-ipsec-sa.c 	ikev2-ke-error-out.c 	ikev2-multiple-auth.c 	ikev2-auth2-init-in.c 	ikev2-auth2-init-out.c 	ikev2-auth2-resp-in.c 	ikev2-auth2-resp-out.c 	ikev2-nat-t.c 	ikev2-packet-decode.c 	ikev2-packet-encode.c 	ikev2-pk-auth.c 	ikev2-prfplus.c 	ikev2-state.c		ikev2-window.c 	ikev2-send.c 	ikev2-shared-key-auth.c 	ikev2-recv.c 	ikev2-rekey-ike.c 	ikev2-render-ike-spi.c 	ikev2-render-payload.c 	ikev2-request-cookie-out.c 	ikev2-sa-init-init-in.c 	ikev2-sa-init-init-out.c 	ikev2-sa-init-resp-in.c 	ikev2-sa-init-resp-out.c 	ikev2-sa-init-error.c 	ikev2-sautil.c 	ikev2-state-common.c 	ikev2-string-attribute-type.c 	ikev2-string-auth-method.c 	ikev2-string-cert-encoding.c 	ikev2-string-id.c 	ikev2-string-notify.c 	ikev2-string-protocol.c 	ikev2-string-transform.c 	ikev2-string-payload.c 	ikev2-tables.c 	ikev2-tsutil.c 	ikev2-linearize.c 	ikev2-fb-init.c 	ikev2-fb-util.c 	ikev2-fb-conv.c 	ikev2-fb-ts-conv.c 	ikev2-fb-id-conv.c 	ikev2-fb-sa-conv.c 	ikev2-fb-init-info.c 	ikev2-fb-init-p1.c 	ikev2-fb-init-qm.c 	ikev2-fb-policy-p1.c 	ikev2-fb-policy-p2.c 	ikev2-fb-policy-qm.c 	ikev2-fb-policy-certs.c 	ikev2-fb-cfgmode.c 	ikev2-fb-cfgmode-conv.c 	ikev2-fb-nat-t.c 	ikev2-fb-xauth.c 
+
+
+EXTRA_DIST = 
+
+SUBDIRS = tests
+
+GRANDLIB_OBJECTS = $(libsshikev2_a_OBJECTS) $(libsshikev2_a_LIBADD)
+noinst_HEADERS = $(public_headers) $(private_headers)
+
+SUFFIXES = .dot .ps .pdf
+mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+CONFIG_HEADER = ../../../sshconf.h
+CONFIG_CLEAN_FILES = 
+LIBRARIES =  $(noinst_LIBRARIES)
+
+CPPFLAGS = @CPPFLAGS@
+LDFLAGS = @LDFLAGS@
+libsshikev2_a_LIBADD = 
+libsshikev2_a_OBJECTS =  ikev2-auth-init-in.o ikev2-auth-init-out.o \
+ikev2-auth-resp-in.o ikev2-auth-resp-out.o ikev2-child-init-in.o \
+ikev2-child-init-out.o ikev2-child-resp-in.o ikev2-child-resp-out.o \
+ikev2-confutil.o ikev2-common-info.o ikev2-crypto.o ikev2-decode.o \
+ikev2-eap-auth.o ikev2-mobike.o ikev2-encode.o ikev2-groups.o \
+ikev2-init.o ikev2-ike-rekey-init-in.o ikev2-ike-rekey-init-out.o \
+ikev2-ike-rekey-resp-in.o ikev2-ike-rekey-resp-out.o \
+ikev2-info-init-in.o ikev2-info-init-out.o ikev2-info-resp-in.o \
+ikev2-info-resp-out.o ikev2-init-ike-sa.o ikev2-init-info-sa.o \
+ikev2-init-ipsec-sa.o ikev2-ke-error-out.o ikev2-multiple-auth.o \
+ikev2-auth2-init-in.o ikev2-auth2-init-out.o ikev2-auth2-resp-in.o \
+ikev2-auth2-resp-out.o ikev2-nat-t.o ikev2-packet-decode.o \
+ikev2-packet-encode.o ikev2-pk-auth.o ikev2-prfplus.o ikev2-state.o \
+ikev2-window.o ikev2-send.o ikev2-shared-key-auth.o ikev2-recv.o \
+ikev2-rekey-ike.o ikev2-render-ike-spi.o ikev2-render-payload.o \
+ikev2-request-cookie-out.o ikev2-sa-init-init-in.o \
+ikev2-sa-init-init-out.o ikev2-sa-init-resp-in.o \
+ikev2-sa-init-resp-out.o ikev2-sa-init-error.o ikev2-sautil.o \
+ikev2-state-common.o ikev2-string-attribute-type.o \
+ikev2-string-auth-method.o ikev2-string-cert-encoding.o \
+ikev2-string-id.o ikev2-string-notify.o ikev2-string-protocol.o \
+ikev2-string-transform.o ikev2-string-payload.o ikev2-tables.o \
+ikev2-tsutil.o ikev2-linearize.o ikev2-fb-init.o ikev2-fb-util.o \
+ikev2-fb-conv.o ikev2-fb-ts-conv.o ikev2-fb-id-conv.o \
+ikev2-fb-sa-conv.o ikev2-fb-init-info.o ikev2-fb-init-p1.o \
+ikev2-fb-init-qm.o ikev2-fb-policy-p1.o ikev2-fb-policy-p2.o \
+ikev2-fb-policy-qm.o ikev2-fb-policy-certs.o ikev2-fb-cfgmode.o \
+ikev2-fb-cfgmode-conv.o ikev2-fb-nat-t.o ikev2-fb-xauth.o
+CFLAGS = @CFLAGS@
+COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
+HEADERS =  $(noinst_HEADERS)
+
+DIST_COMMON =  Makefile.am Makefile.in
+
+
+DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+
+TAR = tar
+GZIP_ENV = --best
+SOURCES = $(libsshikev2_a_SOURCES)
+OBJECTS = $(libsshikev2_a_OBJECTS)
+
+all: all-redirect
+.SUFFIXES:
+.SUFFIXES: .S .c .dot .o .pdf .ps .s
+$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) $(top_srcdir)/Makefile.grandlib_provider $(top_srcdir)/Makefile.libextra
+	cd $(top_srcdir) && $(AUTOMAKE) --foreign ipsec/lib/sshikev2/Makefile
+
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) \
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+
+mostlyclean-noinstLIBRARIES:
+
+clean-noinstLIBRARIES:
+	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+
+distclean-noinstLIBRARIES:
+
+maintainer-clean-noinstLIBRARIES:
+
+.c.o:
+	$(COMPILE) -c $<
+
+.s.o:
+	$(COMPILE) -c $<
+
+.S.o:
+	$(COMPILE) -c $<
+
+mostlyclean-compile:
+	-rm -f *.o core *.core
+
+clean-compile:
+
+distclean-compile:
+	-rm -f *.tab.c
+
+maintainer-clean-compile:
+
+libsshikev2.a: $(libsshikev2_a_OBJECTS) $(libsshikev2_a_DEPENDENCIES)
+	-rm -f libsshikev2.a
+	$(AR) cru libsshikev2.a $(libsshikev2_a_OBJECTS) $(libsshikev2_a_LIBADD)
+	$(RANLIB) libsshikev2.a
+
+# This directory's subdirectories are mostly independent; you can cd
+# into them and run `make' without going through this Makefile.
+# To change the values of `make' variables: instead of editing Makefiles,
+# (1) if the variable is set in `config.status', edit `config.status'
+#     (which will cause the Makefiles to be regenerated when you run `make');
+# (2) otherwise, pass the desired values on the `make' command line.
+
+@SET_MAKE@
+
+all-recursive install-data-recursive install-exec-recursive \
+installdirs-recursive install-recursive uninstall-recursive  \
+check-recursive installcheck-recursive info-recursive dvi-recursive:
+	@set fnord $(MAKEFLAGS); amf=$$2; \
+	dot_seen=no; \
+	target=`echo $@ | sed s/-recursive//`; \
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  echo "Making $$target in $$subdir"; \
+	  if test "$$subdir" = "."; then \
+	    dot_seen=yes; \
+	    local_target="$$target-am"; \
+	  else \
+	    local_target="$$target"; \
+	  fi; \
+	  (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) $$local_target) \
+	   || case "$$amf" in *=*) exit 1;; *k*) fail=yes;; *) exit 1;; esac; \
+	done; \
+	if test "$$dot_seen" = "no"; then \
+	  $(MAKE) $(AM_MAKEFLAGS) "$$target-am" || exit 1; \
+	fi; test -z "$$fail"
+
+mostlyclean-recursive clean-recursive distclean-recursive \
+maintainer-clean-recursive:
+	@set fnord $(MAKEFLAGS); amf=$$2; \
+	dot_seen=no; \
+	rev=''; list='$(SUBDIRS)'; for subdir in $$list; do \
+	  rev="$$subdir $$rev"; \
+	  test "$$subdir" != "." || dot_seen=yes; \
+	done; \
+	test "$$dot_seen" = "no" && rev=". $$rev"; \
+	target=`echo $@ | sed s/-recursive//`; \
+	for subdir in $$rev; do \
+	  echo "Making $$target in $$subdir"; \
+	  if test "$$subdir" = "."; then \
+	    local_target="$$target-am"; \
+	  else \
+	    local_target="$$target"; \
+	  fi; \
+	  (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) $$local_target) \
+	   || case "$$amf" in *=*) exit 1;; *k*) fail=yes;; *) exit 1;; esac; \
+	done && test -z "$$fail"
+tags-recursive:
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+	  test "$$subdir" = . || (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) tags); \
+	done
+
+tags: TAGS
+
+ID: $(HEADERS) $(SOURCES) $(LISP)
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	here=`pwd` && cd $(srcdir) \
+	  && mkid -f$$here/ID $$unique $(LISP)
+
+TAGS: tags-recursive $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) $(LISP)
+	tags=; \
+	here=`pwd`; \
+	list='$(SUBDIRS)'; for subdir in $$list; do \
+   if test "$$subdir" = .; then :; else \
+	    test -f $$subdir/TAGS && tags="$$tags -i $$here/$$subdir/TAGS"; \
+   fi; \
+	done; \
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
+	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags  $$unique $(LISP) -o $$here/TAGS)
+
+mostlyclean-tags:
+
+clean-tags:
+
+distclean-tags:
+	-rm -f TAGS ID
+
+maintainer-clean-tags:
+
+distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
+
+subdir = ipsec/lib/sshikev2
+
+distdir: $(DISTFILES)
+	@for file in $(DISTFILES); do \
+	  d=$(srcdir); \
+	  if test -d $$d/$$file; then \
+	    cp -pr $$d/$$file $(distdir)/$$file; \
+	  else \
+	    test -f $(distdir)/$$file \
+	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
+	    || cp -p $$d/$$file $(distdir)/$$file || :; \
+	  fi; \
+	done
+	for subdir in $(SUBDIRS); do \
+	  if test "$$subdir" = .; then :; else \
+	    test -d $(distdir)/$$subdir \
+	    || mkdir $(distdir)/$$subdir \
+	    || exit 1; \
+	    chmod 777 $(distdir)/$$subdir; \
+	    (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) top_distdir=../$(top_distdir) distdir=../$(distdir)/$$subdir distdir) \
+	      || exit 1; \
+	  fi; \
+	done
+info-am:
+info: info-recursive
+dvi-am:
+dvi: dvi-recursive
+check-am: all-am
+check: check-recursive
+installcheck-am:
+installcheck: installcheck-recursive
+install-exec-am:
+install-exec: install-exec-recursive
+
+install-data-am:
+install-data: install-data-recursive
+
+install-am: all-am
+	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+install: install-recursive
+uninstall-am:
+uninstall: uninstall-recursive
+all-am: Makefile $(LIBRARIES) $(HEADERS) all-local
+all-redirect: all-recursive
+install-strip:
+	$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install
+installdirs: installdirs-recursive
+installdirs-am:
+
+
+mostlyclean-generic:
+
+distclean-generic:
+	-rm -f Makefile $(CONFIG_CLEAN_FILES)
+	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
+
+maintainer-clean-generic:
+mostlyclean-am:  mostlyclean-noinstLIBRARIES mostlyclean-compile \
+		mostlyclean-tags mostlyclean-generic
+
+mostlyclean: mostlyclean-recursive
+
+clean-am:  clean-noinstLIBRARIES clean-compile clean-tags clean-generic \
+		mostlyclean-am
+
+clean: clean-recursive
+
+distclean-am:  distclean-noinstLIBRARIES distclean-compile \
+		distclean-tags distclean-generic clean-am
+
+distclean: distclean-recursive
+
+maintainer-clean-am:  maintainer-clean-noinstLIBRARIES \
+		maintainer-clean-compile maintainer-clean-tags \
+		maintainer-clean-generic distclean-am
+	@echo "This command is intended for maintainers to use;"
+	@echo "it deletes files that may require special tools to rebuild."
+
+maintainer-clean: maintainer-clean-recursive
+
+.PHONY: mostlyclean-noinstLIBRARIES distclean-noinstLIBRARIES \
+clean-noinstLIBRARIES maintainer-clean-noinstLIBRARIES \
+mostlyclean-compile distclean-compile clean-compile \
+maintainer-clean-compile install-data-recursive \
+uninstall-data-recursive install-exec-recursive \
+uninstall-exec-recursive installdirs-recursive uninstalldirs-recursive \
+all-recursive check-recursive installcheck-recursive info-recursive \
+dvi-recursive mostlyclean-recursive distclean-recursive clean-recursive \
+maintainer-clean-recursive tags tags-recursive mostlyclean-tags \
+distclean-tags clean-tags maintainer-clean-tags distdir info-am info \
+dvi-am dvi check check-am installcheck-am installcheck install-exec-am \
+install-exec install-data-am install-data install-am install \
+uninstall-am uninstall all-local all-redirect all-am all installdirs-am \
+installdirs mostlyclean-generic distclean-generic clean-generic \
+maintainer-clean-generic clean mostlyclean distclean maintainer-clean
+
+
+grandlib : grandlib_objs
+
+grandlib_objs : Makefile
+	rm -f grandlib_objs; \
+	touch grandlib_objs; \
+	if test "x$(GRANDLIB_OBJECTS)" != "x" ; then \
+		for o in _ $(GRANDLIB_OBJECTS) ; \
+		do \
+		  test "$$o" != "_" && echo "$$o" >> grandlib_objs; \
+		done ;\
+	fi
+
+clean-generic: clean-grandlib
+
+clean-grandlib:
+	-rm -f grandlib_objs
+	-@if test "x$(EXTRA_PROGRAMS)" != "x"; then \
+	   echo rm -f $(EXTRA_PROGRAMS); \
+	   rm -f $(EXTRA_PROGRAMS); \
+	fi
+	-@if test "x$(CLEANFILES)" != "x"; then \
+	   echo rm -f $(CLEANFILES); \
+	   rm -f $(CLEANFILES); \
+	fi
+
+make-makefile-includes : Makefile.includes
+
+Makefile.includes : Makefile
+	echo "# Generated file, do not edit" > Makefile.includes; \
+	targets=""; \
+        if test "X`pwd | grep ipsec/lib; true`" = X; then \
+	   targetdir="$(top_builddir)/include"; \
+        else \
+	   targetdir="$(top_builddir)/ipsec/include"; \
+        fi; \
+	(for f in $(public_headers); \
+	do \
+	  targets="$$targets ___$$targetdir/$$f"; \
+	done; \
+	echo "ALL_INCLUDES = $$targets") | sed 's/___/\\#	/g' | tr '#' '\012' >> Makefile.includes; \
+	echo 'all : $$(ALL_INCLUDES)' >> Makefile.includes; \
+	for f in $(public_headers); \
+	do \
+	  source=$(srcdir)/$$f; target=$$targetdir/$$f; \
+	  (echo "$$target : $$source"; \
+	   echo "	@ln $$source $$target </dev/null 2>/dev/null || (rm -f $$target; cp -p $$source $$target ; chmod a-w $$target;);";\
+	   echo;) >> Makefile.includes; \
+	done; \
+	echo "clean : " >> Makefile.includes; \
+	echo '	rm -f $$(ALL_INCLUDES)' >> Makefile.includes
+
+real-includes: make-makefile-includes
+	@$(MAKE) -f Makefile.includes
+
+local-includes :
+	@if test "$(public_headers)"; then $(MAKE) real-includes; fi
+
+all-local: local-includes
+
+.PHONY : includes local-includes real-includes make-makefile-includes clean-makefile-includes
+
+clean-generic : clean-makefile-includes
+
+clean-makefile-includes:
+	-rm -f Makefile.includes
+
+includes: local-includes
+	@for d in . $(SUBDIRS); \
+        do \
+	  if test "$$d" != "."; \
+          then \
+	    (cd $$d && $(MAKE) includes); \
+          fi; \
+        done
+
+echo-TESTS:
+	@echo $(TESTS)
+
+echo-TESTS_LIGHT:
+	@echo $(TESTS_LIGHT)
+
+.dot.ps:
+	dot -Tps $< | $(top_srcdir)/scripts/change-to-a3.pl -c > $*.ps
+
+.dot.pdf:
+	sed 's/page=\".*\";/page="20,45";/g;s/orientation=land;//g;' $< | \
+	dot -Tps | \
+	$(top_srcdir)/scripts/change-to-a3.pl -s "1440 3240" | \
+	ps2pdf - $*.pdf
+
+ike-state-init.dot: $(libsshikev2_a_SOURCES) $(srcdir)/fsmdoc-settings.pl
+	-rm -f ike-state-init.dot
+	$(top_srcdir)/scripts/fsmdoc.pl \
+		--settings $(srcdir)/fsmdoc-settings.pl \
+		$(srcdir)/ikev2-init-ike-sa.c \
+		$(srcdir)/ikev2-ke-error-out.c \
+		$(srcdir)/ikev2-request-cookie-out.c \
+		$(srcdir)/ikev2-sa-init-init-in.c \
+		$(srcdir)/ikev2-sa-init-init-out.c \
+		$(srcdir)/ikev2-sa-init-resp-in.c \
+		$(srcdir)/ikev2-sa-init-resp-out.c \
+		$(srcdir)/ikev2-sa-init-error.c \
+		$(srcdir)/ikev2-state.c > ike-state-init.dot
+
+ike-state-auth.dot: $(libsshikev2_a_SOURCES) $(srcdir)/fsmdoc-settings.pl
+	-rm -f ike-state-auth.dot
+	$(top_srcdir)/scripts/fsmdoc.pl \
+		--settings $(srcdir)/fsmdoc-settings.pl \
+		$(srcdir)/ikev2-auth-init-in.c \
+		$(srcdir)/ikev2-auth-init-out.c \
+		$(srcdir)/ikev2-auth-resp-in.c \
+		$(srcdir)/ikev2-auth-resp-out.c \
+		$(srcdir)/ikev2-auth2-init-in.c \
+		$(srcdir)/ikev2-auth2-init-out.c \
+		$(srcdir)/ikev2-auth2-resp-in.c \
+		$(srcdir)/ikev2-auth2-resp-out.c \
+		$(srcdir)/ikev2-state.c > ike-state-auth.dot
+
+ike-state-child.dot: $(libsshikev2_a_SOURCES) $(srcdir)/fsmdoc-settings.pl
+	-rm -f ike-state-child.dot
+	$(top_srcdir)/scripts/fsmdoc.pl \
+		--settings $(srcdir)/fsmdoc-settings.pl \
+		$(srcdir)/ikev2-init-ike-sa.c \
+		$(srcdir)/ikev2-child-init-in.c \
+		$(srcdir)/ikev2-child-init-out.c \
+		$(srcdir)/ikev2-child-resp-in.c \
+		$(srcdir)/ikev2-child-resp-out.c \
+		$(srcdir)/ikev2-state.c > ike-state-child.dot
+
+ike-state-rekey.dot: $(libsshikev2_a_SOURCES) $(srcdir)/fsmdoc-settings.pl
+	-rm -f ike-state-rekey.dot
+	$(top_srcdir)/scripts/fsmdoc.pl \
+		--settings $(srcdir)/fsmdoc-settings.pl \
+		$(srcdir)/ikev2-init-ike-sa.c \
+		$(srcdir)/ikev2-ike-rekey-init-in.c \
+		$(srcdir)/ikev2-ike-rekey-init-out.c \
+		$(srcdir)/ikev2-ike-rekey-resp-in.c \
+		$(srcdir)/ikev2-ike-rekey-resp-out.c \
+		$(srcdir)/ikev2-state.c > ike-state-rekey.dot
+
+ike-state-info.dot: $(libsshikev2_a_SOURCES) $(srcdir)/fsmdoc-settings.pl
+	-rm -f ike-state-info.dot
+	$(top_srcdir)/scripts/fsmdoc.pl \
+		--settings $(srcdir)/fsmdoc-settings.pl \
+		$(srcdir)/ikev2-init-ike-sa.c \
+		$(srcdir)/ikev2-info-init-in.c \
+		$(srcdir)/ikev2-info-init-out.c \
+		$(srcdir)/ikev2-info-resp-in.c \
+		$(srcdir)/ikev2-info-resp-out.c \
+		$(srcdir)/ikev2-state.c > ike-state-info.dot
+
+ike-state-all.dot: $(libsshikev2_a_SOURCES) \
+	$(srcdir)/fsmdoc-settings.pl $(srcdir)/fsmdoc-settings-all.pl
+	-rm -f ike-state-all.dot
+	$(top_srcdir)/scripts/fsmdoc.pl \
+		--settings $(srcdir)/fsmdoc-settings.pl \
+		--settings $(srcdir)/fsmdoc-settings-all.pl \
+		$(srcdir)/ikev2-auth-init-in.c \
+		$(srcdir)/ikev2-auth-init-out.c \
+		$(srcdir)/ikev2-auth-resp-in.c \
+		$(srcdir)/ikev2-auth-resp-out.c \
+		$(srcdir)/ikev2-auth2-init-in.c \
+		$(srcdir)/ikev2-auth2-init-out.c \
+		$(srcdir)/ikev2-auth2-resp-in.c \
+		$(srcdir)/ikev2-auth2-resp-out.c \
+		$(srcdir)/ikev2-child-init-in.c \
+		$(srcdir)/ikev2-child-init-out.c \
+		$(srcdir)/ikev2-child-resp-in.c \
+		$(srcdir)/ikev2-child-resp-out.c \
+		$(srcdir)/ikev2-common-info.c \
+		$(srcdir)/ikev2-confutil.c \
+		$(srcdir)/ikev2-crypto.c \
+		$(srcdir)/ikev2-decode.c \
+		$(srcdir)/ikev2-eap-auth.c \
+		$(srcdir)/ikev2-encode.c \
+		$(srcdir)/ikev2-groups.c \
+		$(srcdir)/ikev2-ike-rekey-init-in.c \
+		$(srcdir)/ikev2-ike-rekey-init-out.c \
+		$(srcdir)/ikev2-ike-rekey-resp-in.c \
+		$(srcdir)/ikev2-ike-rekey-resp-out.c \
+		$(srcdir)/ikev2-info-init-in.c \
+		$(srcdir)/ikev2-info-init-out.c \
+		$(srcdir)/ikev2-info-resp-in.c \
+		$(srcdir)/ikev2-info-resp-out.c \
+		$(srcdir)/ikev2-init-ike-sa.c \
+		$(srcdir)/ikev2-init-info-sa.c \
+		$(srcdir)/ikev2-init-ipsec-sa.c \
+		$(srcdir)/ikev2-init.c \
+		$(srcdir)/ikev2-ke-error-out.c \
+		$(srcdir)/ikev2-linearize.c \
+		$(srcdir)/ikev2-mobike.c \
+		$(srcdir)/ikev2-multiple-auth.c \
+		$(srcdir)/ikev2-nat-t.c \
+		$(srcdir)/ikev2-packet-decode.c \
+		$(srcdir)/ikev2-packet-encode.c \
+		$(srcdir)/ikev2-pk-auth.c \
+		$(srcdir)/ikev2-prfplus.c \
+		$(srcdir)/ikev2-recv.c \
+		$(srcdir)/ikev2-rekey-ike.c \
+		$(srcdir)/ikev2-render-ike-spi.c \
+		$(srcdir)/ikev2-render-payload.c \
+		$(srcdir)/ikev2-request-cookie-out.c \
+		$(srcdir)/ikev2-sa-init-init-in.c \
+		$(srcdir)/ikev2-sa-init-init-out.c \
+		$(srcdir)/ikev2-sa-init-resp-in.c \
+		$(srcdir)/ikev2-sa-init-resp-out.c \
+		$(srcdir)/ikev2-sa-init-error.c \
+		$(srcdir)/ikev2-sautil.c \
+		$(srcdir)/ikev2-send.c \
+		$(srcdir)/ikev2-shared-key-auth.c \
+		$(srcdir)/ikev2-state-common.c \
+		$(srcdir)/ikev2-state.c \
+		$(srcdir)/ikev2-string-attribute-type.c \
+		$(srcdir)/ikev2-string-auth-method.c \
+		$(srcdir)/ikev2-string-cert-encoding.c \
+		$(srcdir)/ikev2-string-id.c \
+		$(srcdir)/ikev2-string-notify.c \
+		$(srcdir)/ikev2-string-payload.c \
+		$(srcdir)/ikev2-string-protocol.c \
+		$(srcdir)/ikev2-string-transform.c \
+		$(srcdir)/ikev2-tables.c \
+		$(srcdir)/ikev2-tsutil.c \
+		$(srcdir)/ikev2-window.c \
+		  > ike-state-all.dot
+
+ike-state-init.ps: ike-state-init.dot
+ike-state-init.pdf: ike-state-init.dot
+ike-state-auth.ps: ike-state-auth.dot
+ike-state-auth.pdf: ike-state-auth.dot
+ike-state-child.ps: ike-state-child.dot
+ike-state-child.pdf: ike-state-child.dot
+ike-state-rekey.ps: ike-state-rekey.dot
+ike-state-rekey.pdf: ike-state-rekey.dot
+ike-state-info.ps: ike-state-info.dot
+ike-state-info.pdf: ike-state-info.dot
+ike-state-all.ps: ike-state-all.dot
+ike-state-all.pdf: ike-state-all.dot
+
+all-ps: ike-state-init.ps ike-state-auth.ps \
+	ike-state-child.ps ike-state-rekey.ps ike-state-info.ps
+
+all-pdf: ike-state-init.pdf ike-state-auth.pdf \
+	ike-state-child.pdf ike-state-rekey.pdf ike-state-info.pdf
+
+# Tell versions [3.59,3.63) of GNU make to not export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:

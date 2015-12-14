@@ -1,0 +1,25 @@
+#
+# Mobilinux 4.1 configuration for TI OMAP 2430
+#
+
+export PATH=$PATH:/opt/montavista/mobilinux/devkit/arm/v6_vfp_le/bin
+
+export CC=arm_v6_vfp_le-gcc
+export AR=arm_v6_vfp_le-ar
+export LD=arm_v6_vfp_le-ld
+export RANLIB=arm_v6_vfp_le-ranlib
+export AS=arm_v6_vfp_le-as
+
+export KERN_CFLAGS="-nostdinc -iwithprefix include -D__KERNEL__ -Iinclude  -Wall -Wstrict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -Os -fno-omit-frame-pointer -marm -fno-omit-frame-pointer -mapcs -mno-sched-prolog -mlittle-endian -mabi=aapcs -mno-thumb-interwork -D__LINUX_ARM_ARCH__=6 -march=armv6 -mtune=arm1136j-s  -msoft-float -Uarm -Wdeclaration-after-statement -fno-schedule-insns"
+
+./configure                         \
+   --build=i686-pc-linux-gnu        \
+   --host=i686-linux                \
+   --target=arm-linux               \
+   --enable-profile=quicksec-client \
+   --disable-asm                    \
+   --disable-debug                  \
+   --enable-insn-cache=4            \
+   --enable-minimal-stack           \
+   --with-kernel-headers=/usr/src/mobilinux/linux-2.6.10_mobilinux410/include/ \
+   --with-kernel-version=2.6.10

@@ -1,0 +1,166 @@
+#
+#   Copyright (c) 2000, 2001	    Dmitry K. Butskoj
+#				    <buc@citadel.stu.neva.ru>
+#   License:  GPL/LGPL		
+#
+#   See COPYING/COPYING.LIB for the status of this software.
+#
+
+#
+#   Default a target`s Makefile. Useful for any things...
+#   For some changes, copy it to a dir where needed and edit that copy.
+#
+
+
+ifndef srcdir
+rul := Make.rules
+path := $(word 1, $(wildcard ../$(rul) ../../$(rul)))
+ifeq ($(path),../$(rul))
+srcdir = $(dir $(CURDIR))
+endif
+ifeq ($(path),../../$(rul))
+srcdir = $(dir $(dir $(CURDIR)))
+TARGET = .MODULE	# an ugly hack
+endif
+ifeq ($(srcdir),)
+$(error Cannot find srcdir (where $(rul) exist))
+endif
+endif
+
+ifndef TARGET
+TARGET = $(notdir $(CURDIR))
+endif
+
+include $(srcdir)/Make.rules
+
+
+#
+#	LIBDIRS	    DEFAULTS
+#
+ifeq ($(filter $(TARGET),$(LIBDIRS)),$(TARGET))
+
+ifeq ($(shared),shared)
+
+all: $(TARGET).so
+
+$(TARGET).so: $(OBJS)
+	$(SHARCC) -shared -o $@ -Wl,-soname -Wl,$@ -Wl,-rpath -Wl,$(libdir) $(OBJS) $(SHARLIBS)
+
+else
+
+all: $(TARGET).a
+
+$(TARGET).a: $(OBJS)
+	rm -f $@
+	$(AR) -rc $@ $(OBJS)
+	$(RANLIB) $@
+
+endif
+
+cross_stamp_file = $(wildcard .cross:*)
+ifeq ($(cross_stamp_file),)
+cross_stamp = .cross:
+else
+cross_stamp = $(cross_stamp_file)
+endif
+new_stamp = .cross:$(subst $(empty) ,:,$(CROSS))
+ifneq ($(cross_stamp),$(new_stamp))
+
+$(OBJS): force
+
+force:
+	rm -f $(cross_stamp) > $(new_stamp)
+	@rm -f *.o *.a *.lo *.so
+
+endif
+
+endif
+
+
+#
+#	MODDIRS	    DEFAULTS
+#
+ifeq ($(filter $(TARGET),$(MODDIRS)),$(TARGET))
+
+modules = $(filter-out tmp%, $(patsubst %/,%,$(wildcard */)))
+
+.PHONY: $(modules)
+
+all: $(modules)
+
+$(modules): mkfile = $(if $(wildcard $@/Makefile),,-f $(srcdir)/default.rules)
+
+$(modules): force
+	@$(MAKE) $(mkfile) srcdir=$(srcdir) -C $@ all TARGET=.MODULE MODULE=$@
+
+force:
+
+depend syntax:
+	@for i in $(modules) ;\
+	do		\
+	    mkfile= ;\
+	    [ -r $$i/Makefile ] || mkfile="-f $(srcdir)/default.rules" ;\
+	    $(MAKE) $$mkfile srcdir=$(srcdir) -C $$i $@ ;\
+	done
+
+endif
+
+
+#
+#	MODDIRS` subdirectories (i.e., modules) defaults
+#
+ifeq ($(TARGET),.MODULE)
+
+ifndef MODULE
+MODULE = $(notdir $(CURDIR))
+endif
+
+ifeq ($(shared),shared)
+
+all: ../$(MODULE).so
+
+../$(MODULE).so: $(OBJS) $(LIBDEPS)
+	$(SHARCC) -shared -o $@ -Wl,-rpath -Wl,$(libdir) $(OBJS) $(LIBS)
+
+else
+
+all: ../$(MODULE).o
+
+../$(MODULE).o: $(OBJS)
+	$(LD) -r -o $@ $(OBJS)
+
+endif
+
+endif
+
+
+#
+#	EXEDIRS	    DEFAULTS	(for usual executables)
+#
+ifeq ($(filter $(TARGET),$(EXEDIRS)),$(TARGET))
+
+ifeq ($(filter $(TARGET),$(MODUSERS)),$(TARGET))
+MOD_OBJS = $(wildcard $(foreach dir,$(MODDIRS),$(srcdir)/$(dir)/*.o))
+ifeq ($(shared),shared)
+override LDFLAGS := -rdynamic $(LDFLAGS)
+endif
+else
+MOD_OBJS =
+endif
+
+ifeq ($(shared),shared)
+ifneq ($(LIBDIRS),)
+override LDFLAGS += -Wl,-rpath -Wl,$(libdir) 
+endif
+link := $(SHARCC)
+else
+link := $(CC)
+endif
+
+all: $(TARGET)
+
+$(TARGET): $(OBJS) $(MOD_OBJS) $(LIBDEPS)
+	$(link) $(LDFLAGS) -o $@ $(OBJS) $(MOD_OBJS) $(LIBS)
+
+endif
+

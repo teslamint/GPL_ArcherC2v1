@@ -1,0 +1,42 @@
+# -*- makefile -*-
+#
+#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+include $(top_srcdir)/ipsec/hwaccel/safenet1x41/Makefile.fragment
+
+
+include $(top_srcdir)/ipsec/hwaccel/safenetwludm/Makefile.fragment
+
+
+include $(top_srcdir)/ipsec/hwaccel/ocf/Makefile.fragment
+
+
+include $(top_srcdir)/ipsec/hwaccel/safenet_pe/Makefile.fragment
+
+include $(top_srcdir)/ipsec/hwaccel/none/Makefile.fragment

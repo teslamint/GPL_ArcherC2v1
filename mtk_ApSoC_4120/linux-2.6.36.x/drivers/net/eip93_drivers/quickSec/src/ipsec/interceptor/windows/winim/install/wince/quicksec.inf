@@ -1,0 +1,125 @@
+; ----------------------------------------------------------------------------
+; Sample CabWiz .inf file for SafeNet QuickSec installation.
+;
+; Copyright (c) 2006 SFNT Finland Oy.
+; ----------------------------------------------------------------------------
+
+[Version]
+Signature   = "$Windows NT$"
+Provider    = "SafeNet"
+CESignature = "$Windows CE$"
+
+[CEStrings]
+AppName     = "QuickSec"
+InstallDir  = "%CE1%\%AppName%"
+
+[CEDevice.CE5.ARMV4I.Debug]
+ProcessorType = 2577
+
+[CEDevice.CE5.ARMV4I.Release]
+ProcessorType = 2577
+
+[CEDevice.CE5PC.x86.Debug]
+ProcessorType = 686
+
+[CEDevice.CE5PC.x86.Release]
+ProcessorType = 686
+
+[CEDevice.WM6PRO.ARMV4I.Debug]
+ProcessorType = 2577
+BuildMax=0xE0000000
+
+[CEDevice.WM6PRO.ARMV4I.Release]
+ProcessorType = 2577
+BuildMax=0xE0000000
+
+[CEDevice.WM6STD.ARMV4I.Debug]
+ProcessorType = 2577
+BuildMax=0xE0000000
+
+[CEDevice.WM6STD.ARMV4I.Release]
+ProcessorType = 2577
+BuildMax=0xE0000000
+
+[SourceDisksNames.CE5.ARMV4I.Debug]
+1 = , "CE5.ARMV4I.Debug",,"STANDARDSDK_500 (ARMV4I)\Debug"
+
+[SourceDisksNames.CE5.ARMV4I.Release]
+1 = , "CE5.ARMV4I.Release",,"STANDARDSDK_500 (ARMV4I)\Release"
+
+[SourceDisksNames.CE5PC.x86.Debug]
+1 = , "x86.x86.Debug",,"STANDARDSDK_500 (x86)\Debug"
+
+[SourceDisksNames.CE5PC.x86.Release]
+1 = , "x86.x86.Release",,"STANDARDSDK_500 (x86)\Release"
+
+[SourceDisksNames.WM6PRO.ARMV4I.Debug]
+1 = , "WM6PRO.ARMV4I.Debug",,"Windows Mobile 6 Professional SDK (ARMV4I)\Debug"
+
+[SourceDisksNames.WM6PRO.ARMV4I.Release]
+1 = , "WM6PRO.ARMV4I.Release",,"Windows Mobile 6 Professional SDK (ARMV4I)\Release"
+
+[SourceDisksNames.WM6STD.ARMV4I.Debug]
+1 = , "WM6STD.ARMV4I.Debug",,"Windows Mobile 6 Standard SDK (ARMV4I)\Debug"
+
+[SourceDisksNames.WM6STD.ARMV4I.Release]
+1 = , "WM6STD.ARMV4I.Release",,"Windows Mobile 6 Standard SDK (ARMV4I)\Release"
+
+[SourceDisksFiles]
+quicksecpm.exe = 1
+quicksec.dll = 1
+qsvnic5.dll = 1
+quicksec.xml = 1
+QSConsole.exe = 1
+qssetup.dll = 1
+
+[DefaultInstall]
+CEShortcuts = Shortcuts
+CopyFiles   = CopyToWindows, CopyToProgramFiles
+AddReg      = RegData
+CESetupDLL  = qssetup.dll
+
+[DestinationDirs]
+CopyToWindows = 0, %CE2%
+CopyToProgramFiles = 0, %CE1%\QuickSec
+Shortcuts    = 0, %CE2%\Start Menu
+
+[CopyToWindows]
+"quicksec.dll", quicksec.dll
+"qsvnic5.dll", qsvnic5.dll
+
+[CopyToProgramFiles]
+"quicksecpm.exe", quicksecpm.exe
+"quicksec.xml", quicksec.xml
+"QSConsole.exe", QSConsole.exe
+"qssetup.dll", qssetup.dll
+
+[Shortcuts]
+"QuickSec", 0, "QSConsole.exe", "%CE17%"
+
+[RegData]
+; HKLM,Comm\QuickSec\Parms,TraceEnable,0x00010001,1
+; HKLM,Comm\QuickSec\Parms,TraceDirectory,0x00010000,"\Temp"
+; HKLM,Comm\QuickSec\Parms,TraceString,0x00010000,"*Interceptor*=99"
+; HKLM,Comm\QuickSec\Parms,TraceMaxSize,0x00010001,100
+HKLM,Comm\TcpIp\Linkage,Bind,0x00010000,QSVNIC1
+HKLM,Comm\QuickSec,Group,0x00000000,NDIS
+HKLM,Comm\QuickSec,ImagePath,0x00000000,quicksec.dll
+HKLM,Comm\QuickSec,NoDeviceCreate,0x00010001,1
+HKLM,Comm\QSVNIC,Group,0x00000000,NDIS
+HKLM,Comm\QSVNIC,ImagePath,0x00000000,qsvnic5.dll
+HKLM,Comm\QSVNIC,DisplayName,0x00000000,SafeNet QuickSec Virtual Adapter
+HKLM,Comm\QSVNIC\Linkage,Route,0x00010000,QSVNIC1
+HKLM,Comm\QSVNIC1\Parms\TcpIp,UseZeroBroadcast,0x00010001,0
+HKLM,Comm\QSVNIC1\Parms\TcpIp,SubnetMask,0x00010000,0.0.0.0
+HKLM,Comm\QSVNIC1\Parms\TcpIp,DefaultGateway,0x00010000,0.0.0.0
+HKLM,Comm\QSVNIC1\Parms\TcpIp,IpAddress,0x00010000,0.0.0.0
+HKLM,Comm\QSVNIC1\Parms\TcpIp,EnableDHCP,0x00010001,0
+HKLM,Comm\QSVNIC1\Parms,BusType,0x00010001,5
+HKLM,Comm\QSVNIC1\Parms,BusNumber,0x00010001,0
+HKLM,Comm\QSVNIC1,ImagePath,0x00000000,qsvnic5.dll
+HKLM,Comm\QSVNIC1,DisplayName,0x00000000,SafeNet QuickSec Virtual Adapter
+HKLM,Comm\QSVNIC1,Group,0x00000000,NDIS
+; Prevent intercepting RNDISFN1 that is usually used for ActiveSync
+HKLM,Comm\RNDISFN1\Parms,UpperBind,0x00010000,NOT,QSECLAN
+HKLM,Software\SafeNet\QuickSec,Arguments,0x00000000,"-f ""\Program Files\QuickSec\quicksec.xml"" -O ""\Program Files\QuickSec\quicksec.txt"" -D 3 -K 3"

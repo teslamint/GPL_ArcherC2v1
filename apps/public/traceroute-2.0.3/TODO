@@ -1,0 +1,49 @@
+* It seems that `-l' and `-g' will not work correctly together (IPv6).
+
+  Wait for "flow label" API to be appeared in glibc-kernheaders and
+  think about it immediately after that... :)
+
+
+* Tune default parameters properly.
+
+  Maybe increase value for the `-N' (sim_probes),
+  maybe decrease `-w' secs to 4.0 instead of 5.0 (as Network is faster now).
+
+
+* Verbose output. Show method in use, what ports we are connecting to,
+  more info about icmp response etc.
+
+
+* Implement a "UDP with constant dest_port" method.
+  Would be useful to trace for firewalled DNS or IPsec hosts etc.
+
+  It requires the packet sent should be correct for the particular
+  dest application (i.e., correct DNS request), and the application
+  normally should answer something on it. (TCP has no such an issue,
+  as there are just syn to, and ack or reset from). It means that
+  we should fill the packet's data depending on the dest port specified.
+  In general, a cmdline option needed to specify such data explicitly.
+
+  Don't forget that (unlike TCP) UDP sockets auto-binds to the latest
+  freed port. To avoid this (i.e., to cause all src_port to differ),
+  use "open tmp_sk, open work_sk, close tmp_sk" ...
+
+  Can re-assign `-U' option just for this method (and without any of [ITU]
+  just the default udp method will used).
+
+
+* Maybe implement a "Generic IP" method, i.e. allow to use any IP proto
+  (not tcp/udp/icmp only). 
+
+  Requires the same data correctness as for "UDP to dest port" method.
+
+
+* Maybe create some "adaptive" method -- for example, if udp probe expires,
+  then try icmp for that hop etc...
+
+
+* Maybe catch situations when "port unreach" is sent from the same host
+  as last ttl-exceed. It means that the last host is a firewall which filters
+  some udp/tcp ports. It seems that it is better to show some "!x" here,
+  but the original traceroute does not behave so.
+

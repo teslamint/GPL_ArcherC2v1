@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE quicksec PUBLIC "quicksec:dtd" "quicksec.dtd">
+<!--
+This ALG performs Static NAT compensations on DNS requests and
+responses and sanity checks on the packets. If static NAT's are not
+defined, only sanity check is performed.
+
+The user needs to define each static NAT on the configuration. Static
+NAT's are defined by speficying private and public addresses.
+-->
+<quicksec>
+  <policy>
+    <!-- Send UDP DNS traffic to alg-dns@ssh.com -->
+    <!-- Without NAT this ALG performs sanity checks on DNS packets. -->
+
+    <service name="dns-udp">
+      <appgw id="alg-dns@ssh.com">
+        <alg-dns>
+          <mapping>
+            <internal-ip>192.168.2.120</internal-ip>
+            <external-ip>10.1.49.129</external-ip>
+          </mapping>
+          <mapping>
+            <internal-ip>192.168.2.120</internal-ip>
+            <external-ip>10.1.49.129</external-ip>
+          </mapping>
+        </alg-dns>
+      </appgw>
+    </service>
+
+    <!-- Apply rule for the alg-dns, log connections -->
+    <rule service="dns-udp" log="connections">
+      <src>ipv4(udp,0.0.0.0/0)</src>
+      <dst>ipv4(udp:53,0.0.0.0/0)</dst>
+    </rule>
+
+    <!-- Pass everything else in plain-text. -->
+    <rule>
+      <src>ipv4(0.0.0.0/0)</src>
+      <dst>ipv4(0.0.0.0/0)</dst>
+    </rule>
+
+  </policy>
+</quicksec>

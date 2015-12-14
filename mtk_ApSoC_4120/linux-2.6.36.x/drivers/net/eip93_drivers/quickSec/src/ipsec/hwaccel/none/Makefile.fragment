@@ -1,0 +1,7 @@
+# -*- makefile -*-
+#
+#
+
+HWACCEL_NONE_SRCS = hwaccel_none.c
+HWACCEL_NONE_OBJS = hwaccel_none.o
+HWACCEL_NONE_INCLUDES = -I$(top_srcdir)/ipsec/hwaccel

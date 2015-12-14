@@ -1,0 +1,109 @@
+.\"  -*- nroff -*-
+.\"
+.\" ssh-hash.1
+.\"
+.\" Author:	Timo J. Rinne <tri@ssh.fi>
+.\"
+.\" Copyright (c) 2002, 2003 SFNT Finland Oy.
+.\" All rights reserved
+.\"
+
+.TH SSH-HASH 1 "November 24, 1998" "SSH-HASH" "SSH-HASH"
+
+.SH NAME
+ssh-hash \- calculate hash values with various algorithms
+
+.SH SYNOPSIS
+.B ssh-hash
+[\c
+.BI \-q \c
+]
+\c
+.BI ( hash-algorithm | -a )\fR\c
+\c
+.br
+.B ssh-hash
+[\c
+.BI \-q \c
+]
+\c
+.BI \-s \c
+\c
+.BI \ ( hash-algorithm | -a )\fR\c
+\c
+.IR \ string1 \c
+\c
+.IR \ ... \c
+\c
+.IR \ stringN \c
+.br
+.B ssh-hash
+[\c
+.BI \-q \c
+]
+\c
+.BI \-f \c
+\c
+.BI \ ( hash-algorithm | -a )\fR\c
+\c
+.IR \ file1 \c
+\c
+.IR \ ... \c
+\c
+.IR \ fileN \c
+.br
+.B ssh-hash
+[\c
+.BI \-q \c
+]
+\c
+.BI \-t \c
+\c
+.BI \ ( hash-algorithm | -a )\fR\c
+\c
+.br
+
+.SH DESCRIPTION 
+.LP
+.B Ssh-hash
+calculates hash values from input with various algorithms.
+Hash is calculated from either user submitted strings or files, or as
+default from standard input.
+
+.SH OPTIONS
+.TP
+.BI \-q
+Print only hash value (or values) in hex number.  Omit all additional
+output. 
+.ne 3
+.TP
+.BI \-a
+Instead of one specific algorithm, calculate hash with all available
+algorithms.  If hash algorithm is explicitely given in command string,
+it can be either one algorithm or several algorithms (separated by
+comma and no white space).
+.ne 3
+.TP
+.BI \-s
+Calculate hash value (or values) from argument strings.
+.ne 3
+.TP
+.BI \-f
+Calculate hash value (or values) from argument files.
+.ne 3
+.TP
+.BI \-t
+Instead of calculating hash value from user input, perform a speed
+test of one or several algorithms.
+.ne 3
+
+.SH AUTHORS
+.LP
+
+SFNT Finland Oy.
+
+For more information, see http://www.safenet-inc.com.
+
+.SH SEE ALSO
+.BR ssh-encrypt (1),
+.BR ssh-keytool (1)

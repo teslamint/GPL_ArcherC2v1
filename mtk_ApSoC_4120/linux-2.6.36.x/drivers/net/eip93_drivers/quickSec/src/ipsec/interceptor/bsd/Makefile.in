@@ -1,0 +1,486 @@
+# Makefile.in generated automatically by automake 1.4-p6 from Makefile.am
+
+# Copyright (C) 1994, 1995-8, 1999, 2001 Free Software Foundation, Inc.
+# This Makefile.in is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+# Process this file with automake to produce Makefile.in
+
+#
+# src/ipsec/interceptor/bsd/Makefile.am.raw
+#
+# Copyright:
+#       Copyright (c) 2002-2006 SFNT Finland Oy.
+#       All rights reserved
+#
+# This file works closely with the configure.in.inc file in directory
+# above. The interceptor source files need to be configured for each
+# platform in the configure.  All source files must be listed in
+# EXTRA_DIST to be included in distributions.
+#
+# Interceptor sources are linked against quicksec/kernel/libengine and
+# quicksec/kernel/libkernel. The first provides quicksec engine and
+# the latter kernel utilities.
+
+
+SHELL = @SHELL@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+libdir = @libdir@
+infodir = @infodir@
+mandir = @mandir@
+includedir = @includedir@
+oldincludedir = /usr/include
+
+DESTDIR =
+
+pkgdatadir = $(datadir)/@PACKAGE@
+pkglibdir = $(libdir)/@PACKAGE@
+pkgincludedir = $(includedir)/@PACKAGE@
+
+top_builddir = ../../..
+
+ACLOCAL = @ACLOCAL@
+AUTOCONF = @AUTOCONF@
+AUTOMAKE = @AUTOMAKE@
+AUTOHEADER = @AUTOHEADER@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@ $(AM_INSTALL_PROGRAM_FLAGS)
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+transform = @program_transform_name@
+
+NORMAL_INSTALL = :
+PRE_INSTALL = :
+POST_INSTALL = :
+NORMAL_UNINSTALL = :
+PRE_UNINSTALL = :
+POST_UNINSTALL = :
+build_alias = @build_alias@
+build_triplet = @build@
+host_alias = @host_alias@
+host_triplet = @host@
+target_alias = @target_alias@
+target_triplet = @target@
+ADDR_MODEL = @ADDR_MODEL@
+AR = @AR@
+AV_ALG_INCLUDES = @AV_ALG_INCLUDES@
+AV_ALG_LIBS = @AV_ALG_LIBS@
+BUILD_CC = @BUILD_CC@
+CC = @CC@
+COPY_INCLUDE = @COPY_INCLUDE@
+ENGINE_ASM_OBJS = @ENGINE_ASM_OBJS@
+FASTPATH_CONFIGURED_DIRECTORY = @FASTPATH_CONFIGURED_DIRECTORY@
+FASTPATH_CONFIGURED_INCLUDES = @FASTPATH_CONFIGURED_INCLUDES@
+FASTPATH_CONFIGURED_OBJS = @FASTPATH_CONFIGURED_OBJS@
+FASTPATH_CONFIGURED_SRCS = @FASTPATH_CONFIGURED_SRCS@
+GRANDLIBARCMD = @GRANDLIBARCMD@
+GRANDLIBRANLIBCMD = @GRANDLIBRANLIBCMD@
+HWACCEL_CONFIGURED_DIRECTORY = @HWACCEL_CONFIGURED_DIRECTORY@
+HWACCEL_CONFIGURED_INCLUDES = @HWACCEL_CONFIGURED_INCLUDES@
+HWACCEL_CONFIGURED_OBJS = @HWACCEL_CONFIGURED_OBJS@
+HWACCEL_CONFIGURED_SRCS = @HWACCEL_CONFIGURED_SRCS@
+HWACCEL_VPATH = @HWACCEL_VPATH@
+IPSEC_ARCH_INTC = @IPSEC_ARCH_INTC@
+IPSEC_ARCH_ROUTE = @IPSEC_ARCH_ROUTE@
+KERN_CC = @KERN_CC@
+KERN_CFLAGS = @KERN_CFLAGS@
+KERN_LDFLAGS = @KERN_LDFLAGS@
+KERN_LIBS = @KERN_LIBS@
+LD = @LD@
+LN_S = @LN_S@
+M4 = @M4@
+MAKEINFO = @MAKEINFO@
+MATH_CONF_OBJS = @MATH_CONF_OBJS@
+NM_PATH = @NM_PATH@
+OCTEONFLAGS = @OCTEONFLAGS@
+OCTEON_OBJS = @OCTEON_OBJS@
+OCTEON_SRCS = @OCTEON_SRCS@
+OCTEON_VPATH = @OCTEON_VPATH@
+PACKAGE = @PACKAGE@
+PERL = @PERL@
+PURIFY = @PURIFY@
+QS_ADDRSPACE = @QS_ADDRSPACE@
+QS_EXTRALIBS = @QS_EXTRALIBS@
+QS_FASTPATH = @QS_FASTPATH@
+QS_FASTPATH_CRYPTO_ASM_LNSRC = @QS_FASTPATH_CRYPTO_ASM_LNSRC@
+QS_FASTPATH_CRYPTO_ASM_OBJS = @QS_FASTPATH_CRYPTO_ASM_OBJS@
+QS_FASTPATH_SRCS = @QS_FASTPATH_SRCS@
+QUICKSEC_ASM_OBJS = @QUICKSEC_ASM_OBJS@
+QUICKSEC_CONF_OBJS = @QUICKSEC_CONF_OBJS@
+RANLIB = @RANLIB@
+ROUTE_CONFIGURED_SRCS = @ROUTE_CONFIGURED_SRCS@
+RXP_PLATFORM_NAME = @RXP_PLATFORM_NAME@
+SAFENETFLAGS = @SAFENETFLAGS@
+SAFENET_UDM_OBJS = @SAFENET_UDM_OBJS@
+SAFENET_UDM_SRCS = @SAFENET_UDM_SRCS@
+SAFENET_UDM_VPATH = @SAFENET_UDM_VPATH@
+SSHCIPHER_CONF_OBJS = @SSHCIPHER_CONF_OBJS@
+SSHHASH_CONF_OBJS = @SSHHASH_CONF_OBJS@
+SSH_ENGINE_KERNEL_TARGET = @SSH_ENGINE_KERNEL_TARGET@
+SSH_ENGINE_USERMODE_TARGET = @SSH_ENGINE_USERMODE_TARGET@
+SSH_INTERCEPTOR_CPPFLAGS = @SSH_INTERCEPTOR_CPPFLAGS@
+SSH_INTERCEPTOR_ETHER_OBJS = @SSH_INTERCEPTOR_ETHER_OBJS@
+SSH_INTERCEPTOR_KERNEL_TARGETS = @SSH_INTERCEPTOR_KERNEL_TARGETS@
+SSH_INTERCEPTOR_MACHINE_DIR = @SSH_INTERCEPTOR_MACHINE_DIR@
+SSH_INTERCEPTOR_MACHINE_SUBDIR = @SSH_INTERCEPTOR_MACHINE_SUBDIR@
+SSH_INTERCEPTOR_NONETHER_OBJS = @SSH_INTERCEPTOR_NONETHER_OBJS@
+SSH_INTERCEPTOR_OBJS = @SSH_INTERCEPTOR_OBJS@
+SSH_INTERCEPTOR_SYMCHECK = @SSH_INTERCEPTOR_SYMCHECK@
+SSH_INTERCEPTOR_TARGETS = @SSH_INTERCEPTOR_TARGETS@
+SSH_IPM_MACHINE_OBJS = @SSH_IPM_MACHINE_OBJS@
+SSH_KB_LINUX_CONFIG_HEADER = @SSH_KB_LINUX_CONFIG_HEADER@
+SSH_KB_LINUX_KERNEL_INCLUDE = @SSH_KB_LINUX_KERNEL_INCLUDE@
+THREAD_OBJS = @THREAD_OBJS@
+THREAD_SYSTEM_OBJS = @THREAD_SYSTEM_OBJS@
+VERSION = @VERSION@
+
+AUTOMAKE_OPTIONS = 1.0 foreign dist-zip no-dependencies
+WINCONF_OPTIONS = ignore
+
+DEFS = -DSSH_BUILD_IPSEC
+
+VPATH = $(srcdir):$(srcdir)/..:$(top_srcdir)/interceptor/usermode:$(top_srcdir)/ipsec/interceptor/@SSH_INTERCEPTOR_MACHINE_DIR@/@SSH_INTERCEPTOR_MACHINE_SUBDIR@:$(top_srcdir)/ipsec/interceptor/tests
+
+CLEANFILES =  	$(cleanfiles) 			        $(SSH_INTERCEPTOR_TARGETS)      	*.o
+
+
+LDFLAGS = $(KERN_LDFLAGS)
+LIBS = $(KERN_LIBS)
+CFLAGS = $(INCLUDES) $(KERN_CFLAGS) $(CPPFLAGS)
+CPPFLAGS = $(SSH_INTERCEPTOR_CPPFLAGS) 	-DINTERCEPTOR_PROVIDES_INTERFACE_INFORMATION 	-DINTERCEPTOR_PROVIDES_IP_ROUTING 	-DINTERCEPTOR_PROVIDES_VIRTUAL_ADAPTERS
+
+
+######################################################################
+# NetBSD, FreeBSD and VxWorks
+
+I386_OBJS = icept_attach_i386.o
+PPC_OBJS = icept_attach_ppc.o
+
+# Common BSD interceptor source files
+BSD_OBJS =  	icept_virtual_adapter.o		        icept_chardev_bsd.o                     icept_kernel_interceptor_bsd.o          icept_kernel_main.o                     icept_kernel_mutex.o                    icept_kernel_stubs_bsd.o
+
+
+# configure.in.inc sets SSH_INTERCEPTOR_NONETHER_OBJS and
+# SSH_INTERCEPTOR_ETHER_OBJS to refer to these.
+
+FREEBSD_NONETHER_OBJS = icept_subst_freebsd.o
+FREEBSD_ETHER_OBJS = icept_subst_freebsd_mediahdr.o
+NETBSD_NONETHER_OBJS = icept_subst_netbsd.o
+NETBSD_ETHER_OBJS = icept_subst_netbsd_mediahdr.o
+
+VXWORKS_OBJS =          icept_kernel_interceptor_bsd.o          icept_kernel_stubs_vxworks.o            icept_attach_vxworks.o                  icept_chardev_vxworks.o                 icept_route_vxworks.o                   icept_virtual_adapter_vxworks.o         vxworks_pcihw.o                 
+
+
+######################################################################
+
+noinst_PROGRAMS = $(SSH_INTERCEPTOR_TARGETS)
+
+EXTRA_PROGRAMS = sshipsec_tester.o interceptor_tester
+
+INCLUDES = -I. -I$(srcdir)            -I$(top_builddir) -I$(top_srcdir)            -I$(top_builddir)/include            -I$(top_srcdir)/ipsec/quicksec            -I$(top_srcdir)/interceptor/include            -I$(top_srcdir)/interceptor/libkernelutil            -I$(top_srcdir)/ipsec            -I$(top_srcdir)/ipsec/util 	   -I$(top_srcdir)/ipsec/hwaccel 	   -I$(top_srcdir)/ipsec/interceptor/@SSH_INTERCEPTOR_MACHINE_DIR@/@SSH_INTERCEPTOR_MACHINE_SUBDIR@
+
+
+LIBENGINE =   $(top_builddir)/ipsec/quicksec/@QS_ADDRSPACE@/libengine.a  $(top_builddir)/ipsec/quicksec/@QS_ADDRSPACE@/libfastpath-@QS_FASTPATH@.a  $(top_builddir)/ipsec/quicksec/@QS_ADDRSPACE@/libaccelerator.a
+
+
+LIBKERNEL =   $(top_builddir)/ipsec/quicksec/@QS_ADDRSPACE@/libaccelerator.a  $(top_builddir)/ipsec/quicksec/@QS_ADDRSPACE@/libkernel.a
+
+
+QS_ENGINE_LIBS = $(LIBENGINE) $(LIBKERNEL) @QS_EXTRALIBS@
+
+QS_PM_LIBS =   $(top_builddir)/ipsec/quicksec/@QS_ADDRSPACE@/libpmconf.a  $(top_builddir)/ipsec/quicksec/@QS_ADDRSPACE@/libappgw.a  $(top_builddir)/ipsec/quicksec/@QS_ADDRSPACE@/libipsecpm.a
+
+
+SUFFIXES = .o .c
+
+#
+# Object files we need for user-mode forwarder and for other similar
+# stripped-down interceptors.
+#
+NETBSD_USERMODE_FORWARDER_OBJS =          $(BSD_OBJS)                     	usermodeforwarder.o			icept_lkm_bsd.o
+
+
+######################################################################
+
+######################################################################
+EXTRA_DIST =          icept_attach.h                                                  icept_attach_i386.c                                             icept_attach_ppc.c                                              icept_chardev.h                                                 icept_chardev_bsd.c                                             icept_internal.h                                                icept_kernel_interceptor_bsd.c                                  icept_kernel_main.c                                             icept_kernel_main.c                                             icept_kernel_mutex.c                                            icept_kernel_stubs_bsd.c                                        icept_lkm_bsd.c                                         		        netbsd132/lib/libkern/libkern.h                                 netbsd132/hwaccel_async_sw.c                                    netbsd132/icept_subst_netbsd.c                                  netbsd132/icept_subst_netbsd_mediahdr.c                         netbsd132/lib/libkern/libkern.h                                 netbsd133/icept_subst_netbsd.c                                  netbsd133/icept_subst_netbsd_mediahdr.c                         netbsd140/lib/libkern/libkern.h                                 netbsd140/icept_subst_netbsd.c                                  netbsd150/lib/libkern/libkern.h                                 netbsd150/icept_subst_netbsd.c                                  netbsd150/icept_subst_netbsd_mediahdr.c                         netbsd160/lib/libkern/libkern.h                                 netbsd160/icept_subst_netbsd.c                                  netbsd160/icept_subst_netbsd_mediahdr.c                 	netbsd200/icept_subst_netbsd.c                                  netbsd200/icept_subst_netbsd_mediahdr.c                 	netbsd200/lib/libkern/libkern.h                         	netbsd200/machine/pic.h		                        	netbsd200/sys/kernel.h                         			netbsd-pfil/icept_subst_netbsd.c				netbsd-pfil/machine/pic.h		                	        vxworks54/icept_virtual_adapter_vxworks.c                       vxworks54/icept_attach_vxworks.c                                vxworks54/icept_route_vxworks.c                                 vxworks54/icept_chardev_vxworks.c                               vxworks54/icept_kernel_stubs_vxworks.c                          vxworks54/icept_mbuf_vxworks.h                                  vxworks54/icept_vxworks.h                                       vxworks54/icept_mutex_vxworks.h                                 vxworks54/usrTime.c                                             vxworks54/ds12887Rtc.c                                          vxworks54/Makefile.default                                      vxworks54/vxworks_pcihw.c                               	        platform_kernel_alloc.h                                         platform_kernel_mutex.h
+
+mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+CONFIG_HEADER = ../../../sshconf.h
+CONFIG_CLEAN_FILES = 
+PROGRAMS =  $(noinst_PROGRAMS)
+
+sshipsec_tester_o_SOURCES = sshipsec_tester.o.c
+sshipsec_tester_o_OBJECTS =  sshipsec_tester.o.o
+sshipsec_tester_o_LDADD = $(LDADD)
+sshipsec_tester_o_DEPENDENCIES = 
+sshipsec_tester_o_LDFLAGS = 
+interceptor_tester_SOURCES = interceptor_tester.c
+interceptor_tester_OBJECTS =  interceptor_tester.o
+interceptor_tester_LDADD = $(LDADD)
+interceptor_tester_DEPENDENCIES = 
+interceptor_tester_LDFLAGS = 
+COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
+DIST_COMMON =  Makefile.am Makefile.in
+
+
+DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+
+TAR = tar
+GZIP_ENV = --best
+SOURCES = sshipsec_tester.o.c interceptor_tester.c
+OBJECTS = sshipsec_tester.o.o interceptor_tester.o
+
+all: all-redirect
+.SUFFIXES:
+.SUFFIXES: .S .c .o .s
+$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+	cd $(top_srcdir) && $(AUTOMAKE) --foreign ipsec/interceptor/bsd/Makefile
+
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) \
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+
+mostlyclean-noinstPROGRAMS:
+
+clean-noinstPROGRAMS:
+	-test -z "$(noinst_PROGRAMS)" || rm -f $(noinst_PROGRAMS)
+
+distclean-noinstPROGRAMS:
+
+maintainer-clean-noinstPROGRAMS:
+
+.c.o:
+	$(COMPILE) -c $<
+
+.s.o:
+	$(COMPILE) -c $<
+
+.S.o:
+	$(COMPILE) -c $<
+
+mostlyclean-compile:
+	-rm -f *.o core *.core
+
+clean-compile:
+
+distclean-compile:
+	-rm -f *.tab.c
+
+maintainer-clean-compile:
+
+tags: TAGS
+
+ID: $(HEADERS) $(SOURCES) $(LISP)
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	here=`pwd` && cd $(srcdir) \
+	  && mkid -f$$here/ID $$unique $(LISP)
+
+mostlyclean-tags:
+
+clean-tags:
+
+distclean-tags:
+	-rm -f TAGS ID
+
+maintainer-clean-tags:
+
+distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
+
+subdir = ipsec/interceptor/bsd
+
+distdir: $(DISTFILES)
+	$(mkinstalldirs) $(distdir)/netbsd-pfil $(distdir)/netbsd-pfil/machine \
+	   $(distdir)/netbsd132 $(distdir)/netbsd132/lib/libkern \
+	   $(distdir)/netbsd133 $(distdir)/netbsd140 \
+	   $(distdir)/netbsd140/lib/libkern $(distdir)/netbsd150 \
+	   $(distdir)/netbsd150/lib/libkern $(distdir)/netbsd160 \
+	   $(distdir)/netbsd160/lib/libkern $(distdir)/netbsd200 \
+	   $(distdir)/netbsd200/lib/libkern \
+	   $(distdir)/netbsd200/machine $(distdir)/netbsd200/sys \
+	   $(distdir)/vxworks54
+	@for file in $(DISTFILES); do \
+	  d=$(srcdir); \
+	  if test -d $$d/$$file; then \
+	    cp -pr $$d/$$file $(distdir)/$$file; \
+	  else \
+	    test -f $(distdir)/$$file \
+	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
+	    || cp -p $$d/$$file $(distdir)/$$file || :; \
+	  fi; \
+	done
+info-am:
+info: info-am
+dvi-am:
+dvi: dvi-am
+check-am: all-am
+check: check-am
+installcheck-am:
+installcheck: installcheck-am
+install-exec-am:
+install-exec: install-exec-am
+
+install-data-am:
+install-data: install-data-am
+
+install-am: all-am
+	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+install: install-am
+uninstall-am:
+uninstall: uninstall-am
+all-am: Makefile $(PROGRAMS)
+all-redirect: all-am
+install-strip:
+	$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install
+installdirs:
+
+
+mostlyclean-generic:
+
+clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
+
+distclean-generic:
+	-rm -f Makefile $(CONFIG_CLEAN_FILES)
+	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
+
+maintainer-clean-generic:
+mostlyclean-am:  mostlyclean-noinstPROGRAMS mostlyclean-compile \
+		mostlyclean-tags mostlyclean-generic
+
+mostlyclean: mostlyclean-am
+
+clean-am:  clean-noinstPROGRAMS clean-compile clean-tags clean-generic \
+		mostlyclean-am
+
+clean: clean-am
+
+distclean-am:  distclean-noinstPROGRAMS distclean-compile distclean-tags \
+		distclean-generic clean-am
+
+distclean: distclean-am
+
+maintainer-clean-am:  maintainer-clean-noinstPROGRAMS \
+		maintainer-clean-compile maintainer-clean-tags \
+		maintainer-clean-generic distclean-am
+	@echo "This command is intended for maintainers to use;"
+	@echo "it deletes files that may require special tools to rebuild."
+
+maintainer-clean: maintainer-clean-am
+
+.PHONY: mostlyclean-noinstPROGRAMS distclean-noinstPROGRAMS \
+clean-noinstPROGRAMS maintainer-clean-noinstPROGRAMS \
+mostlyclean-compile distclean-compile clean-compile \
+maintainer-clean-compile tags mostlyclean-tags distclean-tags \
+clean-tags maintainer-clean-tags distdir info-am info dvi-am dvi check \
+check-am installcheck-am installcheck install-exec-am install-exec \
+install-data-am install-data install-am install uninstall-am uninstall \
+all-redirect all-am all installdirs mostlyclean-generic \
+distclean-generic clean-generic maintainer-clean-generic clean \
+mostlyclean distclean maintainer-clean
+
+
+#
+# Create QuickSec engine.
+#
+quicksec.o: $(SSH_INTERCEPTOR_OBJS) $(SSH_INTERCEPTOR_NONETHER_OBJS) \
+	      $(QS_ENGINE_LIBS)
+	rm -f tmpquicksec.o quicksec.o
+	$(LD) $(LDFLAGS) -r -o tmpquicksec.o \
+	      $(SSH_INTERCEPTOR_OBJS) $(SSH_INTERCEPTOR_NONETHER_OBJS) \
+	      $(QS_ENGINE_LIBS)
+	mv tmpquicksec.o quicksec.o
+
+quicksecpm.o: $(SSH_INTERCEPTOR_OBJS) $(SSH_INTERCEPTOR_NONETHER_OBJS) \
+	       $(QS_PM_LIBS) $(QS_ENGINE_LIBS)
+	rm -f tmpquicksec.o quicksec.o
+	$(LD) $(LDFLAGS) -r -o tmpquicksec.o \
+		  $(SSH_INTERCEPTOR_OBJS) $(SSH_INTERCEPTOR_NONETHER_OBJS) \
+		  $(QS_PM_LIBS) \
+		  $(QS_ENGINE_LIBS) \
+		  $(QS_PM_LIBS)
+	mv tmpquicksec.o quicksec.o
+
+#
+# Create QuickSec engine for media level.
+#
+quicksec_ether.o: $(SSH_INTERCEPTOR_OBJS) $(SSH_INTERCEPTOR_ETHER_OBJS) \
+	              $(QS_ENGINE_LIBS)
+	rm -f tmpquicksec_ether.o quicksec_ether.o
+	$(LD) $(LDFLAGS) -r -o tmpquicksec_ether.o \
+	      $(SSH_INTERCEPTOR_OBJS) $(SSH_INTERCEPTOR_ETHER_OBJS) \
+	      $(QS_ENGINE_LIBS)
+	mv tmpquicksec_ether.o quicksec_ether.o
+
+# Create IPSEC forwarder for usermode engine with IP binding
+quicksec_usermode.o: $(NETBSD_USERMODE_FORWARDER_OBJS) $(SSH_INTERCEPTOR_NONETHER_OBJS) \
+	$(LIBKERNEL)
+	rm -f tmpipsec_usermode.o quicksec_usermode.o
+	$(LD) $(LDFLAGS) -r -o tmpipsec_usermode.o \
+	  $(NETBSD_USERMODE_FORWARDER_OBJS) $(SSH_INTERCEPTOR_NONETHER_OBJS) \
+	  $(LIBKERNEL)
+	mv tmpipsec_usermode.o quicksec_usermode.o
+
+# Create IPSEC forwarder for usermode engine with ether binding
+quicksec_usermode_ether.o: $(NETBSD_USERMODE_FORWARDER_OBJS) $(SSH_INTERCEPTOR_ETHER_OBJS) \
+	$(LIBKERNEL)
+	rm -f tmpipsec_usermode_ether.o quicksec_usermode_ether.o
+	$(LD) $(LDFLAGS) -r -o tmpipsec_usermode_ether.o \
+	  $(NETBSD_USERMODE_FORWARDER_OBJS) $(SSH_INTERCEPTOR_ETHER_OBJS) \
+	  $(LIBKERNEL)
+	mv tmpipsec_usermode_ether.o quicksec_usermode_ether.o
+
+interceptor_tester: interceptor_tester_ipm.o ../../../lib/libssh.a
+	$(CC) $(LDFLAGS) -o interceptor_tester interceptor_tester_ipm.o \
+	  -L../../../lib -lssh
+
+sshipsec_tester.o: interceptor_tester.o \
+		   $(SSH_INTERCEPTOR_NONETHER_OBJS) $(LIBKERNEL)
+	rm -f tmpipsec_tester.o sshipsec_tester.o
+	$(LD) $(LDFLAGS) -r -o tmpipsec_tester.o interceptor_tester.o \
+	      $(SSH_INTERCEPTOR_NONETHER_OBJS) $(LIBKERNEL)
+	mv tmpipsec_tester.o sshipsec_tester.o
+
+includes:
+	@for d in . $(SUBDIRS); \
+        do \
+	  if test "$$d" != "."; \
+          then \
+	    (cd $$d && $(MAKE) includes); \
+          fi; \
+        done
+
+TAGS:
+	etags `find $(SUBDIRS) -name '*.[ch]' -print`
+
+print-vpath:
+	@echo $(VPATH)
+
+# Tell versions [3.59,3.63) of GNU make to not export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:

@@ -1,0 +1,29 @@
+# -*- makefile -*-
+#
+# interceptor/libkernelutil/Makefile.fragment
+#
+
+AUTODIST_OPTIONS += lnsrcs
+
+KERNEL_UTIL_SRCS = \
+	kernel_alloc.c \
+	kernel_encode.c \
+	kernel_encode.h \
+	packet_utils.c
+
+KERNEL_UTIL_INCLUDES = \
+	-I$(top_srcdir)/interceptor/libkernelutil
+
+KERNEL_UTIL_LNSRCS = \
+	kernel_alloc.c \
+	kernel_encode.c \
+	packet_utils.c
+
+KERNEL_UTIL_HDR_LNSRCS = \
+	kernel_encode.h
+
+
+kernel_encode.h kernel_alloc.c kernel_encode.c packet_utils.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/interceptor/libkernelutil/$@ .
+

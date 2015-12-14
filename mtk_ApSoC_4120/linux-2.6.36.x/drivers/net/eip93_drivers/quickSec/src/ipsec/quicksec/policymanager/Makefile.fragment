@@ -1,0 +1,194 @@
+# -*- makefile -*-
+#
+# ipsec/quicksec/policymanager/Makefile.fragment
+#
+# Also, see Makefile.am for list of extra distrubuted files, like tools
+# and platform main's
+#
+
+# core modules
+PM_CORE_LIB_SRCS = \
+	ipsec_pm_low.h                  \
+	quicksec_pm_shared.h            \
+	util_dnsresolver.c		\
+	util_dnsresolver.h		\
+        core_pm.h                       \
+        core_pm_shared.h                \
+        eng_pm_api_pm.h                 \
+        eng_pm_api_pm.c                 \
+        eng_rules.c                     \
+        eng_upcall.c                    \
+        ipsec_pm_shared.h               \
+        pad_authorization.c             \
+        quicksec_pm.h			\
+        quicksec_pm_low.h               \
+        quicksecpm_internal.h           \
+        spd_internal.h                  \
+        spd_ike.c                       \
+        spd_main.c                      \
+	spd_batch_st.c			\
+        spd_config_st.c                 \
+	spd_iface_st.c			\
+        spd_ike_init.c                  \
+        spd_main_st.h                   \
+        spd_main_st.c                   \
+	spd_shutdown_st.c		\
+        spd_rules.c                     \
+        spd_services.c                  \
+        util.c                          \
+        util_algorithms.c               \
+        util_alloc.c                    \
+        util_render.c                   \
+        util_tables.c                   \
+        util_internal.h                 \
+        util_asyncop.c                  \
+        util_audit.c                    \
+        util_servers.c                  \
+        util_statistics.c
+
+
+
+# ipsec modules
+PM_IPSEC_LIB_SRCS = \
+        ipsec_pm_shared.h               \
+	ipsec_internal.h                \
+        pad_auth_passwd.c               \
+        pad_auth_passwd.h               \
+        pad_auth_domain.c               \
+        pad_auth_domain.h               \
+        sad_ike.c                       \
+        spd_ike_psk.c                   \
+        sad_ike_common_st.c             \
+        sad_ike_initiator_st.c          \
+        sad_ike_i_negotiation_st.c      \
+        spd_ike_delete.c                \
+        spd_rule_lookup.c               \
+        spd_ike.c                       \
+        pad_ike.c                       \
+        util_dpd.c                      \
+        util_ike_id.c                   \
+        util_ike_cfgmode.c              \
+        util_ike_confutils.c            \
+        util_ike_sautils.c              \
+	util_tcpencap.c                 \
+	util_tcpencap.h                 \
+	util_peer.c                     \
+        ras_cfgmode_client_store.c      \
+        util_l2tp.c                     \
+        util_ek.c                       \
+        util_ek_st.c                    \
+        pad_auth_radius.c               \
+        pad_auth_radius.h                \
+	rac_virtual_ip_internal.h	 \
+        rac_virtual_ip.c                 \
+        rac_virtual_ip_st.c              \
+        util_nameserver.c                \
+        util_nameserver.h                \
+        util_connection.c                \
+        util_connection.h                \
+	util_virtual_adapter.c           \
+        rac_virtual_ip_cfgmode_st.c      \
+        rac_virtual_ip_l2tp_st.c         \
+        ras.c                           \
+        ras_internal.h                  \
+        ras_legacy_auth_server.c        \
+        util_l2tp_lns_st.c              \
+        pad_authorization_local.h       \
+        pad_authorization_local.c       \
+        pad_ike_eap.c                   \
+        sad_ike_spis.c                  \
+        sad_ike.h                       \
+        ipsec_pm.h                      \
+	ipsec_pm_low.h                  \
+        util_algorithms.c               \
+        util_algorithms_internal.h      \
+        util_compat.c                   \
+        util_ike_tsutils.c              \
+        util_ike_spis.c                 \
+        util_unknown_spis.c             \
+        util_linearize.c                \
+        sad_sa_handler.c                \
+        sad_sa_handler_manual.c         \
+        sad_sa_handler_st.c             \
+        ras_addrpool.h                  \
+        ras_addrpool.c                  \
+        spd_tunnels.c                   \
+	spd_tunnels_ike.c               \
+        util_ipsec.c                    \
+        util_ike_ipsec.c                \
+        util_cm.h                       \
+        util_cm.c                       \
+        util_cm_access.c                \
+        util_cm_notify.c                \
+        util_ike_certs.c                \
+        pad_ike_certs.c                 \
+        pad_ike_certs_mscapi.c          \
+        util_mscapi.h                   \
+        util_mscapi.c                   \
+	sad_mobike.c                    \
+	sad_mobike_st.c                 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Firewall specific modules
+PM_FIREWALL_LIB_SRCS = \
+        nat_internal.h                 \
+        firewall_pm.h                   \
+        firewall_internal.h             \
+	appgw_api.h                     \
+	appgw_st.c                      \
+	appgw.c
+
+
+
+
+
+
+PM_LIB_SRCS = $(PM_CORE_LIB_SRCS)     \
+	      $(PM_FIREWALL_LIB_SRCS) \
+	      $(PM_IPSEC_LIB_SRCS)    
+
+
+PM_LIB_INCLUDES = \
+	-I$(top_srcdir)/ipsec/quicksec/policymanager \
+	-I$(top_srcdir)/ipsec/quicksec/engine \
+	-I$(top_srcdir)/ipsec/quicksec \
+	-I$(top_srcdir)/interceptor/include \
+	-I$(top_srcdir)/ipsec/include \
+	-I$(top_builddir)/ipsec/include \
+	-I$(top_srcdir)/ipsec \
+	-I$(top_srcdir)/ipsec \
+	-I$(top_srcdir)/include \
+	-I$(top_builddir)/include
+

@@ -1,0 +1,111 @@
+<!DOCTYPE quicksec PUBLIC "quicksec:dtd" "quicksec.dtd">
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+This ALG performs SIP application gateway functionality. It will
+open holes on the firewall for application data, and map SIP
+proxies and clients on private network to external addresses.
+-->
+<quicksec>
+  <policy>
+    <service name="sip-udp">
+      <appgw id="alg-sip@ssh.com">
+        <alg-sip>
+          <!-- define conduits; direct traffic arriving to port 5060
+               to alg, that maps it from external IP to internal IP,
+               changing contents on the fly, and opens ports at the
+               external IP for data traffic. -->
+          <conduit>
+            <internal-ip>192.168.2.120</internal-ip>
+            <internal-port>5060</internal-port>
+            <external-ip>10.1.49.129</external-ip>
+            <external-port>38000</external-port>
+          </conduit>
+          <internal-network>192.168.0.0/16</internal-network>
+        </alg-sip>
+      </appgw>
+    </service>
+
+    <!-- Apply rule for the alg-dns, log connections -->
+    <rule service="sip-udp" log="connections">
+      <src>ipv4(udp,0.0.0.0/0)</src>
+      <dst>ipv4(udp:5060,0.0.0.0/0)</dst>
+    </rule>
+
+    <!-- Pass everything else in plain-text. -->
+    <rule>
+      <src>ipv4(tcp,0.0.0.0/0)</src>
+      <dst>ipv4(tcp,0.0.0.0/0)</dst>
+    </rule>
+  </policy>
+</quicksec>
+
+
+<!-- short example:
+
+SIP client                              C
+SIP proxy                               P
+SIP alg                                 A
+SIP proxy|client at outside network     O
+SIP destination                         D
+
+C                    P                    A                    O
+> invite
+  contact=10.0.0.5
+  rtp=10.0.0.5:17832
+                   > invite
+                     contact=10.0.0.5
+                     rtp=10.0.0.5:17832
+                     via=10.0.0.5,10.1.1.1
+                                          > invite
+                                            contact=1.2.3.4:7843
+                                            rtp=1.2.3.4:5678
+                                            via=10.0.0.5,1.2.3.4
+                                          < 200 OK
+                   < 200 OK
+< 200 OK
+> ACK
+                   > ACK
+                                          > ACK
+                                          <
+                                            rtp=1.2.3.4:5678
+                   <
+                     rtp=10.0.0.5:17832
+<
+  rtp=10.0.0.5:17832
+
+C tries to reach D, it sends invite to P, that figures out it should
+contact outside proxy O to reach D (based on REGISTER D has issued).
+P sends invite(D) to O, Alg A intercepts this.
+
+A parses SIP request, and figures out new CSeq. It opens new SIP
+session. For this it needs to know where the packet came from (e.g.
+what conduit rule set to apply). It uses P's address to determine
+this. A allocates new port at conduit external address for Contact
+information and rewrites Via and Contact fields.
+
+Later when parsing SDP, A notices c= field, which it needs to rewrite.
+Thus it opens new port at conduit external address for transport
+purposes. (UDP|TCP depending on tranport type present at m= tag. When
+ready, it will rewrite c= and m= tags at SDP headers.
+
+On a centrex configuration, A rewrites register messages and keeps
+ports open for one hour, after which the client needs to re-register.
+A will rewrite SDP and Contact on 200 series responses.
+
+C                              A                              P
+> register
+  contact=10.0.0.5
+                               > register
+                                 contact=1.2.3.4:8875
+
+                               < 200 OK
+< 200 OK
+                               < invite
+                                 sip:user@1.2.3.4:8875
+< invite
+  sip:user@10.0.0.5
+> 200 OK
+                               > 200 0K
+                               < ACK
+< ACK
+-->

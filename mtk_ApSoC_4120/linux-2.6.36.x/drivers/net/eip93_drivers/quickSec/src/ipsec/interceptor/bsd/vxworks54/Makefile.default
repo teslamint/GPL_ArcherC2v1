@@ -1,0 +1,39 @@
+
+#
+#  Makefile for VxWorks SSH IPSEC
+#
+#  Copyright (c) 1999-2002 SSH Communications Security, Finland
+#  All rights reserved
+#
+#  This Makefile links together the SSH IPSEC interceptor
+#  (with the SSH IPSEC engine) and policymanager for VxWorks.
+#
+#  NOTE. If you do not have L2TP remove the pmapi_tclspd_l2tp.o
+#  object file
+#
+
+default: ipsec.o
+
+top_srcdir = ../../../..
+
+IPSECOBJS = ../sshipsec.o                                          \
+         $(top_srcdir)/ipsec/policymanager/sshipm.o                \
+         $(top_srcdir)/ipsec/policymanager/sshipm_unix.o           \
+         $(top_srcdir)/ipsec/policymanager/libipmengine.a          \
+         $(top_srcdir)/ipsec/policymanager/pmapi_tclspd.o          \
+         $(top_srcdir)/ipsec/policymanager/pmapi_http.o            \
+         $(top_srcdir)/ipsec/policymanager/pmapi_tclspd_mapping.o  \
+         $(top_srcdir)/ipsec/policymanager/pmapi_tclspd_addrpool.o \
+         $(top_srcdir)/ipsec/policymanager/pmapi_tclspd_l2tp.o     \
+         $(top_srcdir)/ipsec/policymanager/pmapi_tclspd_dhcp.o     \
+         $(top_srcdir)/ipsec/policymanager/pmapi_dhcp.o            \
+         $(top_srcdir)/lib/libssh.a                                \
+         $(top_srcdir)/ipsec/policymanager/libipmengine.a
+
+ipsec.o: $(IPSECOBJS)
+	$(LD) -X -N -o ipsec.o -r $(IPSECOBJS)
+
+
+clean:
+	rm *.o
+

@@ -1,0 +1,1732 @@
+# Makefile.in generated automatically by automake 1.4-p6 from Makefile.am
+
+# Copyright (C) 1994, 1995-8, 1999, 2001 Free Software Foundation, Inc.
+# This Makefile.in is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+# Added by filter_add_makefile_libextra_stuff
+# To keep automake silent about public and private headers
+# not been set when something is added to them
+
+
+# -*- makefile -*-
+
+
+# -*-makefile-*-
+
+
+SHELL = @SHELL@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+VPATH = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+libdir = @libdir@
+infodir = @infodir@
+mandir = @mandir@
+includedir = @includedir@
+oldincludedir = /usr/include
+
+DESTDIR =
+
+pkgdatadir = $(datadir)/@PACKAGE@
+pkglibdir = $(libdir)/@PACKAGE@
+pkgincludedir = $(includedir)/@PACKAGE@
+
+top_builddir = ../../..
+
+ACLOCAL = @ACLOCAL@
+AUTOCONF = @AUTOCONF@
+AUTOMAKE = @AUTOMAKE@
+AUTOHEADER = @AUTOHEADER@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@ $(AM_INSTALL_PROGRAM_FLAGS)
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+transform = @program_transform_name@
+
+NORMAL_INSTALL = :
+PRE_INSTALL = :
+POST_INSTALL = :
+NORMAL_UNINSTALL = :
+PRE_UNINSTALL = :
+POST_UNINSTALL = :
+build_alias = @build_alias@
+build_triplet = @build@
+host_alias = @host_alias@
+host_triplet = @host@
+target_alias = @target_alias@
+target_triplet = @target@
+ADDR_MODEL = @ADDR_MODEL@
+AR = @AR@
+AV_ALG_INCLUDES = @AV_ALG_INCLUDES@
+AV_ALG_LIBS = @AV_ALG_LIBS@
+BUILD_CC = @BUILD_CC@
+CC = @CC@
+COPY_INCLUDE = @COPY_INCLUDE@
+ENGINE_ASM_OBJS = @ENGINE_ASM_OBJS@
+FASTPATH_CONFIGURED_DIRECTORY = @FASTPATH_CONFIGURED_DIRECTORY@
+FASTPATH_CONFIGURED_INCLUDES = @FASTPATH_CONFIGURED_INCLUDES@
+FASTPATH_CONFIGURED_OBJS = @FASTPATH_CONFIGURED_OBJS@
+FASTPATH_CONFIGURED_SRCS = @FASTPATH_CONFIGURED_SRCS@
+GRANDLIBARCMD = @GRANDLIBARCMD@
+GRANDLIBRANLIBCMD = @GRANDLIBRANLIBCMD@
+HWACCEL_CONFIGURED_DIRECTORY = @HWACCEL_CONFIGURED_DIRECTORY@
+HWACCEL_CONFIGURED_INCLUDES = @HWACCEL_CONFIGURED_INCLUDES@
+HWACCEL_CONFIGURED_OBJS = @HWACCEL_CONFIGURED_OBJS@
+HWACCEL_CONFIGURED_SRCS = @HWACCEL_CONFIGURED_SRCS@
+HWACCEL_VPATH = @HWACCEL_VPATH@
+IPSEC_ARCH_INTC = @IPSEC_ARCH_INTC@
+IPSEC_ARCH_ROUTE = @IPSEC_ARCH_ROUTE@
+KERN_CC = @KERN_CC@
+KERN_CFLAGS = @KERN_CFLAGS@
+KERN_LDFLAGS = @KERN_LDFLAGS@
+KERN_LIBS = @KERN_LIBS@
+LD = @LD@
+LIBS = @LIBS@
+LN_S = @LN_S@
+M4 = @M4@
+MAKEINFO = @MAKEINFO@
+MATH_CONF_OBJS = @MATH_CONF_OBJS@
+NM_PATH = @NM_PATH@
+OCTEONFLAGS = @OCTEONFLAGS@
+OCTEON_OBJS = @OCTEON_OBJS@
+OCTEON_SRCS = @OCTEON_SRCS@
+OCTEON_VPATH = @OCTEON_VPATH@
+PACKAGE = @PACKAGE@
+PERL = @PERL@
+PURIFY = @PURIFY@
+QS_ADDRSPACE = @QS_ADDRSPACE@
+QS_EXTRALIBS = @QS_EXTRALIBS@
+QS_FASTPATH = @QS_FASTPATH@
+QS_FASTPATH_CRYPTO_ASM_LNSRC = @QS_FASTPATH_CRYPTO_ASM_LNSRC@
+QS_FASTPATH_CRYPTO_ASM_OBJS = @QS_FASTPATH_CRYPTO_ASM_OBJS@
+QS_FASTPATH_SRCS = @QS_FASTPATH_SRCS@
+QUICKSEC_ASM_OBJS = @QUICKSEC_ASM_OBJS@
+QUICKSEC_CONF_OBJS = @QUICKSEC_CONF_OBJS@
+RANLIB = @RANLIB@
+ROUTE_CONFIGURED_SRCS = @ROUTE_CONFIGURED_SRCS@
+RXP_PLATFORM_NAME = @RXP_PLATFORM_NAME@
+SAFENETFLAGS = @SAFENETFLAGS@
+SAFENET_UDM_OBJS = @SAFENET_UDM_OBJS@
+SAFENET_UDM_SRCS = @SAFENET_UDM_SRCS@
+SAFENET_UDM_VPATH = @SAFENET_UDM_VPATH@
+SSHCIPHER_CONF_OBJS = @SSHCIPHER_CONF_OBJS@
+SSHHASH_CONF_OBJS = @SSHHASH_CONF_OBJS@
+SSH_ENGINE_KERNEL_TARGET = @SSH_ENGINE_KERNEL_TARGET@
+SSH_ENGINE_USERMODE_TARGET = @SSH_ENGINE_USERMODE_TARGET@
+SSH_INTERCEPTOR_CPPFLAGS = @SSH_INTERCEPTOR_CPPFLAGS@
+SSH_INTERCEPTOR_ETHER_OBJS = @SSH_INTERCEPTOR_ETHER_OBJS@
+SSH_INTERCEPTOR_KERNEL_TARGETS = @SSH_INTERCEPTOR_KERNEL_TARGETS@
+SSH_INTERCEPTOR_MACHINE_DIR = @SSH_INTERCEPTOR_MACHINE_DIR@
+SSH_INTERCEPTOR_MACHINE_SUBDIR = @SSH_INTERCEPTOR_MACHINE_SUBDIR@
+SSH_INTERCEPTOR_NONETHER_OBJS = @SSH_INTERCEPTOR_NONETHER_OBJS@
+SSH_INTERCEPTOR_OBJS = @SSH_INTERCEPTOR_OBJS@
+SSH_INTERCEPTOR_SYMCHECK = @SSH_INTERCEPTOR_SYMCHECK@
+SSH_INTERCEPTOR_TARGETS = @SSH_INTERCEPTOR_TARGETS@
+SSH_IPM_MACHINE_OBJS = @SSH_IPM_MACHINE_OBJS@
+SSH_KB_LINUX_CONFIG_HEADER = @SSH_KB_LINUX_CONFIG_HEADER@
+SSH_KB_LINUX_KERNEL_INCLUDE = @SSH_KB_LINUX_KERNEL_INCLUDE@
+THREAD_OBJS = @THREAD_OBJS@
+THREAD_SYSTEM_OBJS = @THREAD_SYSTEM_OBJS@
+VERSION = @VERSION@
+
+public_headers =  
+private_headers =  
+
+#
+# lib/sshutil/tests Makefile.am
+#
+# Author: Tatu Ylonen <ylo@ssh.fi>
+#
+#  Copyright:
+#          Copyright (c) 2002, 2003, 2006 SFNT Finland Oy.
+#               All rights reserved
+#
+
+AUTOMAKE_OPTIONS = 1.0 foreign dist-zip no-dependencies
+WINCONF_OPTIONS = maintainer=mtr@ssh.com,kivinen@ssh.com
+
+INCLUDES = -I$(srcdir)/..                       -I$(top_srcdir)/lib/zlib                -I$(top_srcdir)/lib/sshcrypto   	-I$(top_srcdir)  -I$(top_srcdir)/lib/sshutil/sshcore  -I$(top_srcdir)/lib/sshutil/sshadt  -I$(top_srcdir)/lib/sshutil/ssheloop  -I$(top_srcdir)/lib/sshutil/sshstrutil  -I$(top_srcdir)/lib/sshutil/sshfsm  -I$(top_srcdir)/lib/sshutil/sshstream  -I$(top_srcdir)/lib/sshutil/sshsysutil  -I$(top_srcdir)/lib/sshutil/sshnet  -I$(top_srcdir)/lib/sshutil/sshmisc  -I$(top_srcdir)/lib/sshutil/sshaudit  -I$(top_srcdir)/lib/sshutil/sshpacketstream  -I$(top_srcdir)/lib/sshutil/sshtestutil 
+
+
+LDADD = ../libsshutil.a                 ../../zlib/libz.a       	$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a $(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a $(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a $(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a $(top_builddir)/lib/sshutil/sshnet/libsshnet.a $(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a $(top_builddir)/lib/sshutil/sshstream/libsshstream.a $(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a $(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a $(top_builddir)/lib/sshutil/ssheloop/libssheloop.a $(top_builddir)/lib/sshutil/sshadt/libsshadt.a $(top_builddir)/lib/sshutil/sshcore/libsshcore.a 
+
+
+EXTRA_DIST =  	t-packet-test1.c		t-packet-test2.c		t-packet-test3.c		t-packet-test4.c	
+
+
+TESTS_LIGHT =  	t-globals		t-malloc		t-sshstr	        t-time                  t-addr                  t-addrencode            t-debugwrite            t-dsprintf              t-encode                t-eprintf               t-esnprintf             t-eventloop             t-fsm                   t-getput                t-inet_ntoa             t-replace               t-snprintf              t-snprintf2     	t-renderer	        t-sshutf8               t-threads               t-threadedmbox          t-url           	t-audit		        t-regex                 t-fingerprint           t-udp                   t-crc32                 t-buffer                t-miscstring            t-streampair            t-socks                 t-localstream   	t-icmp-util     	t-netconfig
+
+
+TESTS = $(TESTS_LIGHT)  	t-adt			t-timeout               t-operation     	t-packet		t-dns           	t-resolver	        t-stream                t-timemeasure   	t-obstack
+
+
+TESTS_LIGHT_windelta =  	-t-malloc		-t-udp			-t-replace		-t-inet_ntoa    	-t-globals      	-t-netconfig
+
+
+EXTRA_PROGRAMS =          t-decay                         t-base64                        t-debug                         t-c64                           t-ipaddr-print                  t-zlib                          t-tcpc                          t-udpc                          t-localstreamclient             t-localstreamserver             t-l2tp                          t-randspeed             	t-messenger			t-audit-format			t-netevent              	t-netmac                	$(TESTS)
+
+
+EXTRA_PROGRAMS_windelta =  	-t-l2tp           	-t-netevent       	-t-netmac
+
+
+t_debugwrite_PLATFORMS = win32 x64 win32vista x64vista win32win7 x64win7
+
+t_localstream_PLATFORMS = win32 x64 win32vista x64vista win32win7 x64win7
+t_localstreamclient_PLATFORMS = win32 x64 win32vista x64vista win32win7 x64win7
+t_localstreamserver_PLATFORMS = win32 x64 win32vista x64vista win32win7 x64win7
+
+t_eventloop_SOURCES = t-eventloop.c eventloop_perf.c
+noinst_HEADERS = $(public_headers) $(private_headers)
+mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+CONFIG_HEADER = ../../../sshconf.h
+CONFIG_CLEAN_FILES = 
+
+DEFS = @DEFS@ -I. -I$(srcdir) -I../../..
+CPPFLAGS = @CPPFLAGS@
+LDFLAGS = @LDFLAGS@
+t_decay_SOURCES = t-decay.c
+t_decay_OBJECTS =  t-decay.o
+t_decay_LDADD = $(LDADD)
+t_decay_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_decay_LDFLAGS = 
+t_base64_SOURCES = t-base64.c
+t_base64_OBJECTS =  t-base64.o
+t_base64_LDADD = $(LDADD)
+t_base64_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_base64_LDFLAGS = 
+t_debug_SOURCES = t-debug.c
+t_debug_OBJECTS =  t-debug.o
+t_debug_LDADD = $(LDADD)
+t_debug_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_debug_LDFLAGS = 
+t_c64_SOURCES = t-c64.c
+t_c64_OBJECTS =  t-c64.o
+t_c64_LDADD = $(LDADD)
+t_c64_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_c64_LDFLAGS = 
+t_ipaddr_print_SOURCES = t-ipaddr-print.c
+t_ipaddr_print_OBJECTS =  t-ipaddr-print.o
+t_ipaddr_print_LDADD = $(LDADD)
+t_ipaddr_print_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_ipaddr_print_LDFLAGS = 
+t_zlib_SOURCES = t-zlib.c
+t_zlib_OBJECTS =  t-zlib.o
+t_zlib_LDADD = $(LDADD)
+t_zlib_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_zlib_LDFLAGS = 
+t_tcpc_SOURCES = t-tcpc.c
+t_tcpc_OBJECTS =  t-tcpc.o
+t_tcpc_LDADD = $(LDADD)
+t_tcpc_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_tcpc_LDFLAGS = 
+t_udpc_SOURCES = t-udpc.c
+t_udpc_OBJECTS =  t-udpc.o
+t_udpc_LDADD = $(LDADD)
+t_udpc_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_udpc_LDFLAGS = 
+t_localstreamclient_SOURCES = t-localstreamclient.c
+t_localstreamclient_OBJECTS =  t-localstreamclient.o
+t_localstreamclient_LDADD = $(LDADD)
+t_localstreamclient_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_localstreamclient_LDFLAGS = 
+t_localstreamserver_SOURCES = t-localstreamserver.c
+t_localstreamserver_OBJECTS =  t-localstreamserver.o
+t_localstreamserver_LDADD = $(LDADD)
+t_localstreamserver_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_localstreamserver_LDFLAGS = 
+t_l2tp_SOURCES = t-l2tp.c
+t_l2tp_OBJECTS =  t-l2tp.o
+t_l2tp_LDADD = $(LDADD)
+t_l2tp_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_l2tp_LDFLAGS = 
+t_randspeed_SOURCES = t-randspeed.c
+t_randspeed_OBJECTS =  t-randspeed.o
+t_randspeed_LDADD = $(LDADD)
+t_randspeed_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_randspeed_LDFLAGS = 
+t_messenger_SOURCES = t-messenger.c
+t_messenger_OBJECTS =  t-messenger.o
+t_messenger_LDADD = $(LDADD)
+t_messenger_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_messenger_LDFLAGS = 
+t_audit_format_SOURCES = t-audit-format.c
+t_audit_format_OBJECTS =  t-audit-format.o
+t_audit_format_LDADD = $(LDADD)
+t_audit_format_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_audit_format_LDFLAGS = 
+t_netevent_SOURCES = t-netevent.c
+t_netevent_OBJECTS =  t-netevent.o
+t_netevent_LDADD = $(LDADD)
+t_netevent_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_netevent_LDFLAGS = 
+t_netmac_SOURCES = t-netmac.c
+t_netmac_OBJECTS =  t-netmac.o
+t_netmac_LDADD = $(LDADD)
+t_netmac_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_netmac_LDFLAGS = 
+t_globals_SOURCES = t-globals.c
+t_globals_OBJECTS =  t-globals.o
+t_globals_LDADD = $(LDADD)
+t_globals_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_globals_LDFLAGS = 
+t_malloc_SOURCES = t-malloc.c
+t_malloc_OBJECTS =  t-malloc.o
+t_malloc_LDADD = $(LDADD)
+t_malloc_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_malloc_LDFLAGS = 
+t_sshstr_SOURCES = t-sshstr.c
+t_sshstr_OBJECTS =  t-sshstr.o
+t_sshstr_LDADD = $(LDADD)
+t_sshstr_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_sshstr_LDFLAGS = 
+t_time_SOURCES = t-time.c
+t_time_OBJECTS =  t-time.o
+t_time_LDADD = $(LDADD)
+t_time_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_time_LDFLAGS = 
+t_addr_SOURCES = t-addr.c
+t_addr_OBJECTS =  t-addr.o
+t_addr_LDADD = $(LDADD)
+t_addr_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_addr_LDFLAGS = 
+t_addrencode_SOURCES = t-addrencode.c
+t_addrencode_OBJECTS =  t-addrencode.o
+t_addrencode_LDADD = $(LDADD)
+t_addrencode_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_addrencode_LDFLAGS = 
+t_debugwrite_SOURCES = t-debugwrite.c
+t_debugwrite_OBJECTS =  t-debugwrite.o
+t_debugwrite_LDADD = $(LDADD)
+t_debugwrite_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_debugwrite_LDFLAGS = 
+t_dsprintf_SOURCES = t-dsprintf.c
+t_dsprintf_OBJECTS =  t-dsprintf.o
+t_dsprintf_LDADD = $(LDADD)
+t_dsprintf_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_dsprintf_LDFLAGS = 
+t_encode_SOURCES = t-encode.c
+t_encode_OBJECTS =  t-encode.o
+t_encode_LDADD = $(LDADD)
+t_encode_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_encode_LDFLAGS = 
+t_eprintf_SOURCES = t-eprintf.c
+t_eprintf_OBJECTS =  t-eprintf.o
+t_eprintf_LDADD = $(LDADD)
+t_eprintf_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_eprintf_LDFLAGS = 
+t_esnprintf_SOURCES = t-esnprintf.c
+t_esnprintf_OBJECTS =  t-esnprintf.o
+t_esnprintf_LDADD = $(LDADD)
+t_esnprintf_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_esnprintf_LDFLAGS = 
+t_eventloop_OBJECTS =  t-eventloop.o eventloop_perf.o
+t_eventloop_LDADD = $(LDADD)
+t_eventloop_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_eventloop_LDFLAGS = 
+t_fsm_SOURCES = t-fsm.c
+t_fsm_OBJECTS =  t-fsm.o
+t_fsm_LDADD = $(LDADD)
+t_fsm_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_fsm_LDFLAGS = 
+t_getput_SOURCES = t-getput.c
+t_getput_OBJECTS =  t-getput.o
+t_getput_LDADD = $(LDADD)
+t_getput_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_getput_LDFLAGS = 
+t_inet_ntoa_SOURCES = t-inet_ntoa.c
+t_inet_ntoa_OBJECTS =  t-inet_ntoa.o
+t_inet_ntoa_LDADD = $(LDADD)
+t_inet_ntoa_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_inet_ntoa_LDFLAGS = 
+t_replace_SOURCES = t-replace.c
+t_replace_OBJECTS =  t-replace.o
+t_replace_LDADD = $(LDADD)
+t_replace_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_replace_LDFLAGS = 
+t_snprintf_SOURCES = t-snprintf.c
+t_snprintf_OBJECTS =  t-snprintf.o
+t_snprintf_LDADD = $(LDADD)
+t_snprintf_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_snprintf_LDFLAGS = 
+t_snprintf2_SOURCES = t-snprintf2.c
+t_snprintf2_OBJECTS =  t-snprintf2.o
+t_snprintf2_LDADD = $(LDADD)
+t_snprintf2_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_snprintf2_LDFLAGS = 
+t_renderer_SOURCES = t-renderer.c
+t_renderer_OBJECTS =  t-renderer.o
+t_renderer_LDADD = $(LDADD)
+t_renderer_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_renderer_LDFLAGS = 
+t_sshutf8_SOURCES = t-sshutf8.c
+t_sshutf8_OBJECTS =  t-sshutf8.o
+t_sshutf8_LDADD = $(LDADD)
+t_sshutf8_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_sshutf8_LDFLAGS = 
+t_threads_SOURCES = t-threads.c
+t_threads_OBJECTS =  t-threads.o
+t_threads_LDADD = $(LDADD)
+t_threads_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_threads_LDFLAGS = 
+t_threadedmbox_SOURCES = t-threadedmbox.c
+t_threadedmbox_OBJECTS =  t-threadedmbox.o
+t_threadedmbox_LDADD = $(LDADD)
+t_threadedmbox_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_threadedmbox_LDFLAGS = 
+t_url_SOURCES = t-url.c
+t_url_OBJECTS =  t-url.o
+t_url_LDADD = $(LDADD)
+t_url_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_url_LDFLAGS = 
+t_audit_SOURCES = t-audit.c
+t_audit_OBJECTS =  t-audit.o
+t_audit_LDADD = $(LDADD)
+t_audit_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_audit_LDFLAGS = 
+t_regex_SOURCES = t-regex.c
+t_regex_OBJECTS =  t-regex.o
+t_regex_LDADD = $(LDADD)
+t_regex_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_regex_LDFLAGS = 
+t_fingerprint_SOURCES = t-fingerprint.c
+t_fingerprint_OBJECTS =  t-fingerprint.o
+t_fingerprint_LDADD = $(LDADD)
+t_fingerprint_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_fingerprint_LDFLAGS = 
+t_udp_SOURCES = t-udp.c
+t_udp_OBJECTS =  t-udp.o
+t_udp_LDADD = $(LDADD)
+t_udp_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_udp_LDFLAGS = 
+t_crc32_SOURCES = t-crc32.c
+t_crc32_OBJECTS =  t-crc32.o
+t_crc32_LDADD = $(LDADD)
+t_crc32_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_crc32_LDFLAGS = 
+t_buffer_SOURCES = t-buffer.c
+t_buffer_OBJECTS =  t-buffer.o
+t_buffer_LDADD = $(LDADD)
+t_buffer_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_buffer_LDFLAGS = 
+t_miscstring_SOURCES = t-miscstring.c
+t_miscstring_OBJECTS =  t-miscstring.o
+t_miscstring_LDADD = $(LDADD)
+t_miscstring_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_miscstring_LDFLAGS = 
+t_streampair_SOURCES = t-streampair.c
+t_streampair_OBJECTS =  t-streampair.o
+t_streampair_LDADD = $(LDADD)
+t_streampair_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_streampair_LDFLAGS = 
+t_socks_SOURCES = t-socks.c
+t_socks_OBJECTS =  t-socks.o
+t_socks_LDADD = $(LDADD)
+t_socks_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_socks_LDFLAGS = 
+t_localstream_SOURCES = t-localstream.c
+t_localstream_OBJECTS =  t-localstream.o
+t_localstream_LDADD = $(LDADD)
+t_localstream_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_localstream_LDFLAGS = 
+t_icmp_util_SOURCES = t-icmp-util.c
+t_icmp_util_OBJECTS =  t-icmp-util.o
+t_icmp_util_LDADD = $(LDADD)
+t_icmp_util_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_icmp_util_LDFLAGS = 
+t_netconfig_SOURCES = t-netconfig.c
+t_netconfig_OBJECTS =  t-netconfig.o
+t_netconfig_LDADD = $(LDADD)
+t_netconfig_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_netconfig_LDFLAGS = 
+t_adt_SOURCES = t-adt.c
+t_adt_OBJECTS =  t-adt.o
+t_adt_LDADD = $(LDADD)
+t_adt_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_adt_LDFLAGS = 
+t_timeout_SOURCES = t-timeout.c
+t_timeout_OBJECTS =  t-timeout.o
+t_timeout_LDADD = $(LDADD)
+t_timeout_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_timeout_LDFLAGS = 
+t_operation_SOURCES = t-operation.c
+t_operation_OBJECTS =  t-operation.o
+t_operation_LDADD = $(LDADD)
+t_operation_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_operation_LDFLAGS = 
+t_packet_SOURCES = t-packet.c
+t_packet_OBJECTS =  t-packet.o
+t_packet_LDADD = $(LDADD)
+t_packet_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_packet_LDFLAGS = 
+t_dns_SOURCES = t-dns.c
+t_dns_OBJECTS =  t-dns.o
+t_dns_LDADD = $(LDADD)
+t_dns_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_dns_LDFLAGS = 
+t_resolver_SOURCES = t-resolver.c
+t_resolver_OBJECTS =  t-resolver.o
+t_resolver_LDADD = $(LDADD)
+t_resolver_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_resolver_LDFLAGS = 
+t_stream_SOURCES = t-stream.c
+t_stream_OBJECTS =  t-stream.o
+t_stream_LDADD = $(LDADD)
+t_stream_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_stream_LDFLAGS = 
+t_timemeasure_SOURCES = t-timemeasure.c
+t_timemeasure_OBJECTS =  t-timemeasure.o
+t_timemeasure_LDADD = $(LDADD)
+t_timemeasure_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_timemeasure_LDFLAGS = 
+t_obstack_SOURCES = t-obstack.c
+t_obstack_OBJECTS =  t-obstack.o
+t_obstack_LDADD = $(LDADD)
+t_obstack_DEPENDENCIES =  ../libsshutil.a ../../zlib/libz.a \
+$(top_builddir)/lib/sshutil/sshtestutil/libsshtestutil.a \
+$(top_builddir)/lib/sshutil/sshpacketstream/libsshpacketstream.a \
+$(top_builddir)/lib/sshutil/sshaudit/libsshaudit.a \
+$(top_builddir)/lib/sshutil/sshmisc/libsshmisc.a \
+$(top_builddir)/lib/sshutil/sshnet/libsshnet.a \
+$(top_builddir)/lib/sshutil/sshsysutil/libsshsysutil.a \
+$(top_builddir)/lib/sshutil/sshstream/libsshstream.a \
+$(top_builddir)/lib/sshutil/sshfsm/libsshfsm.a \
+$(top_builddir)/lib/sshutil/sshstrutil/libsshstrutil.a \
+$(top_builddir)/lib/sshutil/ssheloop/libssheloop.a \
+$(top_builddir)/lib/sshutil/sshadt/libsshadt.a \
+$(top_builddir)/lib/sshutil/sshcore/libsshcore.a
+t_obstack_LDFLAGS = 
+CFLAGS = @CFLAGS@
+COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
+HEADERS =  $(noinst_HEADERS)
+
+DIST_COMMON =  Makefile.am Makefile.in
+
+
+DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+
+TAR = tar
+GZIP_ENV = --best
+SOURCES = t-decay.c t-base64.c t-debug.c t-c64.c t-ipaddr-print.c t-zlib.c t-tcpc.c t-udpc.c t-localstreamclient.c t-localstreamserver.c t-l2tp.c t-randspeed.c t-messenger.c t-audit-format.c t-netevent.c t-netmac.c t-globals.c t-malloc.c t-sshstr.c t-time.c t-addr.c t-addrencode.c t-debugwrite.c t-dsprintf.c t-encode.c t-eprintf.c t-esnprintf.c $(t_eventloop_SOURCES) t-fsm.c t-getput.c t-inet_ntoa.c t-replace.c t-snprintf.c t-snprintf2.c t-renderer.c t-sshutf8.c t-threads.c t-threadedmbox.c t-url.c t-audit.c t-regex.c t-fingerprint.c t-udp.c t-crc32.c t-buffer.c t-miscstring.c t-streampair.c t-socks.c t-localstream.c t-icmp-util.c t-netconfig.c t-adt.c t-timeout.c t-operation.c t-packet.c t-dns.c t-resolver.c t-stream.c t-timemeasure.c t-obstack.c
+OBJECTS = t-decay.o t-base64.o t-debug.o t-c64.o t-ipaddr-print.o t-zlib.o t-tcpc.o t-udpc.o t-localstreamclient.o t-localstreamserver.o t-l2tp.o t-randspeed.o t-messenger.o t-audit-format.o t-netevent.o t-netmac.o t-globals.o t-malloc.o t-sshstr.o t-time.o t-addr.o t-addrencode.o t-debugwrite.o t-dsprintf.o t-encode.o t-eprintf.o t-esnprintf.o $(t_eventloop_OBJECTS) t-fsm.o t-getput.o t-inet_ntoa.o t-replace.o t-snprintf.o t-snprintf2.o t-renderer.o t-sshutf8.o t-threads.o t-threadedmbox.o t-url.o t-audit.o t-regex.o t-fingerprint.o t-udp.o t-crc32.o t-buffer.o t-miscstring.o t-streampair.o t-socks.o t-localstream.o t-icmp-util.o t-netconfig.o t-adt.o t-timeout.o t-operation.o t-packet.o t-dns.o t-resolver.o t-stream.o t-timemeasure.o t-obstack.o
+
+all: all-redirect
+.SUFFIXES:
+.SUFFIXES: .S .c .o .s
+$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) $(top_srcdir)/Makefile.libextra $(top_srcdir)/Makefile.grandlib_provider
+	cd $(top_srcdir) && $(AUTOMAKE) --foreign lib/sshutil/tests/Makefile
+
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) \
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+
+.c.o:
+	$(COMPILE) -c $<
+
+.s.o:
+	$(COMPILE) -c $<
+
+.S.o:
+	$(COMPILE) -c $<
+
+mostlyclean-compile:
+	-rm -f *.o core *.core
+
+clean-compile:
+
+distclean-compile:
+	-rm -f *.tab.c
+
+maintainer-clean-compile:
+
+t-decay: $(t_decay_OBJECTS) $(t_decay_DEPENDENCIES)
+	@rm -f t-decay
+	$(LINK) $(t_decay_LDFLAGS) $(t_decay_OBJECTS) $(t_decay_LDADD) $(LIBS)
+
+t-base64: $(t_base64_OBJECTS) $(t_base64_DEPENDENCIES)
+	@rm -f t-base64
+	$(LINK) $(t_base64_LDFLAGS) $(t_base64_OBJECTS) $(t_base64_LDADD) $(LIBS)
+
+t-debug: $(t_debug_OBJECTS) $(t_debug_DEPENDENCIES)
+	@rm -f t-debug
+	$(LINK) $(t_debug_LDFLAGS) $(t_debug_OBJECTS) $(t_debug_LDADD) $(LIBS)
+
+t-c64: $(t_c64_OBJECTS) $(t_c64_DEPENDENCIES)
+	@rm -f t-c64
+	$(LINK) $(t_c64_LDFLAGS) $(t_c64_OBJECTS) $(t_c64_LDADD) $(LIBS)
+
+t-ipaddr-print: $(t_ipaddr_print_OBJECTS) $(t_ipaddr_print_DEPENDENCIES)
+	@rm -f t-ipaddr-print
+	$(LINK) $(t_ipaddr_print_LDFLAGS) $(t_ipaddr_print_OBJECTS) $(t_ipaddr_print_LDADD) $(LIBS)
+
+t-zlib: $(t_zlib_OBJECTS) $(t_zlib_DEPENDENCIES)
+	@rm -f t-zlib
+	$(LINK) $(t_zlib_LDFLAGS) $(t_zlib_OBJECTS) $(t_zlib_LDADD) $(LIBS)
+
+t-tcpc: $(t_tcpc_OBJECTS) $(t_tcpc_DEPENDENCIES)
+	@rm -f t-tcpc
+	$(LINK) $(t_tcpc_LDFLAGS) $(t_tcpc_OBJECTS) $(t_tcpc_LDADD) $(LIBS)
+
+t-udpc: $(t_udpc_OBJECTS) $(t_udpc_DEPENDENCIES)
+	@rm -f t-udpc
+	$(LINK) $(t_udpc_LDFLAGS) $(t_udpc_OBJECTS) $(t_udpc_LDADD) $(LIBS)
+
+t-localstreamclient: $(t_localstreamclient_OBJECTS) $(t_localstreamclient_DEPENDENCIES)
+	@rm -f t-localstreamclient
+	$(LINK) $(t_localstreamclient_LDFLAGS) $(t_localstreamclient_OBJECTS) $(t_localstreamclient_LDADD) $(LIBS)
+
+t-localstreamserver: $(t_localstreamserver_OBJECTS) $(t_localstreamserver_DEPENDENCIES)
+	@rm -f t-localstreamserver
+	$(LINK) $(t_localstreamserver_LDFLAGS) $(t_localstreamserver_OBJECTS) $(t_localstreamserver_LDADD) $(LIBS)
+
+t-l2tp: $(t_l2tp_OBJECTS) $(t_l2tp_DEPENDENCIES)
+	@rm -f t-l2tp
+	$(LINK) $(t_l2tp_LDFLAGS) $(t_l2tp_OBJECTS) $(t_l2tp_LDADD) $(LIBS)
+
+t-randspeed: $(t_randspeed_OBJECTS) $(t_randspeed_DEPENDENCIES)
+	@rm -f t-randspeed
+	$(LINK) $(t_randspeed_LDFLAGS) $(t_randspeed_OBJECTS) $(t_randspeed_LDADD) $(LIBS)
+
+t-messenger: $(t_messenger_OBJECTS) $(t_messenger_DEPENDENCIES)
+	@rm -f t-messenger
+	$(LINK) $(t_messenger_LDFLAGS) $(t_messenger_OBJECTS) $(t_messenger_LDADD) $(LIBS)
+
+t-audit-format: $(t_audit_format_OBJECTS) $(t_audit_format_DEPENDENCIES)
+	@rm -f t-audit-format
+	$(LINK) $(t_audit_format_LDFLAGS) $(t_audit_format_OBJECTS) $(t_audit_format_LDADD) $(LIBS)
+
+t-netevent: $(t_netevent_OBJECTS) $(t_netevent_DEPENDENCIES)
+	@rm -f t-netevent
+	$(LINK) $(t_netevent_LDFLAGS) $(t_netevent_OBJECTS) $(t_netevent_LDADD) $(LIBS)
+
+t-netmac: $(t_netmac_OBJECTS) $(t_netmac_DEPENDENCIES)
+	@rm -f t-netmac
+	$(LINK) $(t_netmac_LDFLAGS) $(t_netmac_OBJECTS) $(t_netmac_LDADD) $(LIBS)
+
+t-globals: $(t_globals_OBJECTS) $(t_globals_DEPENDENCIES)
+	@rm -f t-globals
+	$(LINK) $(t_globals_LDFLAGS) $(t_globals_OBJECTS) $(t_globals_LDADD) $(LIBS)
+
+t-malloc: $(t_malloc_OBJECTS) $(t_malloc_DEPENDENCIES)
+	@rm -f t-malloc
+	$(LINK) $(t_malloc_LDFLAGS) $(t_malloc_OBJECTS) $(t_malloc_LDADD) $(LIBS)
+
+t-sshstr: $(t_sshstr_OBJECTS) $(t_sshstr_DEPENDENCIES)
+	@rm -f t-sshstr
+	$(LINK) $(t_sshstr_LDFLAGS) $(t_sshstr_OBJECTS) $(t_sshstr_LDADD) $(LIBS)
+
+t-time: $(t_time_OBJECTS) $(t_time_DEPENDENCIES)
+	@rm -f t-time
+	$(LINK) $(t_time_LDFLAGS) $(t_time_OBJECTS) $(t_time_LDADD) $(LIBS)
+
+t-addr: $(t_addr_OBJECTS) $(t_addr_DEPENDENCIES)
+	@rm -f t-addr
+	$(LINK) $(t_addr_LDFLAGS) $(t_addr_OBJECTS) $(t_addr_LDADD) $(LIBS)
+
+t-addrencode: $(t_addrencode_OBJECTS) $(t_addrencode_DEPENDENCIES)
+	@rm -f t-addrencode
+	$(LINK) $(t_addrencode_LDFLAGS) $(t_addrencode_OBJECTS) $(t_addrencode_LDADD) $(LIBS)
+
+t-debugwrite: $(t_debugwrite_OBJECTS) $(t_debugwrite_DEPENDENCIES)
+	@rm -f t-debugwrite
+	$(LINK) $(t_debugwrite_LDFLAGS) $(t_debugwrite_OBJECTS) $(t_debugwrite_LDADD) $(LIBS)
+
+t-dsprintf: $(t_dsprintf_OBJECTS) $(t_dsprintf_DEPENDENCIES)
+	@rm -f t-dsprintf
+	$(LINK) $(t_dsprintf_LDFLAGS) $(t_dsprintf_OBJECTS) $(t_dsprintf_LDADD) $(LIBS)
+
+t-encode: $(t_encode_OBJECTS) $(t_encode_DEPENDENCIES)
+	@rm -f t-encode
+	$(LINK) $(t_encode_LDFLAGS) $(t_encode_OBJECTS) $(t_encode_LDADD) $(LIBS)
+
+t-eprintf: $(t_eprintf_OBJECTS) $(t_eprintf_DEPENDENCIES)
+	@rm -f t-eprintf
+	$(LINK) $(t_eprintf_LDFLAGS) $(t_eprintf_OBJECTS) $(t_eprintf_LDADD) $(LIBS)
+
+t-esnprintf: $(t_esnprintf_OBJECTS) $(t_esnprintf_DEPENDENCIES)
+	@rm -f t-esnprintf
+	$(LINK) $(t_esnprintf_LDFLAGS) $(t_esnprintf_OBJECTS) $(t_esnprintf_LDADD) $(LIBS)
+
+t-eventloop: $(t_eventloop_OBJECTS) $(t_eventloop_DEPENDENCIES)
+	@rm -f t-eventloop
+	$(LINK) $(t_eventloop_LDFLAGS) $(t_eventloop_OBJECTS) $(t_eventloop_LDADD) $(LIBS)
+
+t-fsm: $(t_fsm_OBJECTS) $(t_fsm_DEPENDENCIES)
+	@rm -f t-fsm
+	$(LINK) $(t_fsm_LDFLAGS) $(t_fsm_OBJECTS) $(t_fsm_LDADD) $(LIBS)
+
+t-getput: $(t_getput_OBJECTS) $(t_getput_DEPENDENCIES)
+	@rm -f t-getput
+	$(LINK) $(t_getput_LDFLAGS) $(t_getput_OBJECTS) $(t_getput_LDADD) $(LIBS)
+
+t-inet_ntoa: $(t_inet_ntoa_OBJECTS) $(t_inet_ntoa_DEPENDENCIES)
+	@rm -f t-inet_ntoa
+	$(LINK) $(t_inet_ntoa_LDFLAGS) $(t_inet_ntoa_OBJECTS) $(t_inet_ntoa_LDADD) $(LIBS)
+
+t-replace: $(t_replace_OBJECTS) $(t_replace_DEPENDENCIES)
+	@rm -f t-replace
+	$(LINK) $(t_replace_LDFLAGS) $(t_replace_OBJECTS) $(t_replace_LDADD) $(LIBS)
+
+t-snprintf: $(t_snprintf_OBJECTS) $(t_snprintf_DEPENDENCIES)
+	@rm -f t-snprintf
+	$(LINK) $(t_snprintf_LDFLAGS) $(t_snprintf_OBJECTS) $(t_snprintf_LDADD) $(LIBS)
+
+t-snprintf2: $(t_snprintf2_OBJECTS) $(t_snprintf2_DEPENDENCIES)
+	@rm -f t-snprintf2
+	$(LINK) $(t_snprintf2_LDFLAGS) $(t_snprintf2_OBJECTS) $(t_snprintf2_LDADD) $(LIBS)
+
+t-renderer: $(t_renderer_OBJECTS) $(t_renderer_DEPENDENCIES)
+	@rm -f t-renderer
+	$(LINK) $(t_renderer_LDFLAGS) $(t_renderer_OBJECTS) $(t_renderer_LDADD) $(LIBS)
+
+t-sshutf8: $(t_sshutf8_OBJECTS) $(t_sshutf8_DEPENDENCIES)
+	@rm -f t-sshutf8
+	$(LINK) $(t_sshutf8_LDFLAGS) $(t_sshutf8_OBJECTS) $(t_sshutf8_LDADD) $(LIBS)
+
+t-threads: $(t_threads_OBJECTS) $(t_threads_DEPENDENCIES)
+	@rm -f t-threads
+	$(LINK) $(t_threads_LDFLAGS) $(t_threads_OBJECTS) $(t_threads_LDADD) $(LIBS)
+
+t-threadedmbox: $(t_threadedmbox_OBJECTS) $(t_threadedmbox_DEPENDENCIES)
+	@rm -f t-threadedmbox
+	$(LINK) $(t_threadedmbox_LDFLAGS) $(t_threadedmbox_OBJECTS) $(t_threadedmbox_LDADD) $(LIBS)
+
+t-url: $(t_url_OBJECTS) $(t_url_DEPENDENCIES)
+	@rm -f t-url
+	$(LINK) $(t_url_LDFLAGS) $(t_url_OBJECTS) $(t_url_LDADD) $(LIBS)
+
+t-audit: $(t_audit_OBJECTS) $(t_audit_DEPENDENCIES)
+	@rm -f t-audit
+	$(LINK) $(t_audit_LDFLAGS) $(t_audit_OBJECTS) $(t_audit_LDADD) $(LIBS)
+
+t-regex: $(t_regex_OBJECTS) $(t_regex_DEPENDENCIES)
+	@rm -f t-regex
+	$(LINK) $(t_regex_LDFLAGS) $(t_regex_OBJECTS) $(t_regex_LDADD) $(LIBS)
+
+t-fingerprint: $(t_fingerprint_OBJECTS) $(t_fingerprint_DEPENDENCIES)
+	@rm -f t-fingerprint
+	$(LINK) $(t_fingerprint_LDFLAGS) $(t_fingerprint_OBJECTS) $(t_fingerprint_LDADD) $(LIBS)
+
+t-udp: $(t_udp_OBJECTS) $(t_udp_DEPENDENCIES)
+	@rm -f t-udp
+	$(LINK) $(t_udp_LDFLAGS) $(t_udp_OBJECTS) $(t_udp_LDADD) $(LIBS)
+
+t-crc32: $(t_crc32_OBJECTS) $(t_crc32_DEPENDENCIES)
+	@rm -f t-crc32
+	$(LINK) $(t_crc32_LDFLAGS) $(t_crc32_OBJECTS) $(t_crc32_LDADD) $(LIBS)
+
+t-buffer: $(t_buffer_OBJECTS) $(t_buffer_DEPENDENCIES)
+	@rm -f t-buffer
+	$(LINK) $(t_buffer_LDFLAGS) $(t_buffer_OBJECTS) $(t_buffer_LDADD) $(LIBS)
+
+t-miscstring: $(t_miscstring_OBJECTS) $(t_miscstring_DEPENDENCIES)
+	@rm -f t-miscstring
+	$(LINK) $(t_miscstring_LDFLAGS) $(t_miscstring_OBJECTS) $(t_miscstring_LDADD) $(LIBS)
+
+t-streampair: $(t_streampair_OBJECTS) $(t_streampair_DEPENDENCIES)
+	@rm -f t-streampair
+	$(LINK) $(t_streampair_LDFLAGS) $(t_streampair_OBJECTS) $(t_streampair_LDADD) $(LIBS)
+
+t-socks: $(t_socks_OBJECTS) $(t_socks_DEPENDENCIES)
+	@rm -f t-socks
+	$(LINK) $(t_socks_LDFLAGS) $(t_socks_OBJECTS) $(t_socks_LDADD) $(LIBS)
+
+t-localstream: $(t_localstream_OBJECTS) $(t_localstream_DEPENDENCIES)
+	@rm -f t-localstream
+	$(LINK) $(t_localstream_LDFLAGS) $(t_localstream_OBJECTS) $(t_localstream_LDADD) $(LIBS)
+
+t-icmp-util: $(t_icmp_util_OBJECTS) $(t_icmp_util_DEPENDENCIES)
+	@rm -f t-icmp-util
+	$(LINK) $(t_icmp_util_LDFLAGS) $(t_icmp_util_OBJECTS) $(t_icmp_util_LDADD) $(LIBS)
+
+t-netconfig: $(t_netconfig_OBJECTS) $(t_netconfig_DEPENDENCIES)
+	@rm -f t-netconfig
+	$(LINK) $(t_netconfig_LDFLAGS) $(t_netconfig_OBJECTS) $(t_netconfig_LDADD) $(LIBS)
+
+t-adt: $(t_adt_OBJECTS) $(t_adt_DEPENDENCIES)
+	@rm -f t-adt
+	$(LINK) $(t_adt_LDFLAGS) $(t_adt_OBJECTS) $(t_adt_LDADD) $(LIBS)
+
+t-timeout: $(t_timeout_OBJECTS) $(t_timeout_DEPENDENCIES)
+	@rm -f t-timeout
+	$(LINK) $(t_timeout_LDFLAGS) $(t_timeout_OBJECTS) $(t_timeout_LDADD) $(LIBS)
+
+t-operation: $(t_operation_OBJECTS) $(t_operation_DEPENDENCIES)
+	@rm -f t-operation
+	$(LINK) $(t_operation_LDFLAGS) $(t_operation_OBJECTS) $(t_operation_LDADD) $(LIBS)
+
+t-packet: $(t_packet_OBJECTS) $(t_packet_DEPENDENCIES)
+	@rm -f t-packet
+	$(LINK) $(t_packet_LDFLAGS) $(t_packet_OBJECTS) $(t_packet_LDADD) $(LIBS)
+
+t-dns: $(t_dns_OBJECTS) $(t_dns_DEPENDENCIES)
+	@rm -f t-dns
+	$(LINK) $(t_dns_LDFLAGS) $(t_dns_OBJECTS) $(t_dns_LDADD) $(LIBS)
+
+t-resolver: $(t_resolver_OBJECTS) $(t_resolver_DEPENDENCIES)
+	@rm -f t-resolver
+	$(LINK) $(t_resolver_LDFLAGS) $(t_resolver_OBJECTS) $(t_resolver_LDADD) $(LIBS)
+
+t-stream: $(t_stream_OBJECTS) $(t_stream_DEPENDENCIES)
+	@rm -f t-stream
+	$(LINK) $(t_stream_LDFLAGS) $(t_stream_OBJECTS) $(t_stream_LDADD) $(LIBS)
+
+t-timemeasure: $(t_timemeasure_OBJECTS) $(t_timemeasure_DEPENDENCIES)
+	@rm -f t-timemeasure
+	$(LINK) $(t_timemeasure_LDFLAGS) $(t_timemeasure_OBJECTS) $(t_timemeasure_LDADD) $(LIBS)
+
+t-obstack: $(t_obstack_OBJECTS) $(t_obstack_DEPENDENCIES)
+	@rm -f t-obstack
+	$(LINK) $(t_obstack_LDFLAGS) $(t_obstack_OBJECTS) $(t_obstack_LDADD) $(LIBS)
+
+tags: TAGS
+
+ID: $(HEADERS) $(SOURCES) $(LISP)
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	here=`pwd` && cd $(srcdir) \
+	  && mkid -f$$here/ID $$unique $(LISP)
+
+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) $(LISP)
+	tags=; \
+	here=`pwd`; \
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
+	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags  $$unique $(LISP) -o $$here/TAGS)
+
+mostlyclean-tags:
+
+clean-tags:
+
+distclean-tags:
+	-rm -f TAGS ID
+
+maintainer-clean-tags:
+
+distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
+
+subdir = lib/sshutil/tests
+
+distdir: $(DISTFILES)
+	@for file in $(DISTFILES); do \
+	  d=$(srcdir); \
+	  if test -d $$d/$$file; then \
+	    cp -pr $$d/$$file $(distdir)/$$file; \
+	  else \
+	    test -f $(distdir)/$$file \
+	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
+	    || cp -p $$d/$$file $(distdir)/$$file || :; \
+	  fi; \
+	done
+check-TESTS: $(TESTS)
+	@failed=0; all=0; \
+	srcdir=$(srcdir); export srcdir; \
+	for tst in $(TESTS); do \
+	  if test -f $$tst; then dir=.; \
+	  else dir="$(srcdir)"; fi; \
+	  if $(TESTS_ENVIRONMENT) $$dir/$$tst; then \
+	    all=`expr $$all + 1`; \
+	    echo "PASS: $$tst"; \
+	  elif test $$? -ne 77; then \
+	    all=`expr $$all + 1`; \
+	    failed=`expr $$failed + 1`; \
+	    echo "FAIL: $$tst"; \
+	  fi; \
+	done; \
+	if test "$$failed" -eq 0; then \
+	  banner="All $$all tests passed"; \
+	else \
+	  banner="$$failed of $$all tests failed"; \
+	fi; \
+	dashes=`echo "$$banner" | sed s/./=/g`; \
+	echo "$$dashes"; \
+	echo "$$banner"; \
+	echo "$$dashes"; \
+	test "$$failed" -eq 0
+info-am:
+info: info-am
+dvi-am:
+dvi: dvi-am
+check-am: all-am
+	$(MAKE) $(AM_MAKEFLAGS) check-TESTS
+check: check-am
+installcheck-am:
+installcheck: installcheck-am
+install-exec-am:
+install-exec: install-exec-am
+
+install-data-am:
+install-data: install-data-am
+
+install-am: all-am
+	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+install: install-am
+uninstall-am:
+uninstall: uninstall-am
+all-am: Makefile $(HEADERS) all-local
+all-redirect: all-am
+install-strip:
+	$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install
+installdirs:
+
+
+mostlyclean-generic:
+
+distclean-generic:
+	-rm -f Makefile $(CONFIG_CLEAN_FILES)
+	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
+
+maintainer-clean-generic:
+mostlyclean-am:  mostlyclean-compile mostlyclean-tags \
+		mostlyclean-generic
+
+mostlyclean: mostlyclean-am
+
+clean-am:  clean-compile clean-tags clean-generic mostlyclean-am
+
+clean: clean-am
+
+distclean-am:  distclean-compile distclean-tags distclean-generic \
+		clean-am
+
+distclean: distclean-am
+
+maintainer-clean-am:  maintainer-clean-compile maintainer-clean-tags \
+		maintainer-clean-generic distclean-am
+	@echo "This command is intended for maintainers to use;"
+	@echo "it deletes files that may require special tools to rebuild."
+
+maintainer-clean: maintainer-clean-am
+
+.PHONY: mostlyclean-compile distclean-compile clean-compile \
+maintainer-clean-compile tags mostlyclean-tags distclean-tags \
+clean-tags maintainer-clean-tags distdir check-TESTS info-am info \
+dvi-am dvi check check-am installcheck-am installcheck install-exec-am \
+install-exec install-data-am install-data install-am install \
+uninstall-am uninstall all-local all-redirect all-am all installdirs \
+mostlyclean-generic distclean-generic clean-generic \
+maintainer-clean-generic clean mostlyclean distclean maintainer-clean
+
+
+grandlib:
+	@if test ! -f grandlib_objs; then touch grandlib_objs; fi
+
+make-makefile-includes : Makefile.includes
+
+Makefile.includes : Makefile
+	echo "# Generated file, do not edit" > Makefile.includes; \
+	targets=""; \
+        if test "X`pwd | grep ipsec/lib; true`" = X; then \
+	   targetdir="$(top_builddir)/include"; \
+        else \
+	   targetdir="$(top_builddir)/ipsec/include"; \
+        fi; \
+	(for f in $(public_headers); \
+	do \
+	  targets="$$targets ___$$targetdir/$$f"; \
+	done; \
+	echo "ALL_INCLUDES = $$targets") | sed 's/___/\\#	/g' | tr '#' '\012' >> Makefile.includes; \
+	echo 'all : $$(ALL_INCLUDES)' >> Makefile.includes; \
+	for f in $(public_headers); \
+	do \
+	  source=$(srcdir)/$$f; target=$$targetdir/$$f; \
+	  (echo "$$target : $$source"; \
+	   echo "	@ln $$source $$target </dev/null 2>/dev/null || (rm -f $$target; cp -p $$source $$target ; chmod a-w $$target;);";\
+	   echo;) >> Makefile.includes; \
+	done; \
+	echo "clean : " >> Makefile.includes; \
+	echo '	rm -f $$(ALL_INCLUDES)' >> Makefile.includes
+
+real-includes: make-makefile-includes
+	@$(MAKE) -f Makefile.includes
+
+local-includes :
+	@if test "$(public_headers)"; then $(MAKE) real-includes; fi
+
+all-local: local-includes
+
+.PHONY : includes local-includes real-includes make-makefile-includes clean-makefile-includes
+
+clean-generic : clean-makefile-includes
+
+clean-makefile-includes:
+	-rm -f Makefile.includes
+
+includes: local-includes
+	@for d in . $(SUBDIRS); \
+        do \
+	  if test "$$d" != "."; \
+          then \
+	    (cd $$d && $(MAKE) includes); \
+          fi; \
+        done
+
+echo-TESTS:
+	@echo $(TESTS)
+
+echo-TESTS_LIGHT:
+	@echo $(TESTS_LIGHT)
+
+grandlib : grandlib_objs
+
+grandlib_objs : Makefile
+	rm -f grandlib_objs; \
+	touch grandlib_objs; \
+	if test "x$(GRANDLIB_OBJECTS)" != "x" ; then \
+		for o in _ $(GRANDLIB_OBJECTS) ; \
+		do \
+		  test "$$o" != "_" && echo "$$o" >> grandlib_objs; \
+		done ;\
+	fi
+
+clean-generic: clean-grandlib
+
+clean-grandlib:
+	-rm -f grandlib_objs
+	-@if test "x$(EXTRA_PROGRAMS)" != "x"; then \
+	   echo rm -f $(EXTRA_PROGRAMS); \
+	   rm -f $(EXTRA_PROGRAMS); \
+	fi
+	-@if test "x$(CLEANFILES)" != "x"; then \
+	   echo rm -f $(CLEANFILES); \
+	   rm -f $(CLEANFILES); \
+	fi
+
+# EOF
+
+# Tell versions [3.59,3.63) of GNU make to not export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:

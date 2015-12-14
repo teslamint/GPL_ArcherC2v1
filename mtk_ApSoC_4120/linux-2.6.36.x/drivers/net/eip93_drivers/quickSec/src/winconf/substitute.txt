@@ -1,0 +1,263 @@
+SUBSTITUTE
+==========
+
+SUBSTITUTE is a text file processing utility. It processes input files
+and writes the result to standard output. Command syntax is as
+follows:
+
+  SUBSTITUTE [-cr] [file...]
+
+Input files are listed as arguments to the command. If no input files
+are specified then standard input is processed. Files are processed in
+the order they appear in the command line. A dash ('-') may appear on
+the command line instead of a file name which causes standard input to
+be processed at that point, as if it were a normal input file.
+
+Input files contain plain text, variable references (variable names in
+curly braces) and directives (lines starting with a dot). Plain text
+is copied unchanged to the output. Processing of variable references
+and directives is explained below.
+
+The '-cr' option forces all line breaks to be output as CR-LF
+sequences instead of plain LF. By default, each line break is output
+the same way the corresponding line break appears in the input.
+
+Special input characters
+------------------------
+
+Curly braces ('{' and '}') are used for variable references.
+
+A dot ('.') begins a directive line. It is special only as the first
+non-whitespace character of a line.
+
+The backslash character ('\') is used to escape special characters,
+including itself, to break long directive lines into multiple input
+lines and to prevent output line break after a non-directive line.
+
+Space (ASCII code 0x20) and TAB (ASCII code 0x09) characters are
+treated as whitespace when processing directive lines.
+
+Directive lines
+---------------
+
+A line with a dot ('.') as its first non-whitespace character is
+treated as a directive line. The dot is part of the directive keyword,
+e.g. `.for'. Some directives take arguments; they are separated from
+the directive keyword and from each other by one or more whitespace
+characters.
+
+If the last character of a directive line is an unescaped
+backslash, the next input line is appended to the directive line
+before processing the directive. Leading space is removed before
+appending the line. This way long directive lines may be written in a
+readable way. For example,
+
+  .set colors black white red green blue orange cyan magenta
+
+can be written as
+
+  .set colors \
+          black \
+          white \
+          red \
+          green \
+          blue \
+          orange \
+          cyan \
+          magenta
+
+Variable substitution is performed on a directive line before
+processing the directive.
+
+Non-directive lines
+-------------------
+
+Variable substitution is performed on a non-directive line after which
+it is written to output. If the `-cr' option is not specified on the
+command line, an LF (ASCII code 0x0a) or a CR-LF sequence (ASCII codes
+0x0d and 0x0a) is written after the line, depending on whether the
+input line was terminated by a LF or a CR-LF sequence. If the `-cr'
+option is specified then a CR-LF sequence is output regardless of how
+the input line is terminated.
+
+If the input line is terminated with an unescaped backslash then no
+line break sequence is output after the line. For example, recalling
+the `colors' variable from the previous examples, the following input
+
+  COLOR_LIST=\
+  .for color {colors}
+  {color};\
+  .rof
+  .rem the following empty line will terminate the output line
+
+
+will produce
+
+  COLOR_LIST=black;white;red;green;blue;orange;cyan;magenta;
+
+Variable references
+-------------------
+
+A character string surrounded by unescaped curly braces ('{' and '}')
+is treated as a variable reference and is replaced by the value of the
+variable with name equal to the string (see the '.set' directive below
+about setting variable values). The following input
+
+  .set x Hello World!
+  {x}
+
+will produce `Hello World!' as output. Variable references can be
+nested, i.e. the name of a variable may be constructed using variable
+references. The following input
+
+  .set nicknames bob art dick
+  .set fullname_bob Robert A. Heinlein
+  .set fullname_art Arthur C. Clarke
+  .set fullname_dick Richard K. Morgan
+  .for nickname {nicknames}
+  The full name of {nickname} is {fullname_{nickname}}.
+  .rof
+
+will produce
+
+  The full name of bob is Robert A. Heinlein.
+  The full name of art is Arthur C. Clarke.
+  The full name of dick is Richard K. Morgan.
+
+A variable name may contain whitespace characters (provided they are
+backslash-escaped on the .set line that sets the variable value).
+However, this is seldom useful as it makes using lists of variable
+names difficult.
+
+All variables must be defined using the `.set' directive before they
+are used, otherwise a warning is issued and the variable reference is
+replaced by an empty string.
+
+The .rem directive
+------------------
+
+  .rem
+
+The `.rem' directive can be used to insert comments (or remarks) in
+the input files. It produces no output. The rest of the line after the
+keyword is ignored.
+
+The .set directive
+------------------
+
+  .set NAME VALUE
+  .set NAME
+
+The `.set' directive sets the value of the variable NAME to
+VALUE. VALUE consists of the rest of the line after removing leading
+and trailing whitespace.
+
+If VALUE is omitted, the value of the variable is set to the empty
+string. This is different from the variable being not set; a variable
+with an empty value can be used in variable references normally
+whereas variable that hasn't been set causes a warning to be issued.
+
+The .for directive
+------------------
+
+  .for NAME VALUES
+  BLOCK
+  .rof
+
+The `.for' directive allows a portion of input to be processed zero or
+more times. The variable NAME is set to each value in turn from the
+whitespace-separated list VALUES and BLOCK is processed once per
+value. BLOCK can contain any number of input lines, including nested
+`.for' directives. BLOCK is terminated by the matching `.rof'
+directive. After the directive is processed the variable NAME is
+deleted. It is possible to use the name of an existing variable as
+NAME; the existing variable is shadowed within BLOCK and becomes
+visible again afterwards. However, a warning is issued.
+
+The `.for' directive can be used for a variety of tasks. For example,
+the following input uses `.for' to test if a variable has a particular
+value:
+
+  .rem Output Green! if the value of selected_color is green.
+  .rem
+  .rem List of all colors.
+  .set colors red green blue
+  .rem
+  .rem First set all variables to empty.
+  .for color {colors}
+  .set color_is_{color}
+  .rof
+  .rem Set variable corresponding to selected_color to a nonempty value.
+  .set color_is_{selected_color} yes
+  .rem
+  .rem Do the test and output.
+  .for dummy {color_is_green}
+  Green!
+  .rof
+
+To check if a list of values is nonempty the following can be used:
+
+  .rem output Nonempty! if list has one or more values
+  .rem
+  .set nonempty
+  .for dummy {list}
+  .set nonempty yes
+  .rof
+  .for dummy {nonempty}
+  Nonempty!
+  .rof
+
+To calculate the intersection of two sets:
+
+  .rem Calculate the intersection of two sets of values.
+  .rem
+  .set set_a x y z
+  .set set_b y z w
+  .for value {set_b}
+  .set a_contains_{value}
+  .rof
+  .for value {set_a}
+  .set a_contains_{value} yes
+  .rof
+  .set intersection
+  .for value {set_b}
+  .for dummy {a_contains_{value}}
+  .set intersection {intersection} {value}
+  .rof
+  .rof
+  The intersection of ({set_a}) and ({set_b}) is ({intersection}).
+
+The .inc directive
+------------------
+
+  .inc FILE
+
+The `.inc' directive reads the file FILE and processes its contents
+after which it continues processing on the next line. FILE consists of
+the rest of the line after removing leading and trailing
+whitespace. If FILE is a relative file name, the directory part of the
+path to the current input file (that may be the result of a previous
+`.inc' directive) is prepended to FILE.
+
+The .out directive
+------------------
+
+  .out FILE
+  BLOCK
+  .tuo
+
+The `.out' directive switches output to the file FILE while BLOCK is
+processed. FILE consists of the rest of the line after removing
+leading and trailing whitespace. BLOCK is terminated by the matching
+`.tuo' directive. If FILE is relative file name, it is interpreted
+according to the current working directory of the process running
+SUBSTITUTE.
+
+The output file is created (or truncated, if it exists) the first time
+it is used with an `.out' directive. The next time the same FILE is
+used with and `.out' directive, output is switched to the same file
+handle, appending to the previous output.
+
+When the terminating `.tuo' directive is encountered output is
+switched back to the output file (or standard output) that was in
+effect before the `.out' directive. `.out' directives may be nested.

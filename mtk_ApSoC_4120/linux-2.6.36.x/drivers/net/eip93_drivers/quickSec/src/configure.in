@@ -1,0 +1,4937 @@
+# -*- sh -*-
+#
+# configure.head - first fragment of top-level configure.in
+#
+# Copyright:
+#       Copyright (c) 2002, 2003, 2004 SFNT Finland Oy.
+#       All rights reserved.
+#
+
+AC_INIT(Makefile.am)
+AC_PREREQ(2.10)
+
+# Check that all files in MANIFEST exist (if MANIFEST exists, of course :-)
+if test -f $srcdir/MANIFEST
+then
+  AC_MSG_CHECKING(distribution consistency)
+  cat $srcdir/MANIFEST | while read afile
+  do
+    if test ! -f $srcdir/$afile
+    then
+      AC_MSG_WARN(file $afile missing from distribution)
+    fi
+  done
+  AC_MSG_RESULT(done)
+fi
+
+AM_CONFIG_HEADER(sshconf.h)
+
+AC_CANONICAL_SYSTEM
+AC_MSG_CHECKING(cached information)
+hostcheck="$target"
+AC_CACHE_VAL(ac_cv_hostcheck, [ ac_cv_hostcheck="$hostcheck" ])
+if test "$ac_cv_hostcheck" != "$hostcheck"; then
+  AC_MSG_RESULT(changed)
+  AC_MSG_WARN(config.cache from a different target platform already exists!)
+  AC_MSG_ERROR(you must do 'make distclean' first to compile for different host or different parameters.)
+else
+  AC_MSG_RESULT(ok)
+fi
+
+AM_INIT_AUTOMAKE(qstree,1.0)
+
+# Compilation environment requires automake to be at least 1.4
+if test "x$AUTOMAKE" = "xautomake"
+then
+  if ($AUTOMAKE --version | egrep 'automake.* 1\.[[456789]]') 2>/dev/null >/dev/null
+  then
+    :
+  else
+dnl 
+dnl 
+dnl 
+    AC_MSG_WARN(automake is not (at least) version 1.4, not using automake)
+    AUTOMAKE="$missing_dir/missing automake"
+dnl 
+  fi
+fi
+
+# Compilation environment requires autoconf to be at least 2.13
+if test "x$AUTOCONF" = "xautoconf"
+then
+  # this should match any 2.2* (2.3* etc..) and 2.1x where x >= 3.
+  if ($AUTOCONF --version | egrep '(Autoconf version|autoconf \(GNU Autoconf\)).* [[23456789]]\.([[23456789]]|1[[3456789]])') 2>/dev/null >/dev/null
+  then
+    :
+  else
+dnl 
+dnl 
+dnl 
+    AC_MSG_WARN(autoconf is not (at least) version 2.13, not using autoconf)
+    AUTOCONF="$missing_dir/missing autoconf"
+dnl 
+  fi
+fi
+
+# XXX temporarily force no optimization unless explicitly requested to
+# ease debugging.
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+AC_MSG_CHECKING([whether building in source directory])
+tmp_builddir=`pwd`;
+tmp_srcdir=`cd $srcdir; pwd`;
+AM_CONDITIONAL(SRCDIR_IS_BUILDDIR, test "$tmp_srcdir" = "$tmp_builddir")
+if test "$tmp_srcdir" = "$tmp_builddir"; then
+  AC_MSG_RESULT(yes)
+else
+  AC_MSG_RESULT(no)
+fi
+
+AC_ARG_ENABLE(profile,
+  [  --enable-profile=ARG Specify build configuration],
+  [ build_profile=$enableval
+    AC_MSG_RESULT(configuring for building $enableval.) ],
+  [ if ! test -r $srcdir/sshdistdefs.h; then
+      AC_MSG_ERROR(build profile (--enable-profile=ARG) not specified.)
+    fi ])
+
+AC_MSG_CHECKING("using purify")
+AC_ARG_WITH(purify,
+[  --with-purify=PURIFY    Use purify (default --without-purify) ],
+[ case "$withval" in
+    no)
+	AC_MSG_RESULT(no)
+	;;
+    yes)
+	with_purify=purify
+	AC_MSG_RESULT(purify)
+	;;
+    *)
+	AC_MSG_RESULT($withval)
+	;;
+  esac ],
+  AC_MSG_RESULT(no)
+)
+
+#
+# vx_suffix is used if targeting VxWorks embedded OS
+#
+vx_suffix=""
+case "$target" in
+  i*86-*-vxworks*|x86-*-vxworks|pentium-*-vxworks*)
+    vx_suffix=386
+    CPPFLAGS="$CPPFLAGS -DCPU=$CPU"
+    # Little endianess is set if the target is of type iX86.
+    ac_cv_c_bigendian=no
+    ssh_cv_cc_R_require=no
+    ;;
+  i960-*-vxworks*)
+    vx_suffix=960
+    CPPFLAGS="$CPPFLAGS -DCPU=$CPU"
+    # Little endianess is set if the target is of type i960.
+    ac_cv_c_bigendian=no
+    ssh_cv_cc_R_require=no
+    ;;
+  powerpc*-*-vxworks*)
+    vx_suffix=ppc
+    CPPFLAGS="$CPPFLAGS -DCPU=$CPU"
+    # Big endianess is set if the target is of type powerpc.
+    ac_cv_c_bigendian=yes
+    ssh_cv_cc_R_require=no
+    ;;
+  mips-*-vxworks*)
+    vx_suffix=mips
+    CPPFLAGS="$CPPFLAGS -DCPU=$CPU"
+    # Big endianess is set if the target is of type mips.
+    ac_cv_c_bigendian=yes
+    ssh_cv_cc_R_require=no
+    ;;
+  mipsel-*-vxworks*)
+    vx_suffix=mips
+    CPPFLAGS="$CPPFLAGS -DCPU=$CPU"
+    # Little endianness is set if the target is of type mipsel.
+    ac_cv_c_bigendian=no
+    ssh_cv_cc_R_require=no
+    ;;
+  sh-*-vxworks*)
+    vx_suffix=sh
+    CPPFLAGS="$CPPFLAGS -DCPU=$CPU"
+    # Big endianess is set if the target is of type 'sh'.
+    ac_cv_c_bigendian=yes
+    ssh_cv_cc_R_require=no
+    ;;
+  arm-*-vxworks*)
+    vx_suffix=arm
+    CPPFLAGS="$CPPFLAGS -DCPU=$CPU"
+    # Big endianess is set if the target is of type 'arm'.
+    ac_cv_c_bigendian=yes
+    ssh_cv_cc_R_require=no
+    ;;
+  armle-*-vxworks*)
+    vx_suffix=arm
+    CPPFLAGS="$CPPFLAGS -DCPU=$CPU"
+    #CFLAGS="$CFLAGS -DVXWORKS"
+    # Little endianess is set if the target is of type 'armel'.
+    ac_cv_c_bigendian=no
+    ssh_cv_cc_R_require=no
+    ;;
+  *)
+    ;;
+esac
+
+#
+# Use /usr/xpg4/bin/sh on Solaris - works much better with some Makefiles
+#
+if test "X$WIND_HOST_TYPE" = "Xsun4-solaris2"; then
+  if test -f /usr/xpg4/bin/sh; then
+    CONFIG_SHELL=/usr/xpg4/bin/sh
+    SHELL=$CONFIG_SHELL
+    echo "configure: Solaris host platform - using /usr/xpg4/bin/sh" 1>&6
+  else
+    echo "configure: error: /usr/xpg4/bin/sh NOT FOUND" 1>&2
+    exit 1
+  fi
+fi
+
+# If configuring for Tornado and GNU toolchain, set compiler options
+if test "X$vx_suffix" != "X"; then
+  # Check that Tornado environment variables are set
+  if test "X${CPU}" = "X"; then
+    AC_MSG_ERROR(CPU environment variable for target platform is not set)
+  fi
+  if test "X$WIND_BASE" = "X"; then
+    AC_MSG_ERROR(WIND_BASE variable unset, see Tornado documentation)
+  fi
+  if test "X$WIND_HOST_TYPE" = "X"; then
+    AC_MSG_ERROR(WIND_HOST_TYPE variable unset, see Tornado documentation)
+  fi
+
+  # -Dmain=vxmain removes symbol main() from resulting objects,
+  # otherwise linker will complain.
+  # -DVXWORKS is used by some parts of SSH code
+  # -D_WRS_KERNEL is needed with PNE 2.2 IPV6 and has to be set when running
+  # compile tests later in this file
+  CPPFLAGS="-Dmain=vxmain -DVXWORKS $CPPFLAGS"
+
+  # Check whether --with-kernel-version was given
+  if test "${with_kernel_version+set}" = set; then
+    withval="$with_kernel_version"
+    case $withval in
+        *PNE)
+      CPPFLAGS="-DVXWORKS_PNE $CPPFLAGS"
+      ;;
+        *5.5.1)
+      CPPFLAGS="-DVXWORKS_551 $CPPFLAGS"
+      ;;
+        *PCD_1.1)
+      CPPFLAGS="-DVXWORKS_551 -DVXWORKS_IPV6 $CPPFLAGS"
+      ;;
+        *PNE_2.2)
+      CPPFLAGS="-DVXWORKS_PNE -DVXWORKS_IPV6 -D_WRS_KERNEL $CPPFLAGS"
+      ;;
+    esac
+  fi
+fi
+
+# Cross compling support //teiste
+AC_CHECK_PROGS(BUILD_CC, gcc cc)
+if test "$host_alias" != "$target_alias"; then
+  AC_CHECK_PROGS(CC, ${target_alias}-gcc ${target_alias}-cc gcc${vx_suffix} cc${vx_suffix})
+  AC_CHECK_PROGS(RANLIB, ${target_alias}-ranlib ranlib${vx_suffix})
+  AC_CHECK_PROGS(AR, ${target_alias}-ar ar${vx_suffix})
+  AC_CHECK_PROGS(LD, ${target_alias}-ld ld${vx_suffix})
+fi
+
+AC_PROG_CC
+
+# Old automake-1.4 and autoconf 2.13 does not support AM_PROG_AS, so
+# we cannot add it here.... Newer automake/autoconf's complain that you
+# need it, but as it is just warning we are going to ignore it.
+# AM_PROG_AS
+
+AC_CHECK_TOOL(LD, ld)
+
+AC_ADD_LIBDIR_PRE
+
+# Automake seems to want this if there are any .cpp files in the tree...
+# No, it does not need it, commented out, because on some environments we
+# do not have C++ compiler at all //kivinen
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+if test "$GCC"; then
+    AC_TRY_ADD_CFLAGS(-Wno-pointer-sign)
+fi
+
+case "$target" in
+  alpha*-dec-osf*)
+    # If we are not using gcc, we want the ansi version of cc.
+    if test -z "$GCC"; then
+      AC_TRY_ADD_CFLAGS(-std1)
+      AC_TRY_ADD_CFLAGS(-warnprotos)
+      AC_TRY_ADD_CFLAGS(-msg_disable longdoublenyi)
+      AC_TRY_ADD_CFLAGS(-msg_disable longlongtype)
+      AC_TRY_ADD_CFLAGS(-msg_disable longlongsufx)
+    fi
+    CFLAGS="$CFLAGS -D_OSF_SOURCE"
+    CFLAGS="$CFLAGS -D_XOPEN_SOURCE=500"
+    CFLAGS="$CFLAGS -D_XOPEN_SOURCE_EXTENDED"
+    CFLAGS="$CFLAGS -D_POSIC_C_SOURCE=199309L"
+    ;;
+  *-dec-ultrix*)
+    no_termios=yes
+    ;;
+  *-*-nextstep*)
+    no_termios=yes
+    ;;
+  *-*-linux*|*-*-mklinux*)
+    CFLAGS="-D_GNU_SOURCE $CFLAGS"
+    ;;
+  *-*-hpux*)
+    # HPUX flags from jgotts@engin.umich.edu
+    if test -z "$GCC"; then
+      AC_TRY_ADD_CFLAGS(-Ae)
+      CFLAGS="$CFLAGS -D_HPUX_SOURCE"
+    fi
+    AC_DEFINE(HPUX_NONSTANDARD_X11_KLUDGE)
+    ;;
+  *-ibm-aix*)
+    # If we are not using gcc, we want the ansi version of cc.
+    if test -z "$GCC"; then
+      AC_TRY_ADD_CFLAGS(-qlanglvl=ansi)
+      AC_TRY_ADD_CFLAGS(-qmaxmem=10240)
+    fi
+    ;;
+esac
+
+AC_MSG_CHECKING(whether to enable optimizations)
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+AC_ARG_ENABLE(compiler-optimizations,
+[  --enable-compiler-optimizations
+                          Enable optimization of the binaries],
+[ case "$enableval" in
+  yes)
+    AC_MSG_RESULT(yes)
+    compiler_optimizations=yes
+    ;;
+  size)
+    AC_MSG_RESULT([yes (size)])
+    compiler_optimizations=yes
+    compiler_size_optimizations=yes
+    ;;
+  *)
+    AC_MSG_RESULT(no)
+    ;;
+  esac],
+[ AC_MSG_RESULT(no)
+  compiler_optimizations=no])
+dnl 
+
+# The default value corresponds to a server or desktop.
+data_cache_size="256"
+AC_ARG_ENABLE(data-cache,
+  [  --enable-data-cache=ARG Specify data cache size in kbytes],
+  [ data_cache_size=$enableval
+    AC_MSG_RESULT(using data cache size of $enableval kB.)
+  ])
+AC_DEFINE_UNQUOTED(SSH_DATA_CACHE_SIZE, $data_cache_size)
+
+insn_cache_size="256"
+AC_ARG_ENABLE(insn-cache,
+  [  --enable-insn-cache=ARG Specify insn cache size in kbytes],
+  [ insn_cache_size=$enableval
+    AC_MSG_RESULT(using insn cache size of $enableval kB.)
+  ])
+AC_DEFINE_UNQUOTED(SSH_INSN_CACHE_SIZE, $insn_cache_size)
+
+
+AC_MSG_CHECKING(whether to minimize stack usage of compiled binaries)
+AC_ARG_ENABLE(minimal-stack,
+[  --enable-minimal-stack    Enable optimizations to minimize stack usage.],
+[ case "$enableval" in
+  yes)
+    AC_MSG_RESULT(yes)
+    AC_DEFINE(MINIMAL_STACK)
+    ;;
+  *)
+    AC_MSG_RESULT(no)
+    ;;
+  esac ], AC_MSG_RESULT(no)
+)
+
+# Workaroud: VxWorks PNE 2.2.  Add an illegal option to fail all link tests.
+# Those type of tests don't make sense for VxWorks anyway as the link would
+# have to be against target libraries and produce VxWorks standalone image.
+
+if test "X$vx_suffix" != "X"; then
+  ac_link="$ac_link --W"
+fi
+
+AC_ISC_POSIX
+
+dnl If we are supposed to optimize binaries, check which compiler flags to use
+dnl (we also generally still want to have the debugging info)
+
+if test "X$compiler_optimizations" = "Xyes"; then
+  if test "$ac_cv_prog_gcc" = "yes"; then
+    case "$target" in
+      alpha*-*-freebsd*)
+        # Reportedly -O2 fails on FreeBSD/alpha.
+        # Let me know when, and in which version, this is fixed.
+        AC_TRY_ADD_CFLAGS(-O)
+        ;;
+      *vxworks*)
+	    CFLAGS="$CFLAGS -O2"
+	    ;;
+      *)
+        if test "X$compiler_size_optimizations" = "Xyes"; then
+	    AC_TRY_ADD_CFLAGS(-Os)
+	else
+	    AC_TRY_ADD_CFLAGS(-O2)
+	fi
+        ;;
+    esac
+  else
+    case "$target" in
+      alpha*-dec-osf*)
+  	AC_TRY_ADD_CFLAGS(-g3 -O2,
+  	  AC_TRY_ADD_CFLAGS(-g3 -O,
+  	    AC_TRY_ADD_CFLAGS(-O)))
+  	;;
+      ia64-hp-hpux*)
+        AC_MSG_WARN([optimizations are experimentally enabled with HP-UX cc])
+  	AC_TRY_ADD_CFLAGS(-O2, AC_TRY_ADD_CFLAGS(-O))
+        ;;
+      *-*-hpux*)
+	# optimization doesn't seem to work at HP-UX cc at all.
+        AC_MSG_WARN([optimizations are disabled with HP-UX cc])
+        ;;
+      *)
+  	AC_TRY_ADD_CFLAGS(-O2, AC_TRY_ADD_CFLAGS(-O))
+  	;;
+    esac
+  fi
+fi
+
+AC_MSG_CHECKING(whether to enable static builds)
+AC_ARG_ENABLE(static-binaries,
+[  --enable-static-binaries
+                          Enable building static binaries],
+[ case "$enableval" in
+  yes)
+    AC_MSG_RESULT(yes)
+    if test "$ac_cv_prog_gcc" = "yes"; then
+        AC_TRY_ADD_CFLAGS(-static)
+    fi
+    ;;
+  *)
+    AC_MSG_RESULT(no)
+    ;;
+  esac],
+[ AC_MSG_RESULT(no) ])
+
+
+########################################################################
+# Check whether we use 32/64 bit addressing -- this is very dependend
+# on hardware and compiler support.
+
+# First, determine the default addressing mode: 32 or 64. By default,
+# try 32 (unless overridden by configuration option).
+#
+# This routine needs to be reworked...
+
+DEFAULT_ADDR_MODEL=ilp32
+
+AC_MSG_CHECKING("memory addressing model")
+
+case "$target" in
+  # On pre-7 targets, use always default, but for newer, check if
+  # we're doing 64-bit version.
+  sparc-*)
+    case "$target" in
+	*2.5|*2.5.1|*2.6)
+	    ;;
+	 *)
+	    if test "`uname -m`" = "sun4u"; then
+		DEFAULT_ADDR_MODEL=lp64
+	    fi
+	    ;;
+    esac
+    ;;
+esac
+
+ADDR_MODEL=${ADDR_MODEL:-$DEFAULT_ADDR_MODEL}
+
+AC_ARG_WITH(addr-model,
+[  --with-addr-model[=NAME]
+                          Memory addressing model to use (ilp32,lp64).],
+[ case "$withval" in
+  lp64|LP64)
+    AC_MSG_RESULT(lp64)
+    ADDR_MODEL=lp64
+    ;;
+  ilp32|ILP32)
+    AC_MSG_RESULT(ilp32)
+    ADDR_MODEL=ilp32
+    ;;
+  *)
+    AC_MSG_RESULT($ADDR_MODEL)
+  esac ],
+  AC_MSG_RESULT($ADDR_MODEL)
+)
+
+AC_SUBST(ADDR_MODEL)
+
+########################################################################
+
+AC_ADD_GCC_CFLAGS([-Wall])
+
+if test "$ac_cv_prog_gcc" = "yes"; then
+  AC_TRY_ADD_CFLAGS(-Wno-unknown-pragmas)
+fi
+
+AC_MSG_CHECKING(whether to enable verbose warnings)
+AC_ARG_ENABLE(verbose-warnings,
+[  --enable-verbose-warnings
+                          Enable verbose compiler warnings.],
+[ case "$enableval" in
+  yes)
+    AC_MSG_RESULT(yes)
+
+    AC_ADD_GCC_CFLAGS([-W])
+    AC_ADD_GCC_CFLAGS([-Wshadow -Wpointer-arith -Wbad-function-cast])
+    AC_ADD_GCC_CFLAGS([-Wcast-align -Wwrite-strings -Waggregate-return])
+    AC_ADD_GCC_CFLAGS([-Wmissing-prototypes -Wstrict-prototypes])
+
+    # Disabled because we use long long
+    # AC_ADD_GCC_CFLAGS([-pedantic])
+
+    # Disabled because lots of system headers break on this (errno.h)
+    # AC_ADD_GCC_CFLAGS([-Wredundant-decls])
+
+    ;;
+  *)
+    AC_MSG_RESULT(no)
+    ;;
+  esac ], AC_MSG_RESULT(no)
+)
+
+AC_PROG_RANLIB
+AC_CHECK_TOOL(AR, ar)
+AC_CHECK_PROGS(M4, gm4 m4, m4)
+AC_CHECK_PROGS(PERL, perl, perl)
+AC_PROG_MAKE_SET
+AC_PROG_INSTALL
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+# Scheme maintenance mode
+# This is not currently needed.
+# AC_MSG_CHECKING(whether to maintain the Scheme engine)
+# AC_ARG_ENABLE(scheme-maintainer,
+# [  --enable-scheme-maintainer
+#                           Enable Scheme maintainer mode.],
+# [ case "$enableval" in
+#   yes)
+#      AC_MSG_RESULT(sure)
+#      scheme_maintainer=yes
+#      ;;
+#   *) AC_MSG_RESULT(surely not)
+#      scheme_maintainer=no
+#      ;;
+#   esac ], AC_MSG_RESULT(not now)
+# )
+
+# AM_CONDITIONAL(SCMMAINT, test x$scheme_maintainer = xyes)
+
+AC_HEADER_STDC
+AC_HEADER_TIME
+AC_HEADER_DIRENT
+AC_HEADER_STAT
+AC_HEADER_SYS_WAIT
+
+AC_TYPE_SIGNAL
+AC_TYPE_SIZE_T
+AC_TYPE_OFF_T
+AC_TYPE_MODE_T
+
+#default type sizes when automatic check does not work (cross compilation)
+cross_sizeof_usermode_pointer="4"
+cross_sizeof_usermode_long="4"
+cross_sizeof_usermode_int="4"
+cross_sizeof_usermode_short="2"
+cross_sizeof_usermode_longlong="8"
+
+cross_sizeof_kernel_pointer="4"
+cross_sizeof_kernel_long="4"
+cross_sizeof_kernel_int="4"
+cross_sizeof_kernel_short="2"
+cross_sizeof_kernel_longlong="8"
+
+case $target in
+  mips64-octeon-linux*)
+    AC_DEFINE(PLATFORM_OCTEON_LINUX)
+    cross_sizeof_usermode_pointer="8"
+    cross_sizeof_kernel_pointer="8"
+    cross_sizeof_usermode_long="8"
+    cross_sizeof_kernel_long="8"
+  ;;
+esac
+
+# Check sizes of various basic types, first for usemode compilation.
+AC_CHECK_SIZEOF_WITH_PREFIX(usermode,void *,$cross_sizeof_usermode_pointer)
+AC_CHECK_SIZEOF_WITH_PREFIX(usermode,long,$cross_sizeof_usermode_long)
+AC_CHECK_SIZEOF_WITH_PREFIX(usermode,int,$cross_sizeof_usermode_int)
+AC_CHECK_SIZEOF_WITH_PREFIX(usermode,short,$cross_sizeof_usermode_short)
+AC_CHECK_SIZEOF_WITH_PREFIX(usermode,long long,$cross_sizeof_usermode_longlong)
+
+AC_CHECK_FUNCS(getenv geteuid localtime nanosleep sleep)
+
+AC_C_CONST
+AC_C_INLINE
+AC_SSH_BIGENDIAN
+
+if test -z "$no_termios"; then
+  AC_CHECK_HEADERS(termios.h)
+fi
+AC_CHECK_HEADERS(sys/ioctl.h)
+
+AC_MSG_CHECKING(whether to enable light debugging)
+MSG_DEBUG="no"
+dnl 
+dnl 
+dnl 
+dnl 
+debug_light_defined=no
+define([ssh_debug_conf_msg],[  --enable-debug          Enable light debugging.])
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+AC_ARG_ENABLE(debug, ssh_debug_conf_msg,
+[ case "$enableval" in
+  no)
+    debug_light_defined=no
+    ;;
+  *)
+    debug_light_defined=yes
+    ;;
+  esac ])
+if test "X$debug_light_defined" = "Xyes"; then
+  AC_DEFINE(DEBUG_LIGHT)
+  MSG_DEBUG="light"
+  AC_MSG_RESULT(yes)
+else
+  AC_MSG_RESULT(no)
+fi
+
+AC_MSG_CHECKING(whether to enable heavy debugging)
+AC_ARG_ENABLE(debug-heavy,
+[  --enable-debug-heavy    Enable heavy debugging.],
+[ case "$enableval" in
+  yes)
+    AC_MSG_RESULT(yes)
+    AC_DEFINE(DEBUG_HEAVY)
+    MSG_DEBUG="heavy"
+    if test "$debug_light_defined" = "no"; then
+      AC_DEFINE(DEBUG_LIGHT)
+    fi
+    ;;
+  *)
+    AC_MSG_RESULT(no)
+    ;;
+  esac ], AC_MSG_RESULT(no)
+)
+
+AC_MSG_CHECKING(whether to enable EFENCE memory allocation debugger)
+AC_ARG_ENABLE(efence,
+[  --enable-efence         Enable EFENCE memory allocation debugger.],
+[ case "$enableval" in
+  yes)
+    AC_MSG_RESULT(yes)
+    AC_DEFINE(EFENCE)
+    ;;
+  *)
+    AC_MSG_RESULT(no)
+    ;;
+  esac ], AC_MSG_RESULT(no)
+)
+
+AC_MSG_CHECKING(using replacement memcmp)
+AC_ARG_WITH(replacement-memcmp,
+[  --with-replacement-memcmp    Use replacement memcmp (default is to use system) ],
+[ case "$withval" in
+    yes)
+	AC_MSG_RESULT(yes)
+	AC_DEFINE(WITH_REPLACEMENT_MEMCMP)
+	;;
+    *)
+	AC_MSG_RESULT($withval)
+	;;
+  esac ],
+  AC_MSG_RESULT(no)
+)
+
+case "$target" in
+  *vxworks*)
+    AC_DEFINE(SSH_GLOBALS_EMULATION)
+  ;;
+  *)
+    AC_MSG_CHECKING(whether to force global variable emulation)
+    AC_ARG_ENABLE(globals-emulation,
+      [  --enable-globals-emulation   Enable global variable emulation.],
+      [ case "$enableval" in
+        yes)
+          AC_MSG_RESULT(yes)
+          AC_DEFINE(SSH_GLOBALS_EMULATION)
+          ;;
+        *)
+          AC_MSG_RESULT(no)
+          ;;
+      esac ],
+      AC_MSG_RESULT(no))
+  ;;
+esac
+
+
+dnl 
+AC_MSG_CHECKING(whether to enable assembler optimized subroutines)
+case "$target" in
+  i*86-*-*linux*)
+#    This _USED_ to be the case in the SOME old version (2000 or pre-).
+#    The lack of optimizations is causing problem, so I removed this.
+#    -mstenber
+#
+#    enable_asm=no
+#    AC_MSG_WARN([Assembler optimizations are DISABLED in ix86 linux])
+#    AC_MSG_WARN([because of a possible bug in gcc.])
+  ;;
+  x86_64-*-linux*)
+    enable_asm=no
+    AC_MSG_WARN([Assembler optimizations are DISABLED in 64bit linux])
+  ;;
+  i*86-*-bsdi*)
+    enable_asm=no
+#    AC_MSG_WARN([Assembler optimizations are DISABLED in BSDI])
+    ;;
+  *)
+  ;;
+esac
+
+if test "X$enable_asm" != "Xno"; then
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+  AC_ARG_ENABLE(asm,
+  [  --disable-asm           Disable assembler optimized subroutines],
+  [ case "$enableval" in
+    yes)
+      AC_MSG_RESULT(yes)
+      enable_asm=yes
+      ;;
+    *)
+      AC_MSG_RESULT(no)
+      ;;
+    esac ],
+    AC_MSG_RESULT(yes)
+    enable_asm=yes
+  )
+dnl 
+else
+  AC_MSG_RESULT(no)
+fi
+dnl 
+dnl 
+dnl 
+
+# If using libtool...
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+GRANDLIBARCMD='$(AR) cr'
+GRANDLIBRANLIBCMD='$(RANLIB)'
+
+dnl 
+
+AC_SUBST(GRANDLIBARCMD)
+AC_SUBST(GRANDLIBRANLIBCMD)
+
+COPY_INCLUDE='$(top_srcdir)/copy_include'
+AC_SUBST(COPY_INCLUDE)
+AC_SUBST(LIBS)
+
+export CC CFLAGS
+
+AC_MSG_CHECKING("using installed sshlibs")
+AC_ARG_WITH(sshlibs,
+[  --with-sshlibs=PATH     Add PATH to include/lib path when find libraries
+                          the PATH should point to directory containing
+                          include and lib directories.],
+[ case "$withval" in
+    no)
+	AC_MSG_RESULT(no)
+	;;
+    yes)
+	AC_MSG_RESULT(no path given, ignored)
+	;;
+    *)
+	AC_MSG_RESULT($withval)
+	dir_found=0
+	if test -d "$withval/lib"
+	then
+	    AC_ADD_LIBDIR($withval/lib)
+	    dir_found=1
+	fi
+	if test -d "$withval/include"
+	then
+	    CPPFLAGS=" $CPPFLAGS -I$withval/include"
+	    dir_found=1
+	fi
+	if test $dir_found = 0
+	then
+	    AC_MSG_ERROR(No $withval/lib or $withval/include found)
+	fi
+	;;
+  esac ],
+  AC_MSG_RESULT(no)
+)
+
+AC_DEFINE(SSH_DIST_NAME, "quicksec-server-quicksec-client")
+base_distribution="`echo quicksec-server-quicksec-client | sed 's/-.*//g;'`"
+AC_DEFINE_UNQUOTED(SSH_DIST_BASENAME, "$base_distribution")
+# -*- sh -*-
+#
+# configure.in.inc - fragment for src/ipsec
+#
+# Copyright:
+#       Copyright (c) 2002-2006 SFNT Finland Oy.
+#       All rights reserved.
+#
+
+########################################################################
+#
+# Non-platform specific but IPsec specific configuration things first:
+#
+
+AC_MSG_CHECKING(whether to compile a minimal engine)
+AC_ARG_ENABLE(ipsec-small,
+  [  --enable-ipsec-small    Compile a minimal engine. ],
+  [ case "$enableval" in
+      no)
+          AC_MSG_RESULT(no)
+          ;;
+      *)
+          AC_MSG_RESULT(yes)
+	  AC_DEFINE(SSH_IPSEC_SMALL)
+          ;;
+      esac ],
+  [ AC_MSG_RESULT(no) ])
+
+case $target in
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+  *)
+    ;;
+esac
+# -*- sh -*-
+#
+# configure.in.inc - fragment for src/interceptor
+#
+# Copyright:
+#       Copyright (c) 2002-2006 SFNT Finland Oy.
+#       All rights reserved.
+#
+
+AC_DEFINE_UNQUOTED(HOSTTYPE, "$host")
+
+########################################################################
+#
+# Non-platform specific but interceptor specific configuration things first:
+#
+
+AC_MSG_CHECKING(whether to enable interceptor)
+AC_ARG_ENABLE(interceptor,
+[  --disable-interceptor   Disable (do not compile) the kernel interceptor],
+[ case "$enableval" in
+    yes)
+	AC_MSG_RESULT(yes)
+	;;
+    *)
+	AC_MSG_RESULT(no)
+	disable_interceptor=yes
+	;;
+    esac ],
+[ AC_MSG_RESULT(yes) ])
+
+AC_MSG_CHECKING(whether to word align the IP header of packets)
+AC_ARG_ENABLE(ip-word-align,
+  [  --enable-ip-word-align   Word align the IP header when sending packets. ],
+  [ case "$enableval" in
+      no)
+          AC_MSG_RESULT(no)
+          ;;
+      *)
+          AC_MSG_RESULT(yes)
+	  AC_DEFINE(INTERCEPTOR_IP_ALIGNS_PACKETS)
+          ;;
+      esac ],
+  [ AC_MSG_RESULT(no) ])
+
+AC_PROG_LN_S
+
+case $target in
+  *-cygwin-vxworks*)
+  LN_S=cp
+  ;;
+esac
+
+AC_SUBST(LN_S)
+
+# Needed if the interceptor supports memory mapping.
+AC_FUNC_MMAP
+
+# Important notice: a lot of this file is now under the
+# --enable/disable-interceptor test. See later for the engine-specific
+# parts (yes, we will compile engine especially the engine/usermode
+# even when interceptor is disabled).
+#
+
+#
+# Hardware accelerators are kept in src/ipsec/hwaccel tree.
+# See src/ipsec/hwaccel/configure.in.inc and Makefile.am.raw to
+# understand how they are configured.
+#
+
+############################################################################
+#
+# Platform-specific
+
+## Check for things we need to do on different platforms differently on
+## the subdir interceptor/ (interceptor stuff, for kernels)
+
+# This configure.in fragment decides which interceptor (if any) is appropriate
+# for the current platform.
+#
+# This sets the following variables for the Makefile.am[.raw]:
+#    SSH_INTERCEPTOR_TARGETS: things to compile (sshipsec.o / sshipsec_ether.o)
+#    SSH_INTERCEPTOR_OBJS: common objects for all interceptors/engines.
+#    SSH_INTERCEPTOR_NONETHER_OBJS: objects that go only for sshipsec.o
+#    SSH_INTERCEPTOR_ETHER_OBJS: objects that go only for sshipsec_ether.o
+#    SSH_INTERCEPTOR_CPPFLAGS: flags to add to CFLAGS
+#    SSH_INTERCEPTOR_SYMCHECK: debugging target to check for kernel symbols in
+#			       loadable kernel modules (only for debugging,
+#			       not fatal if not set)
+
+# Override the kernel version (if conf uses it!)
+AC_ARG_WITH(kernel-version,
+[  --with-kernel-version[=VALUE]
+                          Override kernel version to cross-compile
+                          (used currently only on Linux).],
+[ KERNEL_VERSION="$withval" ])
+
+# Override the kernel include directory (if conf uses it!)
+AC_ARG_WITH(kernel-headers,
+[  --with-kernel-headers[=VALUE]
+                          Override kernel inc directory to cross-compile.],
+[ KERNEL_INCLUDE="$withval" ])
+
+## Set these symbols to undef -W- later, we check that if any of these is
+## undef (unless set by configuration routines), they fall back to "normal"
+## values (eg. KERN_CC=CC and so on.)
+#undef KERN_CC KERN_CFLAGS KERN_LIBS KERN_LDFLAGS
+
+# need_readonly_defines: Set this to "false" (or actually anything
+# other than "true") to signal that the platform provides the readonly
+# versions of the packet processing routines. (The symbol definition
+# is done much later in this file).
+need_readonly_defines=true
+
+# interceptor_has_packet_alloc_and_copy_ext_data: Set this to "true"
+# to signal that the platform provides the packet alloc and copy
+# external data routine.
+interceptor_has_packet_alloc_and_copy_ext_data=false
+
+# interceptor_has_packet_copy: Set this to "true" to signal that the
+# platform provides the packet copy routine.
+interceptor_has_packet_copy=false
+
+# interceptor_has_packet_copyin: Set this to "true" to signal that
+# the platform provides the packet copyin routine.
+interceptor_has_packet_copyin=false
+
+# interceptor_has_mark_func: Set this to "true" to signal that
+# the platform provides the "ssh_interceptor_mark" function.
+interceptor_has_mark_func=false
+
+# interceptor_has_packet_copyout: Set this to "true" to signal that
+# the platform provides the packet copyout routine.
+interceptor_has_packet_copyout=false
+
+# interceptor_has_packet_internal_data: Set this to "true" to signal
+# that the platform provides the internal data export and import routines.
+interceptor_has_packet_internal_data_routines=false
+
+# interceptor provides an instance of the ssh_intercetor_packet_detach()
+# function for detaching a packet from operating system context.
+interceptor_has_packet_detach=false
+
+# interceptor has ssh_interceptor_packet_cache() implementation
+# besides the default "brute-force" implementation.
+interceptor_has_packet_cache=false
+
+# interceptor_has_platform_include: Set this to true to signal
+# that the platform has a "platform_interceptor.h" file available
+# which must be included. This file can e.g. map packet pullup etc
+# functions to macros or inline functions.
+interceptor_has_platform_include=false
+
+# interceptor_sets_ip_forwarding: Set this to "true" to signal that
+# the interceptor knows and sets the SSH_PACKET_FORWARDED flag.
+interceptor_sets_ip_forwarding=false
+
+# interceptor_handles_loopback_packets: Set this to "false" to signal
+# that the interceptor does not handle loopback packets (it passes
+# them to the packet callback).
+interceptor_handles_loopback_packets=true
+
+# interceptor_implements_virtual_adapter_configure: Set this to "false" to
+# signal that the interceptor does not implement kernel level virtual adapter
+# configure.
+interceptor_implements_virtual_adapter_configure=true
+
+# interceptor_implements_route_modify: Set this to "false" to signal that the
+# interceptor does not implement kernel level routing table modification.
+interceptor_implements_route_modify=true
+
+# default assembler optimization stuff
+enable_engine_asm=$enable_asm
+
+ROUTE_CONFIGURED_SRCS='$(ROUTE_SRCS_DEFAULT)'
+QS_ADDRSPACE='kernel'
+QS_EXTRALIBS=
+
+case $target in
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+dnl 
+  *-*-netbsd*)
+    # Generic NetBSD definitions.
+    SSH_INTERCEPTOR_MACHINE_DIR=bsd
+    SSH_INTERCEPTOR_OBJS='$(BSD_OBJS) icept_lkm_bsd.o'
+    SSH_INTERCEPTOR_NONETHER_OBJS='$(NETBSD_NONETHER_OBJS) $(I386_OBJS)'
+    SSH_INTERCEPTOR_ETHER_OBJS='$(NETBSD_ETHER_OBJS) $(I386_OBJS)'
+    SSH_INTERCEPTOR_TARGETS="sshipsec_tester.o interceptor_tester quicksec_usermode.o"
+    SSH_INTERCEPTOR_MEDIA_TARGETS="quicksec_usermode_ether.o"
+
+dnl 
+    SSH_INTERCEPTOR_TARGETS="$SSH_INTERCEPTOR_TARGETS quicksec.o"
+    SSH_INTERCEPTOR_MEDIA_TARGETS="$SSH_INTERCEPTOR_MEDIA_TARGETS quicksec_ether.o"
+    QS_ADDRSPACE='kernel'
+dnl 
+
+    SSH_INTERCEPTOR_CPPFLAGS="-DKERNEL -D_KERNEL -D_LKM -DSSH_ALLOW_SYSTEM_ALLOCATORS"
+
+    # Interceptor features.
+    interceptor_has_packet_alloc_and_copy_ext_data=true
+
+    # NetBSD version dependent configuration.
+    case $target in
+      i386-*-netbsd1.3.2*)
+	AC_DEFINE(SSH_NetBSD, 132)
+        SSH_INTERCEPTOR_MACHINE_SUBDIR='$(srcdir)/netbsd132'
+        SSH_INTERCEPTOR_TARGETS="$SSH_INTERCEPTOR_TARGETS $SSH_INTERCEPTOR_MEDIA_TARGETS"
+        ;;
+
+      i386-*-netbsd1.3.3*)
+	AC_DEFINE(SSH_NetBSD, 133)
+        SSH_INTERCEPTOR_MACHINE_SUBDIR='$(srcdir)/netbsd133'
+        SSH_INTERCEPTOR_TARGETS="$SSH_INTERCEPTOR_TARGETS $SSH_INTERCEPTOR_MEDIA_TARGETS"
+        ;;
+
+      i386-*-netbsd1.4*|i386-*-netbsdelf1.4*)
+	AC_DEFINE(SSH_NetBSD, 140)
+        SSH_INTERCEPTOR_MACHINE_SUBDIR='$(srcdir)/netbsd140'
+        SSH_INTERCEPTOR_CPPFLAGS="$SSH_INTERCEPTOR_CPPFLAGS -DGATEWAY"
+        ;;
+
+      i386-*-netbsd*1.5|i386-*-netbsd*1.5.*)
+	# 1.5.3 is a bit different.
+        case $target in
+          i386-*-netbsd*1.5.3)
+            AC_DEFINE(SSH_NetBSD, 153)
+            ;;
+          *)
+	    AC_DEFINE(SSH_NetBSD, 150)
+	    ;;
+	esac
+
+	SSH_INTERCEPTOR_MACHINE_DIR='bsd'
+        SSH_INTERCEPTOR_MACHINE_SUBDIR='netbsd150'
+        SSH_INTERCEPTOR_TARGETS="$SSH_INTERCEPTOR_TARGETS $SSH_INTERCEPTOR_MEDIA_TARGETS"
+        SSH_INTERCEPTOR_CPPFLAGS="$SSH_INTERCEPTOR_CPPFLAGS -DGATEWAY"
+        AC_DEFINE(INTERCEPTOR_HAS_VIRTUAL_ADAPTERS)
+
+	# Interceptor features.
+	interceptor_sets_ip_forwarding=true
+        ;;
+
+      i386-*-netbsdelf1.6*|i386-*-netbsd*1.5?|i386-*-netbsd*1.5??)
+	AC_DEFINE(SSH_NetBSD, 160)
+	SSH_INTERCEPTOR_MACHINE_DIR='bsd'
+        SSH_INTERCEPTOR_MACHINE_SUBDIR='netbsd160'
+        SSH_INTERCEPTOR_TARGETS="$SSH_INTERCEPTOR_TARGETS $SSH_INTERCEPTOR_MEDIA_TARGETS"
+        SSH_INTERCEPTOR_CPPFLAGS="$KERNEL_INCLUDE $SSH_INTERCEPTOR_CPPFLAGS"
+        AC_DEFINE(INTERCEPTOR_HAS_VIRTUAL_ADAPTERS)
+
+	# Interceptor features.
+	interceptor_sets_ip_forwarding=true
+        ;;
+
+      i386-*-netbsd*2.*)
+	AC_DEFINE(SSH_NetBSD, 200)
+	SSH_INTERCEPTOR_MACHINE_DIR='bsd'
+        SSH_INTERCEPTOR_MACHINE_SUBDIR='netbsd-pfil'
+        SSH_INTERCEPTOR_TARGETS="$SSH_INTERCEPTOR_TARGETS"
+	if test "x$KERNEL_INCLUDE" = "x" ; then
+	    KERNEL_INCLUDE=-I/usr/src/sys
+	fi
+	SSH_INTERCEPTOR_CPPFLAGS="$SSH_INTERCEPTOR_CPPFLAGS -fno-builtin-printf -fno-builtin-vprintf"
+        SSH_INTERCEPTOR_CPPFLAGS="$KERNEL_INCLUDE $SSH_INTERCEPTOR_CPPFLAGS"
+        AC_DEFINE(INTERCEPTOR_HAS_VIRTUAL_ADAPTERS)
+	interceptor_sets_ip_forwarding=true
+	;;
+
+      i386-*-netbsd*3.*)
+	AC_DEFINE(SSH_NetBSD, 300)
+	SSH_INTERCEPTOR_MACHINE_DIR='bsd'
+        SSH_INTERCEPTOR_MACHINE_SUBDIR='netbsd-pfil'
+        SSH_INTERCEPTOR_TARGETS="$SSH_INTERCEPTOR_TARGETS"
+	if test "x$KERNEL_INCLUDE" = "x" ; then
+	    KERNEL_INCLUDE=-I/usr/src/sys
+	fi
+	SSH_INTERCEPTOR_CPPFLAGS="$SSH_INTERCEPTOR_CPPFLAGS -fno-builtin-printf -fno-builtin-vprintf"
+        SSH_INTERCEPTOR_CPPFLAGS="$KERNEL_INCLUDE $SSH_INTERCEPTOR_CPPFLAGS"
+        AC_DEFINE(INTERCEPTOR_HAS_VIRTUAL_ADAPTERS)
+	interceptor_sets_ip_forwarding=true
+	;;
+
+      i386-*-netbsd*4.*)
+	AC_DEFINE(SSH_NetBSD, 400)
+	SSH_INTERCEPTOR_MACHINE_DIR='bsd'
+        SSH_INTERCEPTOR_MACHINE_SUBDIR='netbsd-pfil'
+        SSH_INTERCEPTOR_TARGETS="$SSH_INTERCEPTOR_TARGETS"
+	if test "x$KERNEL_INCLUDE" = "x" ; then
+	    KERNEL_INCLUDE=-I/usr/src/sys
+	fi
+	SSH_INTERCEPTOR_CPPFLAGS="$SSH_INTERCEPTOR_CPPFLAGS -fno-builtin-printf -fno-builtin-vprintf"
+        SSH_INTERCEPTOR_CPPFLAGS="$KERNEL_INCLUDE $SSH_INTERCEPTOR_CPPFLAGS"
+        AC_DEFINE(INTERCEPTOR_HAS_VIRTUAL_ADAPTERS)
+	interceptor_sets_ip_forwarding=true
+	;;
+    esac
+
+    case $target in
+      i386-*-netbsd*2.*|i386-*-netbsd*3.*)
+	AC_MSG_CHECKING(whether NetBSD kernel sources are available)
+	oldcppflags="$CPPFLAGS"
+	CPPFLAGS="$KERNEL_INCLUDE"
+	AC_TRY_COMPILE([
+#include <sys/types.h>
+#include <arch/x86/include/pic.h>
+void test() {
+ ;
+}
+],[],
+	[AC_MSG_RESULT(yes)],
+	[AC_MSG_ERROR([no. Install kernel sources (or use --with-kernel-headers)])])
+	CPPFLAGS="$oldcppflags"
+
+      ;;
+    esac
+
+    icept_result="$SSH_INTERCEPTOR_MACHINE_DIR: $SSH_INTERCEPTOR_TARGETS"
+
+    ;;
+dnl 
+
+dnl 
+*-*-vxworks*)
+  SSH_INTERCEPTOR_MACHINE_DIR=bsd
+  SSH_INTERCEPTOR_MACHINE_SUBDIR='$(srcdir)/vxworks54'
+  SSH_INTERCEPTOR_OBJS='$(VXWORKS_OBJS)'
+  SSH_INTERCEPTOR_NONETHER_OBJS=
+  SSH_INTERCEPTOR_ETHER_OBJS=
+  SSH_INTERCEPTOR_TARGETS=
+  SSH_INTERCEPTOR_CPPFLAGS="$KERNEL_INCLUDE -DSSH_ALLOW_SYSTEM_ALLOCATORS"
+  SSH_INTERCEPTOR_CPPFLAGS="$SSH_INTERCEPTOR_CPPFLAGS"
+
+dnl 
+  SSH_INTERCEPTOR_TARGETS="$SSH_INTERCEPTOR_TARGETS quicksecpm.o"
+dnl 
+
+  AC_DEFINE(INTERCEPTOR_HAS_VIRTUAL_ADAPTERS)
+
+  # Interceptor features.
+  interceptor_has_packet_alloc_and_copy_ext_data=true
+  interceptor_handles_loopback_packets=true
+
+  icept_result="$SSH_INTERCEPTOR_MACHINE_DIR: $SSH_INTERCEPTOR_TARGETS"
+dnl 
+  QS_ADDRSPACE='unified-kernel'
+dnl 
+  QS_EXTRALIBS='$(top_builddir)/ipsec/lib/libsshipsec.a $(top_builddir)/lib/libssh.a'
+dnl 
+dnl 
+dnl 
+
+  # VxWorks does not have separate cpp and cc flags for kernel modules
+  KERN_CFLAGS="$CPPFLAGS $CFLAGS"
+
+  # For final interceptor + engine linkage we don't want to specify
+  # any VxWorks libs, because user will perform final link against
+  # VxWorks kernel by himself.
+  KERN_LDFLAGS=" "
+  KERN_LIBS=" "
+
+dnl 
+  ;;
+dnl 
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+dnl 
+
+  *-*-linux*)
+    # Use kernel version of running kernel if version was not specified.
+    LINUX_KERNEL_VERSION=`uname -r`
+    : ${KERNEL_VERSION:="$LINUX_KERNEL_VERSION"}
+
+dnl 
+    case $target in
+      mips64-octeon-linux-gnu)
+        SSH_INTERCEPTOR_MACHINE_DIR="caviumocteon"
+        SSH_INTERCEPTOR_MACHINE_SUBDIR='$(srcdir)/linux'
+	SSH_INTERCEPTOR_CPPFLAGS='-I$(top_srcdir)/interceptor/linux'
+        ;;
+      *)
+        SSH_INTERCEPTOR_MACHINE_DIR="linux"
+        ;;
+    esac
+     	
+dnl 
+dnl 
+dnl 
+    SSH_INTERCEPTOR_OBJS='$(LINUX_OBJS)'
+    SSH_INTERCEPTOR_NONETHER_OBJS='$(LINUX_NONETHER_OBJS)'
+    SSH_INTERCEPTOR_ETHER_OBJS='$(LINUX_ETHER_OBJS)'
+    SSH_INTERCEPTOR_TARGETS='sshipsec_tester.o'
+dnl 
+    SSH_INTERCEPTOR_TARGETS="$SSH_INTERCEPTOR_TARGETS quicksec.o quicksec_usermode.o"
+dnl 
+dnl 
+dnl 
+dnl 
+
+    # Linux interceptor has readonly versions of iteration/pullup
+    need_readonly_defines=false
+
+    # Linux interceptor has copyin and copyout
+    interceptor_has_packet_copyin=true
+    interceptor_has_packet_copyout=true
+
+    # Linux interceptor has "mark" function
+    interceptor_has_mark_func=true
+
+    # Linux interceptor may have internal data for usermode engine
+    interceptor_has_packet_internal_data_routines=true
+
+    # Linux interceptor may provide a ssh_interceptor_packet_detach()
+    # function.
+    interceptor_has_packet_detach=true
+
+    # Linux interceptor has a platform specific "platform_interceptor.h"
+    # include file.
+    interceptor_has_platform_include=true
+
+    # Linux interceptor has an implementation of
+    # ssh_interceptor_packet_cache()
+    interceptor_has_packet_cache=false
+
+    # Linux interceptor does not implement kernel level virtual adapter
+    # configure.
+    interceptor_implements_virtual_adapter_configure=false
+
+    # Linux interceptor does not implement kernel level routing table 
+    # modification
+    interceptor_implements_route_modify=false
+
+    AC_DEFINE(INTERCEPTOR_HAS_VIRTUAL_ADAPTERS)
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+    # Set kernel includes path to /lib/modules/$KERNEL_VERSION/build/include 
+    # if path was not specified.
+    if test "x$KERNEL_INCLUDE" = "x"; then
+      LINUX_KERNEL_INCLUDE="/lib/modules/$KERNEL_VERSION/build/include"
+    else
+      LINUX_KERNEL_INCLUDE="$KERNEL_INCLUDE"
+    fi
+
+    # Check that kernel is configured.
+    AC_MSG_CHECKING(whether linux kernel is configured)
+    if test -f "$LINUX_KERNEL_INCLUDE/linux/autoconf.h"; then
+	AC_MSG_RESULT(yes)
+    else
+	AC_MSG_ERROR([no, please configure linux kernel])
+    fi
+
+    # Check that kernel headers include 'linux/version.h' 
+    # which is created dynamically.
+    AC_MSG_CHECKING(for "linux/version.h")
+    if test -f "$LINUX_KERNEL_INCLUDE/linux/version.h"; then
+	AC_MSG_RESULT(ok)
+    else
+	AC_MSG_ERROR(["linux/version.h"
+		not found in $LINUX_KERNEL_INCLUDE, generate it with
+		'make include/linux/version.h' or 'make menuconfig'
+		in the top of linux kernel source tree.])
+    fi
+
+    # Check kernel major version and set compiler flags
+    AC_MSG_CHECKING(linux major kernel version)
+    KERNEL_MAJOR_VERSION=`echo $KERNEL_VERSION | cut -d- -f1`
+    case $KERNEL_MAJOR_VERSION in
+      2.6.*)
+        AC_MSG_RESULT(2.6)
+	LINUX_CONFIG_HEADER="$LINUX_KERNEL_INCLUDE/linux/autoconf.h"
+dnl 
+dnl 
+dnl 
+dnl 
+	;;
+	
+      *)
+        AC_MSG_ERROR([Unsupported kernel version!])
+	;;
+    esac
+
+    # linux architecture specific include dir for 2.6.28 and later kernels
+    LINUXARCH=`echo $target | sed -e s/-.*// | \
+            sed \
+            -e s/i.86/x86/ -e s/sun4u/sparc/ \
+            -e s/arm.*/arm/ -e s/sa110/arm/ \
+            -e s/s390x/s390/ -e s/parisc64/parisc/ \
+            -e s/ppc.*/powerpc/ -e s/mips.*/mips/ \
+            -e s/sh[234].*/sh/ -e s/sh64/sh/ \
+            -e s/x86_64/x86/ -e s/sparc64/sparc/ \
+            -e s/m68knommu/m68k/`
+
+
+    SSH_INTERCEPTOR_CPPFLAGS="$SSH_INTERCEPTOR_CPPFLAGS -D__KERNEL__ -D_KERNEL -DKERNEL -DMODULE -I$LINUX_KERNEL_INCLUDE -include $LINUX_CONFIG_HEADER"
+
+    SSH_KB_LINUX_KERNEL_INCLUDE="$LINUX_KERNEL_INCLUDE"
+    SSH_KB_LINUX_KERNEL_INCLUDE=`echo $SSH_KB_LINUX_KERNEL_INCLUDE|sed 's@/include@@g'`
+    SSH_KB_LINUX_CONFIG_HEADER="-include $LINUX_CONFIG_HEADER"
+
+    # Set kernel minor version specific flags
+    case $KERNEL_MAJOR_VERSION in
+      2.6.[[0-8]]|2.6.[[0-8]].*)
+        # 2.6.0-2.6.8.1
+	SSH_INTERCEPTOR_CPPFLAGS="$SSH_INTERCEPTOR_CPPFLAGS -I$LINUX_KERNEL_INCLUDE/asm/mach-default -DKBUILD_BASENAME=quicksec"
+	SSH_INTERCEPTOR_TARGETS=`echo $SSH_INTERCEPTOR_TARGETS|sed 's@\.o@\.ko@g'`
+	;;
+      2.6.10_mvl401*)
+        # Montavista Linux 4.0
+	SSH_INTERCEPTOR_CPPFLAGS="$SSH_INTERCEPTOR_CPPFLAGS -I$LINUX_KERNEL_INCLUDE/asm/mach-default -DMONTAVISTA_4 -DKBUILD_BASENAME=quicksec"
+	SSH_INTERCEPTOR_TARGETS=`echo $SSH_INTERCEPTOR_TARGETS|sed 's@\.o@\.ko@g'`
+	AC_DEFINE(LINUX_HAS_RTM_SETLINK)
+	;;
+      2.6.9|2.6.9.*|2.6.1[[0-5]]|2.6.1[[0-5]].*)
+        # 2.6.9-2.6.15
+	SSH_INTERCEPTOR_CPPFLAGS="$SSH_INTERCEPTOR_CPPFLAGS -I$LINUX_KERNEL_INCLUDE/asm/mach-default -DKBUILD_BASENAME=quicksec"
+	SSH_INTERCEPTOR_TARGETS=`echo $SSH_INTERCEPTOR_TARGETS|sed 's@\.o@\.ko@g'`
+	AC_DEFINE(LINUX_HAS_RTM_SETLINK)
+	;;
+
+      2.6.28*|2.6.29*)
+        # 2.6.28 and 2.6.29
+	SSH_INTERCEPTOR_CPPFLAGS="$SSH_INTERCEPTOR_CPPFLAGS -DKBUILD_BASENAME=quicksec -I$LINUX_KERNEL_INCLUDE/../arch/$LINUXARCH/include -I$LINUX_KERNEL_INCLUDE/../arch/$LINUXARCH/include/asm/mach-default "
+	SSH_INTERCEPTOR_TARGETS=`echo $SSH_INTERCEPTOR_TARGETS|sed 's@\.o@\.ko@g'`
+	cat >> confdefs.h <<\EOF
+#define LINUX_HAS_RTM_SETLINK 1
+EOF
+
+        ;;
+
+      2.6.3[[01]]*)
+        # 2.6.28-2.6.31
+	SSH_INTERCEPTOR_CPPFLAGS="$SSH_INTERCEPTOR_CPPFLAGS -DKBUILD_BASENAME=quicksec -I$LINUX_KERNEL_INCLUDE/../arch/$LINUXARCH/include"
+	SSH_INTERCEPTOR_TARGETS=`echo $SSH_INTERCEPTOR_TARGETS|sed 's@\.o@\.ko@g'`
+	cat >> confdefs.h <<\EOF
+#define LINUX_HAS_RTM_SETLINK 1
+EOF
+
+        ;;
+
+      2.6.*)
+        # 2.6 that was not matched above
+	SSH_INTERCEPTOR_CPPFLAGS="$SSH_INTERCEPTOR_CPPFLAGS -I$LINUX_KERNEL_INCLUDE/asm/mach-default -D\"KBUILD_STR(s)=\\#s\" -D\"KBUILD_BASENAME=KBUILD_STR(quicksec)\" -D\"KBUILD_MODNAME=KBUILD_STR(quicksec)\""
+	SSH_INTERCEPTOR_TARGETS=`echo $SSH_INTERCEPTOR_TARGETS|sed 's@\.o@\.ko@g'`
+	AC_DEFINE(LINUX_HAS_RTM_SETLINK)
+	;;
+    esac
+    
+    AC_MSG_CHECKING(whether to compile for an SMP kernel)
+    AC_ARG_ENABLE(smp,
+    [  --enable-smp            Compile for an SMP kernel.
+	                       (used currently only on Linux).],
+    [ case "$enableval" in
+	no)
+          ;; 
+	*)
+          enable_smp=yes
+	  ;;
+       esac ],
+    [ oldcppflags="$CPPFLAGS"
+      CPPFLAGS="-I$LINUX_KERNEL_INCLUDE -include $LINUX_CONFIG_HEADER"
+      AC_TRY_COMPILE([
+	      void test() {
+	      #ifndef CONFIG_SMP
+		  This is a syntax error
+              #endif
+		  }],[],
+	  [enable_smp=yes],[])
+      CPPFLAGS="$oldcppflags" ])
+    if test "x$enable_smp" = "xyes"; then
+	AC_MSG_RESULT(yes)
+	SSH_INTERCEPTOR_CPPFLAGS="$SSH_INTERCEPTOR_CPPFLAGS -D__SMP__"
+    else
+	AC_MSG_RESULT(no)
+    fi
+
+    # Add -g to KERN_CFLAGS
+    if ( echo $CFLAGS | grep "\-g" > /dev/null ); then
+	KERN_CFLAGS="$KERN_CFLAGS -g";
+    fi
+
+    # Add -Wno-pointer-sign to KERN_CFLAGS
+    if ( echo $CFLAGS | grep "\-Wno\-pointer\-sign" > /dev/null )
+    then
+        KERN_CFLAGS="$KERN_CFLAGS -Wno-pointer-sign";
+    fi
+
+    # Check hw platform specific compiler flags
+
+    # Check if -mregparm=3 is needed (only for i386)
+    case $KERNEL_MAJOR_VERSION in
+      2.6.[[0-9]]|2.6.[[0-9]].*|2.6.1[[0-9]]|2.6.1[[0-9]].*)
+	AC_MSG_CHECKING(whether linux kernel was compiled with CONFIG_REGPARM)
+	oldcppflags="$CPPFLAGS"
+	CPPFLAGS="-I$LINUX_KERNEL_INCLUDE -include $LINUX_CONFIG_HEADER"
+	AC_TRY_COMPILE([
+		void test() {
+	        #ifndef CONFIG_REGPARM
+		    This is a syntax error
+                #endif
+		    }],[],
+	    [linux_i386_regparm=yes
+	     AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
+	CPPFLAGS="$oldcppflags"      
+	;;
+
+      *)
+        # Starting from 2.6.20 -mregparm=3 is always set
+        linux_i386_regparm=yes;
+	;;
+    esac
+
+    # Check -fstack-protector and -fstack-protector-all (only for x86_64)
+    AC_MSG_CHECKING(whether linux kernel was compiled with CONFIG_CC_STACKPROTECTOR)
+    oldcppflags="$CPPFLAGS"
+    CPPFLAGS="-I$LINUX_KERNEL_INCLUDE -include $LINUX_CONFIG_HEADER"
+    AC_TRY_COMPILE([
+	    void test() {
+	    #ifndef CONFIG_CC_STACKPROTECTOR
+		This is a syntax error
+            #endif
+		}],[],
+	[linux_x86_64_stackprotector=yes
+	    AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
+    CPPFLAGS="$oldcppflags"
+
+    AC_MSG_CHECKING(whether linux kernel was compiled with CONFIG_CC_STACKPROTECTOR_ALL)
+    oldcppflags="$CPPFLAGS"
+    CPPFLAGS="-I$LINUX_KERNEL_INCLUDE -include $LINUX_CONFIG_HEADER"
+    AC_TRY_COMPILE([
+	    void test() {
+	    #ifndef CONFIG_CC_STACKPROTECTOR_ALL
+		This is a syntax error
+            #endif
+		}],[],
+	[linux_x86_64_stackprotector_all=yes
+	    AC_MSG_RESULT(yes)],[AC_MSG_RESULT(no)])
+    CPPFLAGS="$oldcppflags"
+    
+    # Set hw platform specific compiler flags
+    case $target in
+	i[[3-6]]86-*-linux*)
+	  if test "x$linux_i386_regparm" = "xyes"; then
+	      KERN_CFLAGS="$KERN_CFLAGS -mregparm=3"
+	      if test "x$enable_asm" = "xyes"; then
+		  AC_DEFINE(NEED_ASM_LINKAGE)
+	      fi
+	  fi
+	;;
+
+	powerpc64-*-linux*)
+	  KERN_CFLAGS="$KERN_CFLAGS -Wa,-a64,-mppc64 -m64"
+	;;
+
+	x86_64-*-linux*)
+	  KERN_CFLAGS="$KERN_CFLAGS -mcmodel=kernel"
+	  if test "x$linux_x86_64_stackprotector" = "xyes"; then
+	      KERN_CFLAGS="$KERN_CFLAGS -fstack-protector"
+	  fi
+	  if test "x$linux_x86_64_stackprotector_all" = "xyes"; then
+	      KERN_CFLAGS="$KERN_CFLAGS -fstack-protector-all"
+	  fi
+	;;
+    esac
+
+    # Skip linux kernel feature checks if we are not building the interceptor.
+    if test "x$disable_interceptor" != "xyes"; then
+
+      AC_MSG_CHECKING(whether linux kernel has netfilter support)
+      oldcppflags="$CPPFLAGS"
+      CPPFLAGS="-I$LINUX_KERNEL_INCLUDE -include $LINUX_CONFIG_HEADER"
+      AC_TRY_COMPILE([
+	      void test() {
+	      #ifndef CONFIG_NETFILTER
+		  This is a syntax error
+              #endif
+		  }],[],
+	  [AC_MSG_RESULT(yes)],
+	  [AC_MSG_ERROR([no, please recompile with CONFIG_NETFILTER=y])])
+      CPPFLAGS="$oldcppflags"
+
+      AC_MSG_CHECKING(whether linux kernel was compiled with CONFIG_4KSTACKS)
+      oldcppflags="$CPPFLAGS"
+      CPPFLAGS="-I$LINUX_KERNEL_INCLUDE -include $LINUX_CONFIG_HEADER"
+      AC_TRY_COMPILE([
+	      void test() {
+	      #ifndef CONFIG_4KSTACKS
+		  This is a syntax error
+              #endif
+		  }],[],
+	  [linux_config_4k_stacks=yes],
+	  [])
+      CPPFLAGS="$oldcppflags"
+      AC_ARG_WITH(4k-stacks,
+	  [],
+	  [with_4k_stacks=$withval])
+      if test "x$linux_config_4k_stacks" = "xyes" || test "x$with_4k_stacks" = "xyes"; then
+	  AC_MSG_RESULT([yes, enabling MINIMAL_STACK])
+	  AC_DEFINE(MINIMAL_STACK)
+	  AC_MSG_CHECKING(whether compiler supports -fno-unit-at-a-time)
+	  oldcppflags="$CPPFLAGS"
+	  CPPFLAGS="-I$LINUX_KERNEL_INCLUDE -include $LINUX_CONFIG_HEADER"
+	  oldcflags="$CFLAGS"
+	  CFLAGS="-fno-unit-at-a-time"
+	  AC_TRY_COMPILE([
+		  void test() {
+		      }],[],
+	      [AC_MSG_RESULT(yes)
+		  KERN_CFLAGS="$KERN_CFLAGS -fno-unit-at-a-time"],
+	      [AC_MSG_RESULT(no)])
+	  CPPFLAGS="$oldcppflags"
+	  CFLAGS="$oldcflags"
+      else
+        AC_MSG_RESULT(no)
+      fi
+
+    # end of 'if test "x$disable_interceptor" != "xyes"'
+    fi
+
+    # Make sure KERN_CFLAGS contains -O, as Linux (linux/string.h) expects
+    # inline functions to work.
+    if (! echo $KERN_CFLAGS | grep "\-O" > /dev/null ); then
+	KERN_CFLAGS="$KERN_CFLAGS -O"
+    fi
+    
+    KERN_CFLAGS="$KERN_CFLAGS -fno-common -Wall"
+    KERN_LDFLAGS="$KERN_LDFLAGS -fno-common"
+
+    icept_result="Linux $KERNEL_VERSION"
+dnl 
+    QS_ADDRSPACE='kernel'
+dnl 
+    ;;
+dnl 
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+  *)
+    SSH_INTERCEPTOR_MACHINE_DIR=
+    SSH_INTERCEPTOR_MACHINE_SUBDIR=
+    icept_result="none"
+    AC_WARN([No packet interceptor available for this platform ($target).])
+    ;;
+esac
+
+# If $need_readonly_defines is "true", define
+# NEED_PACKET_READONLY_DEFINES symbol.
+if test "$need_readonly_defines" = "true"
+then
+    AC_DEFINE(NEED_PACKET_READONLY_DEFINES)
+fi
+
+# If $interceptor_has_packet_alloc_and_copy_ext_data is "true",
+# define INTERCEPTOR_HAS_PACKET_ALLOC_AND_COPY_EXT_DATA symbol.
+if test "$interceptor_has_packet_alloc_and_copy_ext_data" = "true"
+then
+    AC_DEFINE(INTERCEPTOR_HAS_PACKET_ALLOC_AND_COPY_EXT_DATA)
+fi
+
+# If $interceptor_has_packet_copy is "true", define
+# INTERCEPTOR_HAS_PACKET_COPY symbol.
+if test "$interceptor_has_packet_copy" = "true"
+then
+    AC_DEFINE(INTERCEPTOR_HAS_PACKET_COPY)
+fi
+
+# If $interceptor_has_packet_copyin is "true", define
+# INTERCEPTOR_HAS_PACKET_COPYIN symbol.
+if test "$interceptor_has_packet_copyin" = "true"
+then
+    AC_DEFINE(INTERCEPTOR_HAS_PACKET_COPYIN)
+fi
+
+# If $interceptor_has_packet_copyout is "true", define
+# INTERCEPTOR_HAS_PACKET_COPYOUT symbol.
+if test "$interceptor_has_packet_copyout" = "true"
+then
+    AC_DEFINE(INTERCEPTOR_HAS_PACKET_COPYOUT)
+fi
+
+# If $interceptor_has_mark_func is "true", define
+# INTERCEPTOR_HAS_MARK_FUNC symbol
+if test "$interceptor_has_mark_func" = "true"
+then
+    AC_DEFINE(INTERCEPTOR_HAS_MARK_FUNC)
+fi
+
+# If $interceptor_has_packet_internal_data_routines is "true", define
+# INTERCEPTOR_HAS_PACKET_INTERNAL_DATA_ROUTINES.
+if test "$interceptor_has_packet_internal_data_routines" = "true"
+then
+    AC_DEFINE(INTERCEPTOR_HAS_PACKET_INTERNAL_DATA_ROUTINES)
+fi
+
+# If $interceptor_has_packet_detach is "true", define
+# INTERCEPTOR_HAS_PACKET_DETACH
+if test "$interceptor_has_packet_detach" = "true"
+then
+    AC_DEFINE(INTERCEPTOR_HAS_PACKET_DETACH)
+fi
+
+# If $interceptor_has_packet_cache is "true", define
+# INTERCEPTOR_HAS_PACKET_CACHE
+if test "$interceptor_has_packet_cache" = "true"
+then
+    AC_DEFINE(INTERCEPTOR_HAS_PACKET_CACHE)
+fi
+
+# If $interceptor_has_platform_include is "true", define
+# INTERCEPTOR_HAS_PLATFORM_INCLUDE
+if test "$interceptor_has_platform_include" = "true"
+then
+    AC_DEFINE(INTERCEPTOR_HAS_PLATFORM_INCLUDE)
+fi
+
+# If $interceptor_sets_ip_forwarding is "true", define
+# INTERCEPTOR_SETS_IP_FORWARDING symbol.
+if test "$interceptor_sets_ip_forwarding" = "true"
+then
+    AC_DEFINE(INTERCEPTOR_SETS_IP_FORWARDING)
+fi
+
+# If $interceptor_handles_loopback_packets is "true", define
+# INTERCEPTOR_HANDLES_LOOPBACK_PACKETS symbol.
+if test "$interceptor_handles_loopback_packets" = "true"
+then
+    AC_DEFINE(INTERCEPTOR_HANDLES_LOOPBACK_PACKETS)
+fi
+
+# If $interceptor_implements_virtual_adapter_configure is "true", define
+# INTERCEPTOR_IMPLEMENTS_VIRTUAL_ADAPTER_CONFIGURE symbol.
+if test "$interceptor_implements_virtual_adapter_configure" = "true"
+then
+    AC_DEFINE(INTERCEPTOR_IMPLEMENTS_VIRTUAL_ADAPTER_CONFIGURE)
+fi
+
+# If $interceptor_implements_route_modify is "true", define
+# INTERCEPTOR_IMPLEMENTS_ROUTE_MODIFY symbol.
+if test "$interceptor_implements_route_modify" = "true"
+then
+    AC_DEFINE(INTERCEPTOR_IMPLEMENTS_ROUTE_MODIFY)
+fi
+
+# This is needed by tests
+AC_CHECK_FUNCS(mprotect)
+
+## Whatever we configured above, zap all interceptor parts since they
+## won't be compiled.
+if test "x$disable_interceptor" = "xyes"
+then
+    SSH_INTERCEPTOR_MACHINE_DIR=
+    SSH_INTERCEPTOR_MACHINE_SUBDIR=
+    SSH_INTERCEPTOR_KERNEL_TARGETS=
+    SSH_INTERCEPTOR_TARGETS=
+    SSH_INTERCEPTOR_OBJS=
+    SSH_INTERCEPTOR_NONETHER_OBJS=
+    SSH_INTERCEPTOR_ETHER_OBJS=
+    SSH_INTERCEPTOR_CPPFLAGS=
+    SSH_INTERCEPTOR_SYMCHECK=
+    SSH_KB_LINUX_KERNEL_INCLUDE=
+    SSH_KB_LINUX_CONFIG_HEADER=
+dnl 
+dnl 
+dnl 
+else
+    AC_MSG_CHECKING(IPSEC packet interceptor support)
+    AC_MSG_RESULT($icept_result)
+fi
+
+AC_SUBST(SSH_INTERCEPTOR_MACHINE_DIR)
+AC_SUBST(SSH_INTERCEPTOR_MACHINE_SUBDIR)
+AC_SUBST(SSH_INTERCEPTOR_KERNEL_TARGETS)
+AC_SUBST(SSH_INTERCEPTOR_TARGETS)
+AC_SUBST(SSH_INTERCEPTOR_OBJS)
+AC_SUBST(SSH_INTERCEPTOR_NONETHER_OBJS)
+AC_SUBST(SSH_INTERCEPTOR_ETHER_OBJS)
+AC_SUBST(SSH_INTERCEPTOR_CPPFLAGS)
+AC_SUBST(SSH_INTERCEPTOR_SYMCHECK)
+AC_SUBST(SSH_KB_LINUX_KERNEL_INCLUDE)
+AC_SUBST(SSH_KB_LINUX_CONFIG_HEADER)
+dnl 
+AC_SUBST(QS_ADDRSPACE)
+AC_SUBST(QS_EXTRALIBS)
+dnl 
+dnl 
+dnl 
+dnl 
+
+AC_SUBST(ROUTE_CONFIGURED_SRCS)
+
+## Check KERN_ symbols, and do fallbacks if necessary. If we are
+## compiling interceptor then KERN_* may have been set by the platform
+## cases. If we are not building interceptor, use the normal compiler
+## as default.
+
+: ${KERN_CC:="$CC"}
+: ${KERN_CFLAGS:="$CFLAGS"}
+: ${KERN_LDFLAGS:="$LDFLAGS"}
+# Perhaps it is not a good idea to try to use user-level libraries in
+# kernel linkage..
+: ${KERN_LIBS:=""}
+##: ${KERN_LIBS:="$LIBS"}
+
+AC_SUBST(KERN_CC)
+AC_SUBST(KERN_CFLAGS)
+AC_SUBST(KERN_LDFLAGS)
+AC_SUBST(KERN_LIBS)
+
+########################################################################
+
+############################################################################
+
+## Check for things we need to do differently in the policy manager
+## for different platforms.
+
+AC_MSG_CHECKING(IPM routing method)
+case $target in
+    *-*-solaris2.6|*-*-solaris2.7|*-*-solaris2.8)
+	SSH_IPM_MACHINE_OBJS='$(SOLARIS_MACHINE_OBJS)'
+	AC_MSG_RESULT(Solaris)
+	;;
+    *)
+	SSH_IPM_MACHINE_OBJS='$(GENUNIX_MACHINE_OBJS)'
+	AC_MSG_RESULT(kernel-based (stubs only))
+	;;
+esac
+
+AC_SUBST(SSH_IPM_MACHINE_OBJS)
+
+# Notice: We do this separately from $enable_asm (which
+# $enable_engine_asm defaults to) separately so it is possible to
+# disable the assembler optimization code inside kernel.
+
+if test "x$enable_engine_asm" = "xyes"; then
+    ENGINE_ASM_OBJS='$(asm_cipher_objs) $(asm_hash_objs)'
+    QUICKSEC_ASM_OBJS='$(asm_quicksec_objs)'
+else
+    ENGINE_ASM_OBJS=""
+    QUICKSEC_ASM_OBJS=""
+fi
+
+AC_SUBST(ENGINE_ASM_OBJS)
+AC_SUBST(QUICKSEC_ASM_OBJS)
+
+# Check kernel-compilation mode sizes of basic types.  (but not if
+# interceptor is disabled). We compile libengine.a on kernel only if
+# interceptor is enabled.
+
+if test "x$disable_interceptor" != "xyes"
+then
+    # Store old values, and use kernel compilation values for a minute.
+    CFLAGS_store="$CFLAGS"
+    LDFLAGS_store="$LDFLAGS"
+    CFLAGS="$KERN_CFLAGS"
+    LDFLAGS="$KERN_LDFLAGS"
+
+    # There is a thing with Tru64 -- we must weed out the -Wb,-static out
+    # before doing kernelmode basic type size checks:
+    if test "x$SSH_INTERCEPTOR_MACHINE_DIR" = "xtru64"; then
+	CFLAGS=`echo "$CFLAGS" | sed 's/-Wb,-static//; s/-Wf,-static//;'`
+    fi
+
+    # Remove -mregparm=3 from KERN_CFLAGS, 
+    # since it is not compatible with AC_CHECK_SIZEOF_WITH_PREFIX.
+    CFLAGS=`echo "$CFLAGS" | sed -e 's/-mregparm=3//' -e 's/-fstack-protector-all//'`
+
+    AC_CHECK_SIZEOF_WITH_PREFIX(kernel,void *,$cross_sizeof_kernel_pointer)
+    AC_CHECK_SIZEOF_WITH_PREFIX(kernel,long,$cross_sizeof_kernel_long)
+    AC_CHECK_SIZEOF_WITH_PREFIX(kernel,int,$cross_sizeof_kernel_int)
+    AC_CHECK_SIZEOF_WITH_PREFIX(kernel,short,$cross_sizeof_kernel_short)
+    AC_CHECK_SIZEOF_WITH_PREFIX(kernel,long long,$cross_sizeof_kernel_longlong)
+
+    # Switch back to the normal values.
+    CFLAGS="$CFLAGS_store"
+    LDFLAGS="$LDFLAGS_store"
+    unset CFLAGS_store
+    unset LDFLAGS_store
+dnl 
+dnl 
+dnl 
+dnl 
+    SSH_ENGINE_KERNEL_TARGET=libengine.a
+dnl 
+    SSH_ENGINE_USERMODE_TARGET=sshengine_usermode
+else
+    # Disable kernel libengine.a target. We always comppile
+    # sshengine_usermode, but provide the same type of substitution
+    # target as for kernel library for completeness. (Might come handy
+    # on some later platform?)
+    SSH_ENGINE_KERNEL_TARGET=
+    SSH_ENGINE_USERMODE_TARGET=sshengine_usermode
+fi
+dnl 
+dnl 
+dnl 
+AC_SUBST(SSH_ENGINE_KERNEL_TARGET)
+AC_SUBST(SSH_ENGINE_USERMODE_TARGET)
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+if test -z "$no_setsid"; then
+  AC_CHECK_FUNCS(setsid)
+fi
+
+case $target in
+   *-*-linux*)
+    AC_DEFINE(RXP_PLATFORM_LINUX)
+    RXP_PLATFORM_NAME=linux
+    ;;
+    *-*-solaris*)
+    AC_DEFINE(RXP_PLATFORM_SOLARIS)
+    RXP_PLATFORM_NAME=solaris
+    ;;
+    *-*-vxworks*)
+    AC_DEFINE(RXP_PLATFORM_VXWORKS)
+    RXP_PLATFORM_NAME=vxworks
+    ;;
+esac
+AC_SUBST(RXP_PLATFORM_NAME)
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+# -*- autoconf -*-
+#
+# configure.in fragment for sshutil (generic utilities and portability stuff)
+#
+# Author: Tatu Ylonen <ylo@ssh.fi>
+#
+#  Copyright:
+#          Copyright (c) 2002, 2003 SFNT Finland Oy.
+#                    All rights reserved
+#
+
+# So many systems seem to need this that it is better do it here automatically.
+LIBS="-L/usr/local/lib $LIBS"
+
+# Platform-specific stuff.
+case "$target" in
+  alpha*-dec-osf*)
+    ;;
+  *-*-solaris*)
+    AC_DEFINE(SECURE_RPC)
+    AC_DEFINE(SECURE_NFS)
+    ;;
+  m88k-dg-dgux*)
+    AC_DEFINE(BROKEN_INET_ADDR)
+    ;;
+  *-sequent-ptx*)
+    # From geek+@cmu.edu
+    test_libinet=yes
+    ;;
+  *-sequent-dynix*|*-sequent-ptx*)
+    LIBS="-lseq -lsocket -linet -lnsl $LIBS"
+    ;;
+  *-*-hpux*)
+    AC_MSG_CHECKING(for keyserv)
+    if test -f /usr/sbin/keyserv; then
+      AC_MSG_RESULT(yes)
+      AC_DEFINE(SECURE_RPC)
+      LIBS="$LIBS -lrpcsvc"
+    else
+      AC_MSG_RESULT(no)
+    fi
+    no_utmpx=yes
+   ;;
+  *-*-aix*)
+    no_utmpx=yes
+    ;;
+  *-*-irix6*)
+    AC_DEFINE(BROKEN_INET_ADDR)
+    ;;
+  *-sco*-*uw*)
+    no_test_for_memset=yes
+    ;;
+  *)
+    ;;
+esac
+
+AC_CHECK_FUNCS(key_secretkey_is_set)
+
+if test -z "$no_libnsl"; then
+  AC_CHECK_LIB(nsl, main)
+fi
+if test -n "$test_libinet"; then
+  AC_CHECK_LIB(inet, inet_network)
+fi
+if test -z "$no_libsocket"; then
+  AC_CHECK_LIB(socket, socket)
+fi
+
+AC_CHECK_FUNCS(strchr memcpy gethostname gettimeofday ctime signal)
+AC_CHECK_FUNCS(getservbyname getservbyport endservent)
+AC_CHECK_FUNCS(popen lockf getrusage uname)
+AC_CHECK_FUNCS(getpid getppid getuid getgid getpgrp)
+AC_CHECK_FUNCS(endpwent endgrent getgrgid getpwuid)
+AC_CHECK_FUNCS(truncate ftruncate chown fchown chmod fchmod fstat)
+AC_CHECK_FUNCS(lutimes futimes utime utimes usleep lstat localtime inet_aton)
+AC_CHECK_FUNCS(select poll)
+
+# Checking if we have socklen_t in sys/socket.h
+# Note, that we do not use AC_CHECK_TYPE because its use have
+# changed between 2.13 and newer version of autoconf, and the
+# old version was quite broken
+AC_MSG_CHECKING(whether we have socklen_t)
+AC_TRY_COMPILE([#include <sys/socket.h>
+void test()
+{
+  socklen_t s;
+}],[],
+[AC_MSG_RESULT(yes)
+ AC_DEFINE(HAVE_SOCKLEN_T)],
+[AC_MSG_RESULT(no)])
+
+# This needs to be checked here, because otherwise, in some cases, the
+# replacement func for crypt() might be compiled, which would override
+# system's crypt(). Which would break password checking.
+AC_CHECK_LIB(c, crypt, [true], AC_CHECK_LIB(crypt, crypt))
+
+AC_REPLACE_FUNCS(strerror memmove remove random putenv)
+if test -z "$no_test_for_memset"; then
+  AC_REPLACE_FUNCS(memset)
+fi
+AC_REPLACE_FUNCS(strcasecmp strncasecmp crypt getopt)
+
+AC_CHECK_HEADERS(unistd.h netinet/in_systm.h netinet/in.h)
+AC_CHECK_HEADERS(machine/endian.h endian.h paths.h sys/un.h sys/utsname.h)
+AC_CHECK_HEADERS(machine/spl.h sys/callout.h)
+AC_CHECK_HEADERS(termcap.h rusage.h pwd.h grp.h sys/time.h dirent.h limits.h)
+AC_CHECK_HEADERS(sys/select.h sys/poll.h)
+
+MSG_WITH_IPV6="yes"
+AC_MSG_CHECKING(whether to enable IPv6 support)
+AC_ARG_WITH(ipv6,
+[  --without-ipv6          Disable IPv6 support.],
+[case "$withval" in
+   yes)
+      AC_MSG_RESULT(yes)
+      AC_DEFINE(WITH_IPV6)
+      ;;
+   *)
+      AC_MSG_RESULT(no)
+      MSG_WITH_IPV6="no"
+      ;;
+ esac], AC_MSG_RESULT(yes)
+        AC_DEFINE(WITH_IPV6)
+)
+
+if test "$with_ipv6" != "no"; then
+  AC_MSG_CHECKING(whether we have sockaddr_in6)
+  AC_TRY_COMPILE([#include <sys/types.h>
+  #include <sys/socket.h>
+  #include <netinet/in.h>
+  #ifdef HAVE_NETINET_IN_SYSTM_H
+  #include <netinet/in_systm.h>
+  #else /* Some old linux systems at least have in_system.h instead. */
+  #include <netinet/in_system.h>
+  #endif /* HAVE_NETINET_IN_SYSTM_H */
+  #if !defined(__PARAGON__)
+  #include <netinet/ip.h>
+  #endif /* !__PARAGON__ */
+  #include <netinet/tcp.h>
+  #include <arpa/inet.h>
+  #include <netdb.h>
+  void test()
+  {
+    struct sockaddr_in6 sinaddr6;
+  }],
+  [],
+  [AC_MSG_RESULT(yes)
+   AC_DEFINE(HAVE_SOCKADDR_IN6_STRUCT)
+   AC_CHECK_FUNCS(getipnodebyaddr getipnodebyname gethostbyname2)],
+  [AC_MSG_RESULT(no)
+   MSG_WITH_IPV6="no"]
+  )
+fi
+
+if test "$with_ipv6" != "no"; then
+  AC_MSG_CHECKING(whether we have sockaddr_in6.sin6_scope_id)
+  AC_TRY_COMPILE([#include <sys/types.h>
+  #include <sys/socket.h>
+  #include <netinet/in.h>
+  #ifdef HAVE_NETINET_IN_SYSTM_H
+  #include <netinet/in_systm.h>
+  #else /* Some old linux systems at least have in_system.h instead. */
+  #include <netinet/in_system.h>
+  #endif /* HAVE_NETINET_IN_SYSTM_H */
+  #if !defined(__PARAGON__)
+  #include <netinet/ip.h>
+  #endif /* !__PARAGON__ */
+  #include <netinet/tcp.h>
+  #include <arpa/inet.h>
+  #include <netdb.h>
+  void test()
+  {
+    struct sockaddr_in6 sinaddr6;
+    sinaddr6.sin6_scope_id = 0;
+  }],
+  [],
+  [AC_MSG_RESULT(yes)
+   AC_DEFINE(HAVE_SOCKADDR_IN6_SCOPE_ID)],
+  [AC_MSG_RESULT(no)]
+  )
+fi
+
+
+# Check if /var/run exists (this is used by includes.h to set PIDDIR).
+if test -d /var/run; then
+  AC_DEFINE(HAVE_VAR_RUN)
+fi
+
+AC_MSG_CHECKING(whether inet_ntoa is broken)
+AC_TRY_RUN([
+struct in_addr {
+  unsigned char s_addr[4];
+};
+
+char *inet_ntoa(struct in_addr in);
+
+main()
+{
+   char *addr;
+   struct in_addr in;
+   unsigned char *b;
+
+   b = in.s_addr;
+   *b = 0xef; b++;
+   *b = 0xcd; b++;
+   *b = 0xab; b++;
+   *b = 0x89;
+   addr = inet_ntoa(in);
+   return ((strcmp(addr, "239.205.171.137") == 0) ? 0 : 1);
+}],AC_MSG_RESULT(no),[AC_MSG_RESULT(yes)
+broken_inet_ntoa="yes"],[AC_MSG_RESULT(yes)
+broken_inet_ntoa="yes"])
+
+if test -n "$broken_inet_ntoa"; then
+dnl 
+dnl 
+dnl 
+  CA_LIBOBJS="$CA_LIBOBJS inet_ntoa.o"
+dnl 
+  AC_MSG_WARN("using internal inet_ntoa")
+fi
+
+AC_MSG_CHECKING(whether S_IFSOCK is defined)
+AC_TRY_LINK([#include <sys/stat.h>],
+	    [int i = S_IFSOCK;],
+	    [AC_MSG_RESULT(yes)
+             AC_DEFINE(HAVE_S_IFSOCK)],
+	    AC_MSG_RESULT(no))
+
+AC_MSG_CHECKING(whether to enable TCP_NODELAY)
+AC_ARG_ENABLE(tcp-nodelay,
+[  --disable-tcp-nodelay   Disable TCP_NODELAY socket option],
+[ case "$enableval" in
+  yes)
+       AC_MSG_RESULT(yes)
+       AC_DEFINE(ENABLE_TCP_NODELAY)
+       ;;
+  *)
+       AC_MSG_RESULT(no)
+  esac ],
+  AC_MSG_RESULT(yes)
+  AC_DEFINE(ENABLE_TCP_NODELAY)
+)
+
+AC_MSG_CHECKING(whether to prefer select() over poll())
+AC_ARG_ENABLE(select,
+[  --enable-select         Use select even if poll() is present. ],
+[ case "$enableval" in
+  yes)
+    AC_MSG_RESULT(yes)
+    AC_DEFINE(ENABLE_SELECT)
+    ;;
+  *)
+    AC_MSG_RESULT(no)
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+)
+
+AC_MSG_CHECKING(whether to use blocking connect system call)
+AC_ARG_ENABLE(blocking-connect,
+[  --enable-blocking-connect
+                          Use blocking connect system call.],
+[ case "$enableval" in
+  yes)
+    AC_MSG_RESULT(yes)
+    AC_DEFINE(NO_NONBLOCKING_CONNECT)
+    ;;
+  *)
+    AC_MSG_RESULT(no)
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+)
+
+AC_MSG_CHECKING(whether struct tm has member tm_gmtoff)
+AC_TRY_COMPILE([#include <sys/types.h>
+#include <time.h>
+long test()
+{
+  struct tm tm;
+  tm.tm_gmtoff = 0;
+  return ((long)(tm.tm_gmtoff));
+}],
+[],
+[AC_MSG_RESULT(yes)
+ AC_DEFINE(HAVE_TM_GMTOFF_IN_STRUCT_TM)],
+[AC_MSG_RESULT(no)
+ AC_MSG_CHECKING(whether struct tm has member __tm_gmtoff__)
+ AC_TRY_COMPILE([#include <sys/types.h>
+ #include <time.h>
+ long test()
+ {
+   struct tm tm;
+   tm.__tm_gmtoff__ = 0;
+   return ((long)(tm.__tm_gmtoff__));
+ }],
+[],
+[AC_MSG_RESULT(yes)
+AC_DEFINE(HAVE_OLD_TM_GMTOFF_IN_STRUCT_TM)],
+[AC_MSG_RESULT(no)]
+)]
+)
+
+AC_MSG_CHECKING(whether struct tm has member tm_isdst)
+AC_TRY_COMPILE([#include <sys/types.h>
+#include <time.h>
+int test()
+{
+  struct tm tm;
+  tm.tm_isdst = 0;
+  return ((int)(tm.tm_isdst));
+}],
+[],
+[AC_MSG_RESULT(yes)
+AC_DEFINE(HAVE_TM_ISDST_IN_STRUCT_TM)],
+[AC_MSG_RESULT(no)]
+)
+
+AC_MSG_CHECKING(whether system uses external timezone variable)
+AC_TRY_COMPILE([#include <sys/types.h>
+                #include <time.h>],
+               [timezone = 0;
+                return ((int)(timezone));],
+               [AC_MSG_RESULT(yes)
+                AC_DEFINE(HAVE_EXTERNAL_TIMEZONE)],
+               [AC_MSG_RESULT(no)])
+
+AC_MSG_CHECKING(whether to use system provided localtime)
+AC_ARG_WITH(internal-localtime,
+[  --with-internal-localtime
+                          Use only ssh internal localtime function.],
+[
+  case "$withval" in
+  yes)
+    AC_MSG_RESULT(no)
+    AC_DEFINE(USE_SSH_INTERNAL_LOCALTIME)
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    ;;
+  esac ],
+  AC_MSG_RESULT(yes)
+)
+
+# Thread packages in the order they should be probed. The first found
+# is selected if
+THREADS="pthread none"
+AC_MSG_CHECKING(whether to use threads)
+AC_ARG_WITH(threads,
+[  --with-threads=xxx      Use thread package xxx ($THREADS)],
+[
+  case "$withval" in
+    yes)
+      AC_MSG_RESULT(yes, try to find package)
+      ;;
+    pthread)
+      AC_MSG_RESULT(pthread)
+      THREADS=pthread
+      ;;
+    no)
+      AC_MSG_RESULT(no)
+      THREADS=none
+      ;;
+    *)
+      AC_MSG_RESULT(unknown)
+      AC_MSG_ERROR([Unknown thread package selected: $withval, supported packages are: $THREADS])
+      ;;
+  esac ],
+  AC_MSG_RESULT(no)
+  THREADS=none
+)
+
+THREAD_OBJS=
+THREAD_SYSTEM_OBJS=
+
+for i in $THREADS
+do
+  if test -z "$THREAD"; then
+    case "$i" in
+      none)
+	  THREAD=none
+	  THREAD_OBJS=
+	  THREAD_SYSTEM_OBJS=
+	  ;;
+      pthread)
+dnl	  AC_MSG_CHECKING(whether $CC accepts -lpthread)
+	  CFLAGS_store="$CFLAGS"
+	  CFLAGS="$CFLAGS -lpthread"
+
+	  AC_TRY_COMPILE([#include <pthread.h>],[
+ pthread_create(NULL, NULL, NULL, NULL);],[AC_MSG_RESULT(yes)
+ 		 THREAD=pthread
+		 CFLAGS="$CFLAGS_store -D_REENTRANT"
+		 LIBS="-lpthread $LIBS"
+		 AC_CHECK_LIB(exc, main) ],
+                  [AC_MSG_RESULT(no)
+dnl                  CFLAGS="$CFLAGS_store -D_REENTRANT"
+dnl		  AC_CHECK_LIB(pthread, pthread_create, [
+dnl			LIBS="-lpthread $LIBS"
+dnl			THREAD=pthread
+dnl			AC_CHECK_LIB(exc, main)])
+		  ])
+	  unset CFLAGS_store
+	  if test -n "$THREAD"; then
+dnl 
+dnl 
+dnl 
+dnl 
+		THREAD_OBJS="sshmt_pthreads.o sshmt_timeouts.o"
+		THREAD_SYSTEM_OBJS="sshmt_pthreads.o sshmt_timeouts.o"
+dnl 
+		AC_DEFINE(HAVE_PTHREADS)
+		AC_DEFINE(HAVE_THREADS)
+	  fi
+	  ;;
+      *)
+	  AC_MSG_ERROR(Unknown thread package selected)
+	  ;;
+    esac
+  fi
+done
+
+AC_SUBST(THREAD_OBJS)
+AC_SUBST(THREAD_SYSTEM_OBJS)
+
+if test -z "$no_termios"; then
+  if test "X$ac_cv_header_termios_h" = "Xyes"; then
+    AC_CHECK_HEADERS(sys/modem.h)
+    if test "X$ac_cv_header_sys_modem_h" = "Xyes"; then
+      AC_MSG_CHECKING(whether termios.h needs sys/modem.h to be included)
+      AC_TRY_COMPILE([#include <termios.h>],
+                     [#ifdef TIOCM_DTR
+		        int flags = 0;
+                        flags |= TIOCM_DTR;
+                      #endif /* TIOCM_DTR */],
+                      AC_MSG_RESULT(no),
+                      [ AC_MSG_RESULT(yes)
+                        AC_DEFINE(TERMIOS_H_NEEDS_MODEM_H)])
+
+    fi
+  fi
+fi
+
+
+AC_MSG_CHECKING(whether off_t is 8 bytes by default)
+AC_CACHE_VAL(ac_offt_size,
+[AC_TRY_RUN([
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+main()
+{
+  struct stat asdf;
+  FILE *f=fopen("conftestval", "w");
+  if (!f) exit(1);
+  fprintf(f, "%d\n", sizeof(asdf.st_size));
+  exit(0);
+}], ac_offt_size=`cat conftestval`, ac_offt_size=4, ac_offt_size=4)])
+
+if test "$ac_offt_size" = "8"; then
+  AC_MSG_RESULT(yes)
+else
+  AC_MSG_RESULT(no)
+  AC_MSG_CHECKING(whether 8 byte off_t is supported)
+
+  case "$target" in
+  *-*-aix*)
+    AC_CACHE_VAL(ac_offt_size_aix_define,
+    [AC_TRY_RUN([
+    #define _LARGE_FILES
+    #include <stdio.h>
+    #include <sys/types.h>
+    #include <sys/stat.h>
+    main()
+    {
+      struct stat asdf;
+      FILE *f=fopen("conftestval", "w");
+      if (!f) exit(1);
+      fprintf(f, "%d\n", sizeof(asdf.st_size));
+      exit(0);
+    }], ac_offt_size_aix_define=`cat conftestval`,
+        ac_offt_size_aix_define=4, ac_offt_size_aix_define=4)])
+
+    if test "$ac_offt_size_aix_define" = "8"; then
+      AC_MSG_RESULT(yes)
+      CFLAGS="$CFLAGS -D_LARGE_FILES"
+    else
+      AC_MSG_RESULT(no)
+    fi
+    ;;
+  *)
+    AC_CACHE_VAL(ac_offt_size_gen_define,
+    [AC_TRY_RUN([
+    #define _LARGEFILE_SOURCE
+    #define _FILE_OFFSET_BITS 64
+    #include <stdio.h>
+    #include <sys/types.h>
+    #include <sys/stat.h>
+    main()
+    {
+      struct stat asdf;
+      FILE *f=fopen("conftestval", "w");
+      if (!f) exit(1);
+      fprintf(f, "%d\n", sizeof(asdf.st_size));
+      exit(0);
+    }], ac_offt_size_gen_define=`cat conftestval`,
+        ac_offt_size_gen_define=4, ac_offt_size_gen_define=4)])
+
+    if test "$ac_offt_size_gen_define" = "8" -a "X$CC" != "Xinsure" ; then
+      AC_MSG_RESULT(yes)
+      CFLAGS="$CFLAGS -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64"
+    else
+      AC_MSG_RESULT(no)
+    fi
+    ;;
+
+  esac
+fi
+
+# lib/sshutil/sshsysutil/sshdlib.c uses dlopen family. They are at
+# libc or libdl.
+
+AC_CHECK_HEADER(dlfcn.h,
+ [ AC_MSG_CHECKING([for dlopen in -lc])
+   AC_TRY_LINK([#include <dlfcn.h>],[dlopen ("", 0);],
+               [ AC_MSG_RESULT(yes) ],
+               [ AC_MSG_RESULT(no)
+                 AC_MSG_CHECKING([for dlopen in -ldl])
+                 ac_save_LIBS="$LIBS"
+		 LIBS="-ldl $LIBS"
+                 AC_TRY_LINK([#include <dlfcn.h>],[dlopen ("", 0);],
+               		     [ AC_MSG_RESULT(yes) ],
+               		     [ AC_MSG_RESULT(no)
+                               LIBS="$ac_save_LIBS"])
+                 ac_save_LIBS=])
+ ]
+)
+
+AC_MSG_CHECKING([whether can use __attribute__ ((weak))])
+
+if test -n "$GCC"; then
+	AC_TRY_LINK([ bar() { return 1; }
+		      foo() __attribute__ ((weak, alias("bar")));],
+[ foo() ],
+[AC_MSG_RESULT(yes)
+AC_DEFINE(HAVE_GCC_ATTRIBUTE_WEAK)],
+AC_MSG_RESULT(no))
+else
+	AC_MSG_RESULT(no)
+fi
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+# The malloc debugger is disabled only if --disable-debug-malloc is given.
+# Otherwise its default value is set in sshmalloc.h
+AC_MSG_CHECKING(whether to disable debug malloc)
+AC_ARG_ENABLE(debug-malloc,
+[  --disable-debug-malloc
+                          Disable debug malloc (for purify/third use)],
+[ case "$enableval" in
+  no)
+    AC_MSG_RESULT(yes)
+    AC_DEFINE(SSH_DISABLE_DEBUG_MALLOC)
+    ;;
+  *)
+    AC_MSG_RESULT(no)
+    ;;
+  esac ],
+  AC_MSG_RESULT(no)
+)
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+       
+AC_CHECK_HEADERS(dlfcn.h)
+AC_CHECK_LIB(dl, dlopen)
+AC_CHECK_FUNCS(dlopen dlsym dlclose)
+
+AC_MSG_CHECKING(for __libc_stack_end)
+AC_TRY_LINK([#include <stdlib.h>], [
+extern void *__libc_stack_end;
+exit(((unsigned long) __libc_stack_end) & 0x1);
+], [
+   AC_MSG_RESULT(yes)
+   AC_DEFINE(HAVE_LIBC_STACK_END)
+], AC_MSG_RESULT(no))
+
+AC_MSG_CHECKING(whether to use system dns resolver)
+AC_ARG_ENABLE(system-resolver,
+[  --enable-system-resolver
+                          Enable use of system resolver instead of internal],
+[ case "$enableval" in
+  yes)
+       AC_MSG_RESULT(yes)
+       AC_DEFINE(ENABLE_SYSTEM_DNS_RESOLVER)
+       ;;
+  *)
+       AC_MSG_RESULT(no)
+  esac ],
+  AC_MSG_RESULT(no)
+)
+
+# udp_datagram_size
+AC_ARG_ENABLE(udp-datagram-size,
+  [  --enable-udp-datagram-size=ARG
+                         Specify the size in bytes of the global UDP
+                         datagram buffer.],
+  [ udp_datagram_size=$enableval
+    AC_DEFINE_UNQUOTED(SSH_UDP_DATAGRAM_BUFFER_SIZE, $udp_datagram_size)
+    AC_MSG_RESULT(Enabling UDP datagram buffer size of $enableval.)
+  ])
+
+
+AC_CHECK_SIZEOF_WITH_PREFIX(usermode,size_t,8)
+
+AC_MSG_CHECKING(whether gcc supports __attribute__ with ssh printf extensions)
+CFLAGS_store="$CFLAGS"
+CFLAGS="$CFLAGS -Werror"
+AC_TRY_COMPILE([#include <stdio.h>
+#include <stdlib.h>
+int ssh_snprintf(unsigned char *str, size_t size, const char *format, ...)
+       __attribute__ ((format (printf, 3, 4)));
+
+int test_renderer(unsigned char *buf, int buf_size, int prec, void *datum)
+{
+  return 0;
+}
+
+void test(void *ptr)
+{
+  unsigned char buffer[100]; 
+  ssh_snprintf(buffer, sizeof(buffer), "%@", test_renderer, ptr);
+}],[],
+[AC_MSG_RESULT(yes)
+ AC_DEFINE(HAVE_ATTRIBUTE_FORMAT_PRINTF_SSH)],
+[AC_MSG_RESULT(no)])
+CFLAGS="$CFLAGS_store"
+unset CFLAGS_store
+
+#
+# configure.in fragment for sshmath (arithmetic library)
+#
+# Author: Tatu Ylonen <ylo@ssh.fi>
+#
+#  Copyright:
+#          Copyright (c) 2002, 2003 SFNT Finland Oy.
+#                    All rights reserved
+#
+
+dnl 
+AC_MSG_CHECKING(whether to use assembly optimizations in math library)
+case "$target" in
+dnl 
+  i*86-*-bsdi*|i*86-*-freebsd*|i*86-*-netbsd*|i*86-*-openbsd*|i*86-*-linux*)
+    if test "$enable_asm" = "yes"; then
+      if test -n "$GCC"; then
+dnl 
+dnl 
+dnl 
+        MATH_CONF_OBJS="$MATH_CONF_OBJS sshmp-asmopt_i386-att.o"
+dnl 
+        AC_DEFINE(SSHMATH_ASSEMBLER_SUBROUTINES)
+        AC_DEFINE(SSHMATH_ASSEMBLER_MACROS)
+        AC_DEFINE(SSHMATH_I386)
+	AC_MSG_RESULT(yes)
+      else
+	AC_MSG_RESULT(no)
+      fi
+    else
+      AC_MSG_RESULT(no)
+    fi
+    ;;
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+  *-*-*)
+      AC_MSG_RESULT(no)
+    ;;
+esac
+dnl 
+
+AC_SUBST(MATH_CONF_OBJS)
+
+AC_CHECK_FUNCS(times clock)
+
+AC_MSG_CHECKING(whether to use a minimal version of the math library)
+AC_ARG_ENABLE(minimal-math,
+  [  --enable-minimal-math   Omit math library rountines that are not required
+                          for RSA, DSA and Diffie-Hellman. ],
+  [ AC_MSG_RESULT(yes)
+    AC_DEFINE(SSHMATH_MINIMAL) ],
+  [ AC_MSG_RESULT(no) ]
+)
+
+
+# The default setting only uses dynamic memory for math library computations.
+static_integer_size="0"
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+AC_DEFINE_UNQUOTED(SSH_MP_INTEGER_BIT_SIZE_STATIC, $static_integer_size)
+# -*- ksh -*-
+#
+# configure.in.inc - fragment for src/lib/sshexternalkey
+#
+# Author: Toni Tammisalo <ttammisa@ssh.fi>
+#
+#  Copyright:
+#          Copyright (c) 2002, 2003 SFNT Finland Oy.
+#               All rights reserved.
+#
+##############################################################################
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+
+dnl 
+
+AC_MSG_CHECKING(whether to support Safenet)
+AC_ARG_WITH(safenet-udm,
+[  --with-safenet-udm[=PATH]
+                          Enable support for Safenet UDM driver],
+[
+  case "$withval" in
+  no)
+    AC_MSG_RESULT(no)
+    safenet_dir=""
+    ;;
+  yes)
+    safenet_dir=""
+    ;;
+  *)
+   safenet_dir="$withval"
+    ;;
+  esac
+
+  if test X$safenet_dir != X; then
+    case $target in
+    *-*-linux*)  
+    SAFENETFLAGS="-DCGX_PLATFORM_LINUX -I$safenet_dir/cgx/hdrs"
+    SAFENET_UDM_VPATH="$safenet_dir/cgx/plugins/udm/usr/generic:\
+$safenet_dir/cgx/plugins/udm/usr/linux"
+    SAFENET_UDM_SRCS='udm_usr.c udm_usr_target.c'
+    SAFENET_UDM_OBJS='udm_usr.o udm_usr_target.o'
+    ;;
+    *-*-vxworks*)
+    SAFENETFLAGS="-DCGX_PLATFORM_VXWORKS -I$safenet_dir/cgx/hdrs"
+    ;;
+    esac
+    CPPFLAGS="$CPPFLAGS $SAFENETFLAGS"
+
+    AC_SUBST(SAFENET_UDM_VPATH)
+    AC_SUBST(SAFENET_UDM_SRCS)
+    AC_SUBST(SAFENET_UDM_OBJS)
+    AC_SUBST(SAFENETFLAGS)
+    AC_DEFINE(HAVE_SAFENET)
+    AC_MSG_RESULT(Safenet driver header files are in $safenet_dir.)
+  fi ],
+  AC_MSG_RESULT(no)
+)
+
+AC_MSG_CHECKING(whether a Safenet 1840 device type has been specified)
+AC_ARG_ENABLE(safenet-1840,
+  [  --enable-safenet-1840    Using Safenet 1840 device. ],
+  [ case "$enableval" in
+      no)
+          AC_MSG_RESULT(no)
+          ;;
+      *)
+          AC_MSG_RESULT(yes)
+	  AC_DEFINE(SSH_SAFENET_USE_1840_DEVICE)
+          ;;
+      esac ],
+ 	AC_MSG_RESULT(no))
+
+AC_MSG_CHECKING(whether a Safenet 1841 device type has been specified)
+AC_ARG_ENABLE(safenet-1841,
+  [  --enable-safenet-1841    Using Safenet 1841 device. ],
+  [ case "$enableval" in
+      no)
+          AC_MSG_RESULT(no)
+          ;;
+      *)
+          AC_MSG_RESULT(yes)
+	  AC_DEFINE(SSH_SAFENET_USE_1841_DEVICE)
+          ;;
+      esac ],
+   AC_MSG_RESULT(no))
+
+AC_MSG_CHECKING(whether a Safenet 1842 device type has been specified)
+AC_ARG_ENABLE(safenet-1842,
+  [  --enable-safenet-1842    Using Safenet 1842 device. ],
+  [ case "$enableval" in
+      no)
+          AC_MSG_RESULT(no)
+          ;;
+      *)
+          AC_MSG_RESULT(yes)
+	  AC_DEFINE(SSH_SAFENET_USE_1842_DEVICE)
+          ;;
+      esac ],
+  AC_MSG_RESULT(no))
+
+dnl 
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+dnl 
+AC_MSG_CHECKING(whether to support Octeon)
+AC_ARG_WITH(octeon,
+[  --with-octeon[=PATH]
+                          Enable support for Octeon],
+[
+  case "$withval" in
+  no)
+    AC_MSG_RESULT(no)
+    octeon_dir=""
+    ;;
+  yes)
+    octeon_dir=""
+    ;;
+  *)
+    octeon_dir="$withval"
+    ;;
+  esac
+
+  if test X$octeon_dir != X; then
+    OCTEONFLAGS="-I$octeon_dir/include -I$octeon_dir/crypto -DOCTEON_OPENSSL"
+    OCTEON_VPATH="$octeon_dir/crypto:$octeon_dir/crypto/modexp"
+    OCTEON_SRCS='modexp.c cryptlib.c'
+    OCTEON_OBJS='modexp.o cryptlib.o'
+
+    CPPFLAGS="$CPPFLAGS $OCTEONFLAGS"
+
+    AC_SUBST(OCTEON_VPATH)
+    AC_SUBST(OCTEON_SRCS)
+    AC_SUBST(OCTEON_OBJS)
+    AC_SUBST(OCTEONFLAGS)
+    AC_DEFINE(ENABLE_CAVIUM_OCTEON)
+    AC_MSG_RESULT(Octeon cryptographic library files are in $octeon_dir.)
+  fi ],
+  AC_MSG_RESULT(no)
+)
+
+dnl 
+
+dnl 
+AC_MSG_CHECKING(whether to support Safenet SLAD driver)
+AC_ARG_WITH(safenet-slad,
+[  --with-safenet-slad[=PATH]
+                          Enable support for Safenet SLAD driver],
+[
+  case "$withval" in
+  no)
+    AC_MSG_RESULT(no)
+    safenet_dir=""
+    ;;
+  yes)
+    safenet_dir=""
+    ;;
+  *)
+   safenet_dir="$withval"
+    ;;
+  esac
+
+  if test X$safenet_dir != X; then
+    case $target in
+    *-*-linux*)  
+    SAFENETFLAGS="-DSLAD_PLATFORM_LINUX -I$safenet_dir/hdrs \
+-I$safenet_dir/os/inc -I$safenet_dir/pe/inc \
+-I$safenet_dir/pka/inc -I../../ipsec/hwaccel/safenet_pe"
+    SAFENET_UDM_VPATH="$safenet_dir/usr/generic:\
+$safenet_dir/usr/os/linux"
+    SAFENET_UDM_SRCS='slad_usr.c slad_usr_target.c'
+    SAFENET_UDM_OBJS='slad_usr.o slad_usr_target.o'
+    ;;
+    *-*-vxworks*)
+    SAFENETFLAGS="-DSLAD_PLATFORM_VXWORKS -I$safenet_dir/hdrs"
+    ;;
+    esac
+    CPPFLAGS="$CPPFLAGS $SAFENETFLAGS"
+
+    AC_SUBST(SAFENET_UDM_VPATH)
+    AC_SUBST(SAFENET_UDM_SRCS)
+    AC_SUBST(SAFENET_UDM_OBJS)
+    AC_SUBST(SAFENETFLAGS)
+    AC_DEFINE(HAVE_SAFENET_SLAD,[],[Use Safenet SLAD accelerator function for PKA])
+    AC_MSG_RESULT(Safenet driver header files are in $safenet_dir.)
+  fi ],
+  AC_MSG_RESULT(no)
+)
+
+dnl 
+AC_MSG_CHECKING(whether to support Safenet Packet Engine driver)
+AC_ARG_WITH(safenet-pec,
+[  --with-safenet-pec[=PATH]
+                          Enable support for Safenet Packet Engine driver],
+[
+  case "$withval" in
+  no)
+    AC_MSG_RESULT(no)
+    safenet_dir=""
+    ;;
+  yes)
+    safenet_dir=""
+    ;;
+  *)
+    safenet_dir="$withval"
+    ;;
+  esac
+
+  if test X$safenet_dir != X; then
+    case $target in
+    *-*-linux*)
+    SAFENETFLAGS="-I$safenet_dir/Kit/Log/incl \
+                  -I$safenet_dir/Kit/Log/src \
+                  -I$safenet_dir/Kit/DriverFramework/incl \
+                  -I$safenet_dir/Kit/DMABuf/incl"
+    SAFENET_UDM_VPATH=
+    SAFENET_UDM_SRCS=
+    SAFENET_UDM_OBJS=
+  esac
+    CPPFLAGS="$CPPFLAGS $SAFENETFLAGS"
+
+    AC_SUBST(SAFENET_UDM_VPATH)
+    AC_SUBST(SAFENET_UDM_SRCS)
+    AC_SUBST(SAFENET_UDM_OBJS)
+    AC_SUBST(SAFENETFLAGS)
+    AC_DEFINE(HAVE_SAFENET_PEC,[],[Use Safenet PEC driver's accelerator function for PKA])
+    AC_MSG_RESULT(Safenet driver header files are in $safenet_dir.)
+    fi ],
+    AC_MSG_RESULT(no)
+)
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+AC_CHECK_HEADERS(dlfcn.h)
+
+#
+# configure.in fragment for ipsec/quicksec
+#
+# Copyright:
+#       Copyright (c) 2002, 2003, 2004, 2005 SFNT Finland Oy.
+#       All rights reserved
+#
+
+dnl 
+AC_MSG_CHECKING(whether to use assembly optimizations in quicksec)
+case "$target" in
+dnl 
+  i*86-*-bsdi*|i*86-*-freebsd*|i*86-*-netbsd*|i*86-*-openbsd*|i*86-*-linux*)
+    if test "$enable_asm" = "yes"; then
+      if test -n "$GCC"; then
+	AC_DEFINE(QUICKSEC_ASM_I386)
+        QS_FASTPATH_CRYPTO_ASM_LNSRC='$(FASTPATH_SOFT_CRYPTO_ASM_LNSRCS)'
+        QS_FASTPATH_CRYPTO_ASM_OBJS='$(FASTPATH_SOFT_CRYPTO_ASM_OBJS)'
+	AC_MSG_RESULT(yes)
+      else
+	AC_MSG_RESULT(no)
+      fi
+    else
+      AC_MSG_RESULT(no)
+    fi
+    ;;
+dnl 
+  *-*-*)
+      AC_MSG_RESULT(no)
+    ;;
+esac
+dnl 
+
+AC_SUBST(QS_FASTPATH_CRYPTO_ASM_LNSRC)
+AC_SUBST(QS_FASTPATH_CRYPTO_ASM_OBJS)
+AC_SUBST(QUICKSEC_CONF_OBJS)
+
+#
+# Determine which subdirectories to build based on the 'configured' target:
+# (This cannot be performed by autodist because one distribution supports
+# several different targets)
+#
+
+AC_MSG_CHECKING([which QuickSec Engine and PM configurations to build])
+
+AM_CONDITIONAL(SSH_QS_BUILD_USERMODE, false)
+AM_CONDITIONAL(SSH_QS_BUILD_KERNEL, false)
+AM_CONDITIONAL(SSH_QS_BUILD_UNIFIED_USERMODE, false)
+AM_CONDITIONAL(SSH_QS_BUILD_UNIFIED_KERNEL, false)
+
+case "$target" in
+  *-*-netbsd*|*-*-linux*|*-*-solaris*|*-*-freebsd*)
+    #
+    # Build split and unified usermode engine models for debugging
+    #
+    SSH_QS_BUILD_USERMODE_TRUE=""
+    SSH_QS_BUILD_USERMODE_FALSE="#"
+    SSH_QS_BUILD_KERNEL_TRUE=""
+    SSH_QS_BUILD_KERNEL_FALSE="#"
+    SSH_QS_BUILD_UNIFIED_USERMODE_TRUE=""
+    SSH_QS_BUILD_UNIFIED_USERMODE_FALSE="#"
+    SSH_QS_BUILD_UNIFIED_KERNEL_TRUE="#"
+    SSH_QS_BUILD_UNIFIED_KERNEL_FALSE=""
+    ;;
+  *-*-vxworks*)
+    #
+    # For VxWorks only the unified-kernel is really meaningful
+    #
+    SSH_QS_BUILD_USERMODE_TRUE="#"
+    SSH_QS_BUILD_USERMODE_FALSE=""
+    SSH_QS_BUILD_KERNEL_TRUE="#"
+    SSH_QS_BUILD_KERNEL_FALSE=""
+    SSH_QS_BUILD_UNIFIED_USERMODE_TRUE="#"
+    SSH_QS_BUILD_UNIFIED_USERMODE_FALSE=""
+    SSH_QS_BUILD_UNIFIED_KERNEL_TRUE=""
+    SSH_QS_BUILD_UNIFIED_KERNEL_FALSE="#"
+    ;;
+  *-*-*)
+    ;;
+esac
+
+# Do not build kernel space modules if interceptor will not be built.
+if test "x$disable_interceptor" = "xyes"; then
+  SSH_QS_BUILD_KERNEL_TRUE="#"
+  SSH_QS_BUILD_KERNEL_FALSE=""
+fi
+
+AC_MSG_RESULT(ok)
+
+dnl 
+AC_MSG_CHECKING(whether to compile with Anti-virus ALG)
+AC_ARG_WITH(av-alg,
+[  --with-av-alg=PATH      Add PATH to include/lib 
+                           the PATH should point to directory containing
+                           includes anti-virus/kaverr.h, 
+			   anti-virus/kldclient.h, anti-virus/md5.h,
+                           and library anti-virus/libkld.a.],
+[ case "$withval" in
+    no)
+	check_dir=""
+	;;
+    yes)
+	check_dir=$srcdir
+	AV_ALG_INCLUDES='-I$(top_srcdir)'
+	AV_ALG_LIBS='$(top_srcdir)/anti-virus/libkld.a'
+	AC_DEFINE(WITH_AV_ALG)
+	;;
+    *)
+	check_dir=$withval
+	AV_ALG_INCLUDES=-I$check_dir
+	AV_ALG_LIBS=$check_dir/anti-virus/libkld.a
+	AC_DEFINE(WITH_AV_ALG)
+	;;
+  esac
+
+  if test "$check_dir" = ""
+  then
+	AV_ALG_INCLUDES=""
+	AV_ALG_LIBS=""
+	AC_MSG_RESULT(no)
+  else
+  	dir_found=1
+  	if test ! -f "$check_dir/anti-virus/libkld.a"
+  	then
+		dir_found=0
+  	fi
+  	if test ! -f "$check_dir/anti-virus/kaverr.h"
+	then
+        	dir_found=0
+  	fi
+  	if test ! -f "$check_dir/anti-virus/kldclient.h"
+  	then
+ 		dir_found=0
+  	fi
+  	if test ! -f "$check_dir/anti-virus/md5.h"
+  	then
+		dir_found=0
+  	fi
+  	if test $dir_found = 0
+  	then
+		AC_MSG_ERROR(Missing files in $check_dir)
+		AV_ALG_INCLUDES=""
+		AV_ALG_LIBS=""
+  	else
+	  	AC_MSG_RESULT($check_dir)
+  	fi
+  fi
+  ],
+  AC_MSG_RESULT(no)
+)
+dnl 
+AC_SUBST(AV_ALG_INCLUDES)
+AC_SUBST(AV_ALG_LIBS)
+#
+# configure.in fragment for ipsec/hwaccel
+#
+# Copyright:
+#       Copyright (c) 2002, 2003, 2004, 2006 SFNT Finland Oy.
+#       All rights reserved
+#
+#
+# Tests for hardware accelerators
+#
+# Only thing you need to do here is to set HWACCEL_CONFIGURED_SRCS to
+# point to the right set of sources under src/ipsec/hwaccel. Source
+# files for different drivers are defined in
+# src/ipsec/hwaccel/Makefile.inc
+#
+
+AC_MSG_CHECKING(what kind of acclerator hardware to support)
+
+HWACCEL_CONFIGURED_SRCS='$(HWACCEL_NONE_SRCS)'
+HWACCEL_CONFIGURED_OBJS='$(HWACCEL_NONE_OBJS)'
+HWACCEL_CONFIGURED_INCLUDES='$(HWACCEL_NONE_INCLUDES)'
+HWACCEL_CONFIGURED_DIRECTORY='none'
+
+AC_ARG_WITH(hwaccel,
+[  --with-hwaccel[=NAME]   Enable use of IPSEC hardware acceleration module.],
+[ case "$withval" in
+  no)
+    AC_MSG_RESULT(no)
+    HWACCEL_CONFIGURED_SRCS='$(HWACCEL_NONE_SRCS)'
+    HWACCEL_CONFIGURED_OBJS='$(HWACCEL_NONE_OBJS)'
+    HWACCEL_CONFIGURED_INCLUDES='$(HWACCEL_NONE_INCLUDES)'
+    HWACCEL_CONFIGURED_DIRECTORY='none'
+    AC_DEFINE(SSH_IPSEC_HWACCEL_NAME, "none")
+    ;;
+
+dnl 
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+dnl 
+  safenet-1x41)
+    AC_MSG_RESULT($withval)
+    HWACCEL_CONFIGURED_SRCS='$(HWACCEL_SAFENET_1X41_SRCS)'
+    HWACCEL_CONFIGURED_OBJS='$(HWACCEL_SAFENET_1X41_OBJS)'
+    HWACCEL_CONFIGURED_INCLUDES='$(HWACCEL_SAFENET_1X41_INCLUDES)'
+    HWACCEL_CONFIGURED_DIRECTORY='safenet1x41'
+    AC_DEFINE(SSH_IPSEC_HWACCEL_CONFIGURED)
+    AC_DEFINE(SSH_IPSEC_HWACCEL_USE_COMBINED_TRANSFORM)
+    AC_DEFINE(SSH_IPSEC_HWACCEL_DOES_ANTIREPLAY)
+    AC_DEFINE(SSH_IPSEC_HWACCEL_NAME, "SafeNet UDM")
+    AC_DEFINE(SSH_IPSEC_HWACCEL_SUPPORT_TLS)
+    ;;
+dnl 
+
+dnl 
+  safenet-pe-slad-405EX)
+    AC_MSG_RESULT($withval)
+    HWACCEL_CONFIGURED_SRCS='$(HWACCEL_SAFENET_PE_405_SRCS)'
+    HWACCEL_CONFIGURED_OBJS='$(HWACCEL_SAFENET_PE_405_OBJS)'
+    HWACCEL_CONFIGURED_INCLUDES='$(HWACCEL_SAFENET_PE_INCLUDES)'
+    HWACCEL_CONFIGURED_DIRECTORY='safenet_pe'
+    AC_DEFINE(SSH_IPSEC_HWACCEL_CONFIGURED)
+    AC_DEFINE(SSH_IPSEC_HWACCEL_USE_COMBINED_TRANSFORM)
+    AC_DEFINE(SSH_IPSEC_HWACCEL_DOES_ANTIREPLAY)
+    SAFENETFLAGS="-DSAFENET_PE_PLATFORM_405EX $SAFENETFLAGS"
+    CPPFLAGS="-DSAFENET_PE_PLATFORM_405EX $CPPFLAGS"	    
+    AC_DEFINE(SSH_IPSEC_HWACCEL_NAME, "SAFENET_PE_SLAD_405EX")
+    ;;
+dnl 
+
+dnl 
+  safenet-pe-pec-1742)
+    AC_MSG_RESULT($withval)
+    HWACCEL_CONFIGURED_SRCS='$(HWACCEL_SAFENET_PE_PEC_SRCS)'
+    HWACCEL_CONFIGURED_OBJS='$(HWACCEL_SAFENET_PE_PEC_OBJS)'
+    HWACCEL_CONFIGURED_INCLUDES='$(HWACCEL_SAFENET_PE_INCLUDES)'
+    HWACCEL_CONFIGURED_DIRECTORY='safenet_pe'
+    AC_DEFINE(SSH_IPSEC_HWACCEL_CONFIGURED)
+    AC_DEFINE(SSH_IPSEC_HWACCEL_USE_COMBINED_TRANSFORM)
+    AC_DEFINE(SSH_IPSEC_HWACCEL_DOES_ANTIREPLAY)
+    SAFENETFLAGS="-DSAFENET_PE_PLATFORM_1742 \
+                  -I$safenet_dir/Kit/EIP94v2_SL/incl \
+                  -I$safenet_dir/Examples/V-Driver_1742/incl \
+                  $SAFENETFLAGS"
+    CPPFLAGS="-DSAFENET_PE_PLATFORM_1742 $CPPFLAGS"
+    AC_DEFINE(SSH_IPSEC_HWACCEL_NAME, "SAFENET_PE_PEC_1742")
+    ;;
+dnl 
+
+dnl 
+  safenet-pe-pec-1746)
+    AC_MSG_RESULT($withval)
+    HWACCEL_CONFIGURED_SRCS='$(HWACCEL_SAFENET_PE_PEC_SRCS)'
+    HWACCEL_CONFIGURED_OBJS='$(HWACCEL_SAFENET_PE_PEC_OBJS)'
+    HWACCEL_CONFIGURED_INCLUDES='$(HWACCEL_SAFENET_PE_INCLUDES)'
+    HWACCEL_CONFIGURED_DIRECTORY='safenet_pe'
+    AC_DEFINE(SSH_IPSEC_HWACCEL_CONFIGURED)
+    AC_DEFINE(SSH_IPSEC_HWACCEL_USE_COMBINED_TRANSFORM)
+    AC_DEFINE(SSH_IPSEC_HWACCEL_DOES_ANTIREPLAY)
+    SAFENETFLAGS="-DSAFENET_PE_PLATFORM_1746 \
+                  -I$safenet_dir/Kit/EIP94v2_SL/incl \
+                  -I$safenet_dir/Examples/V-Driver_1746/incl \
+                  $SAFENETFLAGS"
+    CPPFLAGS="-DSAFENET_PE_PLATFORM_1746 $CPPFLAGS"
+    AC_DEFINE(SSH_IPSEC_HWACCEL_NAME, "SAFENET_PE_PEC_1746")
+    ;;
+dnl 
+
+dnl 
+  safenet-wludm)
+    AC_MSG_RESULT($withval)
+    HWACCEL_CONFIGURED_SRCS=safenet_wludm.c
+    HWACCEL_CONFIGURED_OBJS=safenet_wludm.o
+    HWACCEL_CONFIGURED_INCLUDES='$(HWACCEL_SAFENET_WLUDM_INCLUDES)'
+    HWACCEL_CONFIGURED_DIRECTORY='safenetwludm'
+    AC_DEFINE(SSH_IPSEC_HWACCEL_CONFIGURED)
+    AC_DEFINE(SSH_IPSEC_HWACCEL_NAME, "SafeNet Wireless UDM")
+    ;;
+dnl 
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+
+dnl 
+  ocf)
+    AC_MSG_RESULT($withval)
+    HWACCEL_CONFIGURED_SRCS='$(HWACCEL_OCF_SRCS)'
+    HWACCEL_CONFIGURED_OBJS='$(HWACCEL_OCF_OBJS)'
+    HWACCEL_CONFIGURED_INCLUDES='$(HWACCEL_OCF_INCLUDES)'
+    HWACCEL_CONFIGURED_DIRECTORY='ocf'
+    AC_DEFINE(ENABLE_OCF_SP)
+    AC_DEFINE(SSH_IPSEC_HWACCEL_CONFIGURED)
+    AC_DEFINE(SSH_IPSEC_HWACCEL_NAME, "OCF")
+    ;;
+dnl 
+
+
+dnl 
+
+  *)
+    AC_MSG_RESULT(no)
+    HWACCEL_CONFIGURED_SRCS='$(HWACCEL_NONE_SRCS)'
+    HWACCEL_CONFIGURED_OBJS='$(HWACCEL_NONE_OBJS)'
+    HWACCEL_CONFIGURED_INCLUDES='$(HWACCEL_NONE_INCLUDES)'
+    HWACCEL_CONFIGURED_DIRECTORY='none'
+    AC_DEFINE(SSH_IPSEC_HWACCEL_NAME, "none")
+    ;;
+  esac ],
+
+  AC_MSG_RESULT(no)
+)
+
+#
+# Do the substition for the final ipsec/hwaccel/Makefile
+#
+
+AC_SUBST(HWACCEL_VPATH)
+AC_SUBST(HWACCEL_CONFIGURED_SRCS)
+AC_SUBST(HWACCEL_CONFIGURED_OBJS)
+AC_SUBST(HWACCEL_CONFIGURED_INCLUDES)
+AC_SUBST(HWACCEL_CONFIGURED_DIRECTORY)
+
+
+dnl 
+
+AC_MSG_CHECKING(whether to use EMI memory)
+AC_ARG_ENABLE(emi-memory,
+  [  --enable-emi-memory     Enable the use of EMI memory. ],
+  [ case "$enableval" in
+      no)
+          AC_MSG_RESULT(no)
+          ;;
+      *)
+          AC_MSG_RESULT(yes)
+	  AC_DEFINE(SSH_SAFENET_USE_EMI_MEMORY)
+          ;;
+      esac ],
+  [ AC_MSG_RESULT(yes)
+   AC_DEFINE(SSH_SAFENET_USE_EMI_MEMORY)])
+
+AC_MSG_CHECKING(whether to enable the support of AMCC)
+AC_ARG_ENABLE(amcc-support,
+  [  --enable-amcc-support     Enable the support of AMCC. ],
+  [ case "$enableval" in
+      no)
+          AC_MSG_RESULT(no)
+          ;;
+      *)
+          AC_MSG_RESULT(yes)
+          case "$target" in
+            *-*-linux*)
+                       ;;
+            *)
+               AC_MSG_ERROR([AMCC support can only be enabled on linux])
+               ;;
+           esac 
+      AC_DEFINE(SSH_SAFENET_AMCC_SUPPORT)
+          ;;
+      esac ],
+  AC_MSG_RESULT(no))
+
+AC_MSG_CHECKING(whether to enable target endian swapping for Safenet devices)
+AC_ARG_ENABLE(target-endian-swap,
+  [  --enable-target-endian-swap     Enabling target endian swapping for Safenet devices. ],
+  [ case "$enableval" in
+      no)
+          AC_MSG_RESULT(no)
+          ;;
+      *)
+          AC_MSG_RESULT(yes)
+	  AC_DEFINE(SSH_SAFENET_TARGET_REQUIRES_SWAP)
+          ;;
+      esac ],
+  AC_MSG_RESULT(no)
+)
+
+AC_MSG_CHECKING(whether to support Safenet)
+AC_ARG_WITH(safenet-udm,
+[  --with-safenet-udm[=PATH]
+                          Enable support for Safenet UDM driver],
+[
+  case "$withval" in
+  no)
+    AC_MSG_RESULT(no)
+    safenet_dir=""
+    ;;
+  yes)
+    safenet_dir=""
+    ;;
+  *)
+   safenet_dir="$withval"
+    ;;
+  esac
+  if test X$safenet_dir != X; then
+    if ( ! (echo $SAFENETFLAGS | grep "$safenet_dir/cgx/hdrs" > /dev/null ) ); 
+      then
+      case $target in
+      *-*-linux*)  
+      SAFENETFLAGS="-DCGX_PLATFORM_LINUX -I$safenet_dir/cgx/hdrs"
+      SAFENET_UDM_VPATH="$safenet_dir/cgx/plugins/udm/usr/generic:\
+$safenet_dir/cgx/plugins/udm/usr/linux"
+      SAFENET_UDM_SRCS='udm_usr.c udm_usr_target.c'
+      SAFENET_UDM_OBJS='udm_usr.o udm_usr_target.o'
+      ;;
+      *-*-vxworks*)
+      SAFENETFLAGS="-DCGX_PLATFORM_VXWORKS -I$safenet_dir/cgx/hdrs"
+      ;;
+      esac
+      CPPFLAGS="$CPPFLAGS $SAFENETFLAGS"
+
+      AC_SUBST(SAFENET_UDM_VPATH)
+      AC_SUBST(SAFENET_UDM_SRCS)
+      AC_SUBST(SAFENET_UDM_OBJS)
+      AC_SUBST(SAFENETFLAGS)
+      AC_DEFINE(HAVE_SAFENET)
+      AC_MSG_RESULT(Safenet driver header files are in $safenet_dir.)
+    else
+      AC_MSG_RESULT(already defined)
+    fi
+  fi ],
+  AC_MSG_RESULT(no)
+ 
+)
+
+AC_MSG_CHECKING(whether a Safenet 1840 device type has been specified)
+AC_ARG_ENABLE(safenet-1840,
+  [  --enable-safenet-1840    Using Safenet 1840 device. ],
+  [ case "$enableval" in
+      no)
+          AC_MSG_RESULT(no)
+          ;;
+      *)
+          AC_MSG_RESULT(yes)
+	  AC_DEFINE(SSH_SAFENET_USE_1840_DEVICE)
+          ;;
+      esac ],
+ 	AC_MSG_RESULT(no))
+
+AC_MSG_CHECKING(whether a Safenet 1841 device type has been specified)
+AC_ARG_ENABLE(safenet-1841,
+  [  --enable-safenet-1841    Using Safenet 1841 device. ],
+  [ case "$enableval" in
+      no)
+          AC_MSG_RESULT(no)
+          ;;
+      *)
+          AC_MSG_RESULT(yes)
+	  AC_DEFINE(SSH_SAFENET_USE_1841_DEVICE)
+          ;;
+      esac ],
+   AC_MSG_RESULT(no))
+
+AC_MSG_CHECKING(whether a Safenet 1842 device type has been specified)
+AC_ARG_ENABLE(safenet-1842,
+  [  --enable-safenet-1842    Using Safenet 1842 device. ],
+  [ case "$enableval" in
+      no)
+          AC_MSG_RESULT(no)
+          ;;
+      *)
+          AC_MSG_RESULT(yes)
+	  AC_DEFINE(SSH_SAFENET_USE_1842_DEVICE)
+          ;;
+      esac ],
+  AC_MSG_RESULT(no))
+
+
+dnl 
+
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+
+dnl 
+
+AC_MSG_CHECKING(whether to enable ethernet driver)
+AC_ARG_ENABLE(eth-packet-hook,
+  [  --enable-eth-packet-hook     Enable ethernet driver packet hook. ],
+  [ case "$enableval" in
+      yes)
+          AC_MSG_RESULT(yes)
+	  AC_DEFINE([ETH_PACKET_HOOK], [1], [Ethernet driver packet hook will be used to bypass Linux netfilter])
+          ;;
+      *)
+          AC_MSG_RESULT(no)
+          ;;
+      esac ], AC_MSG_RESULT(no)
+)
+dnl 
+# -*- sh -*-
+#
+# configure.in fragment for src/ipsec/interceptor
+#
+
+#
+# Here "" basically means TRUE and "#" means FALSE
+# (These are used for substitutions in Makefile.in's
+#
+
+AC_MSG_CHECKING([Target platform for interceptor tree])
+
+AM_CONDITIONAL(SSH_QS_PLATFORM_LINUX, false)
+AM_CONDITIONAL(SSH_QS_PLATFORM_TRU64, false)
+AM_CONDITIONAL(SSH_QS_PLATFORM_NETBSD, false)
+AM_CONDITIONAL(SSH_QS_PLATFORM_VXWORKS, false)
+AM_CONDITIONAL(SSH_QS_PLATFORM_SOLARIS, false)
+AM_CONDITIONAL(SSH_QS_PLATFORM_OCTEON, false)
+
+case "$target" in
+  mips64-octeon-linux-gnu)
+   AC_MSG_RESULT(Octeon)
+   SSH_QS_PLATFORM_OCTEON_TRUE=""
+   SSH_QS_PLATFORM_OCTEON_FALSE="#"
+   ;;
+
+  *-*-linux*|*-*-mklinux*)
+    AC_MSG_RESULT(Linux)
+    SSH_QS_PLATFORM_LINUX_TRUE=""
+    SSH_QS_PLATFORM_LINUX_FALSE="#"
+    ;;
+
+  *-*-solaris*|*solaris*)
+    AC_MSG_RESULT(Solaris)
+    SSH_QS_PLATFORM_SOLARIS_TRUE=""
+    SSH_QS_PLATFORM_SOLARIS_FALSE="#"
+    ;;
+
+  alpha*-dec-osf5*|*osf5*)
+    AC_MSG_RESULT(Tru64)
+    SSH_QS_PLATFORM_TRU64_TRUE=""
+    SSH_QS_PLATFORM_TRU64_FALSE="#"
+    ;;
+
+  *vxworks*)
+    AC_MSG_RESULT(VxWorks)
+    SSH_QS_PLATFORM_VXWORKS_TRUE=""
+    SSH_QS_PLATFORM_VXWORKS_FALSE="#"
+    ;;
+
+  *)
+    AC_MSG_RESULT(NetBSD)
+    SSH_QS_PLATFORM_NETBSD_TRUE=""
+    SSH_QS_PLATFORM_NETBSD_FALSE="#"
+    ;;
+esac
+AC_CHECK_FUNCS(getpass fsync)
+#
+# configure.in fragment for sshcrypto/sshcipher
+#
+# Copyright:
+# 	Copyright (c) 2002, 2003, 2005 SFNT Finland Oy.
+#       All rights reserved
+#
+
+dnl 
+
+AC_MSG_CHECKING(whether to use assembly optimizations in crypt library)
+
+case "$target" in
+dnl 
+  mips64-octeon-linux*)
+    if test "$enable_asm" = "yes"; then
+      AC_DEFINE(ASM_PLATFORM_OCTEON)
+      AC_DEFINE(HAVE_3DES)
+      AC_DEFINE(HAVE_AES)
+      AC_DEFINE(HAVE_SHA)
+      AC_DEFINE(HAVE_MD5)
+      AC_MSG_RESULT(yes)
+    else
+      AC_MSG_RESULT(no)
+    fi
+  ;;
+dnl 
+
+dnl 
+  i*86-*-bsdi*|i*86-*-freebsd*|i*86-*-netbsd*|i*86-*-openbsd*|i*86-*-linux*)
+    if test "$enable_asm" = "yes"; then
+      if test -n "$GCC"; then
+dnl 
+dnl 
+dnl 
+dnl 
+	SSHCIPHER_CONF_OBJS="$SSHCIPHER_CONF_OBJS des386.o"
+dnl 
+	AC_DEFINE(ASM_DES)
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+        SSHCIPHER_CONF_OBJS="$SSHCIPHER_CONF_OBJS blowfish386.o"
+dnl 
+        AC_DEFINE(ASM_BLOWFISH)
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+        SSHCIPHER_CONF_OBJS="$SSHCIPHER_CONF_OBJS arcfour_386.o"
+dnl 
+        AC_DEFINE(ASM_ARCFOUR)
+dnl 
+	AC_MSG_RESULT(yes)
+      else
+	AC_MSG_RESULT(no)
+      fi
+    else
+      AC_MSG_RESULT(no)
+    fi
+    ;;
+dnl 
+  *-*-*)
+      AC_MSG_RESULT(no)
+    ;;
+esac
+dnl 
+
+AC_SUBST(SSHCIPHER_CONF_OBJS)
+
+AC_CHECK_FUNCS(times clock)
+AC_CHECK_FUNCS(getpid getppid getuid getgid getpgrp)
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+# Make sure nm is in PATH, because it is needed by the next test.
+AC_PATH_PROG(NM_PATH, nm, no-nm)
+if test "$NM_PATH" = "no-nm"; then
+  AC_MSG_ERROR("The 'nm' program could not be found in PATH.")
+fi
+
+    AC_MSG_CHECKING(whether compiled symbols are prepended with underscore)
+
+if test "${ac_cv_have_no_symbol_underscore+set}" = set; then
+  if test "$ac_cv_have_no_symbol_underscore" = "yes"; then
+    AC_MSG_RESULT(no)
+    AC_DEFINE(HAVE_NO_SYMBOL_UNDERSCORE)
+  else
+    AC_MSG_RESULT(yes)
+  fi
+else
+
+  AC_TRY_RUN(int underscoretestfunction() { return 0; }
+             int main()
+		{
+		    underscoretestfunction();
+		    return 0;
+		},
+		[if test -n "`nm conftest 2>/dev/null | grep _underscoretestfunction 2>/dev/null`"; then
+		    AC_MSG_RESULT(yes)
+		    ac_cv_have_no_symbol_underscore=no
+		    elif test -n "`nm conftest 2>/dev/null | grep underscoretestfunction 2>/dev/null`"; then
+		    AC_MSG_RESULT(no)
+		    AC_DEFINE(HAVE_NO_SYMBOL_UNDERSCORE)
+		    ac_cv_have_no_symbol_underscore=yes
+		fi ],
+		AC_MSG_WARN(failed to test underscore.),
+		AC_MSG_WARN(cross compilation isn't tested))
+fi
+
+#
+# configure.in fragment for sshcrypt (crypto library)
+#
+# Author: Tatu Ylonen <ylo@ssh.fi>
+#
+#  Copyright:
+#          Copyright (c) 2002, 2003, 2005 SFNT Finland Oy.
+#                    All rights reserved
+#
+
+dnl 
+AC_MSG_CHECKING(whether to use assembly optimizations in hash library)
+case "$target" in
+dnl 
+  i*86-*-bsdi*|i*86-*-freebsd*|i*86-*-netbsd*|i*86-*-openbsd*|i*86-*-linux*)
+    if test "$enable_asm" = "yes"; then
+      if test -n "$GCC"; then
+dnl 
+dnl 
+dnl 
+dnl 
+        SSHHASH_CONF_OBJS="$SSHHASH_CONF_OBJS md5_386.o"
+dnl 
+        AC_DEFINE(ASM_MD5)
+dnl 
+	AC_MSG_RESULT(yes)
+      else
+	AC_MSG_RESULT(no)
+      fi
+    else
+      AC_MSG_RESULT(no)
+    fi
+    ;;
+dnl 
+  *-*-*)
+      AC_MSG_RESULT(no)
+    ;;
+esac
+dnl 
+
+AC_SUBST(SSHHASH_CONF_OBJS)
+
+AC_CHECK_FUNCS(times clock)
+AC_CHECK_FUNCS(getpid getppid getuid getgid getpgrp)
+
+# Make sure nm is in PATH, because it is needed by the next test.
+AC_PATH_PROG(NM_PATH, nm, no-nm)
+if test "$NM_PATH" = "no-nm"; then
+  AC_MSG_ERROR("The 'nm' program could not be found in PATH.")
+fi
+
+AC_MSG_CHECKING(whether compiled symbols are prepended with underscore)
+
+if test "${ac_cv_have_no_symbol_underscore+set}" = set; then
+  if test "$ac_cv_have_no_symbol_underscore" = "yes"; then
+    AC_MSG_RESULT(no)
+    AC_DEFINE(HAVE_NO_SYMBOL_UNDERSCORE)
+  else
+    AC_MSG_RESULT(yes)
+  fi
+else
+
+  AC_TRY_RUN(int underscoretestfunction() { return 0; }
+             int main()
+             {
+                 underscoretestfunction();
+	         return 0;
+             },
+             [if test -n "`nm conftest 2>/dev/null | grep _underscoretestfunction 2>/dev/null`"; then
+                AC_MSG_RESULT(yes)
+                ac_cv_have_no_symbol_underscore=no
+              elif test -n "`nm conftest 2>/dev/null | grep underscoretestfunction 2>/dev/null`"; then
+                AC_MSG_RESULT(no)
+                AC_DEFINE(HAVE_NO_SYMBOL_UNDERSCORE)
+                ac_cv_have_no_symbol_underscore=yes
+              fi ], 
+             AC_MSG_WARN(failed to test underscore.), 
+             AC_MSG_WARN(cross compilation isn't tested))
+fi
+AC_MSG_CHECKING(whether to use the SSH or ANSI X9.62 random number generator)
+AC_ARG_WITH(ansi-rng,
+[  --with-ansi-rng	  Use the ANSI X9.62 Random Number Generator.
+  --without-ansi-rng      Use the SSH Random Number Generator (default).],
+[ case "$withval" in
+  no)
+    AC_MSG_RESULT(SSH)
+    ;;
+  *)
+    AC_MSG_RESULT(ANSI X9.62)
+    AC_DEFINE(WITH_ANSI_RNG)
+    ;;
+  esac ],
+    AC_MSG_RESULT(SSH)
+)
+
+AC_CHECK_LIB(dl, dladdr)
+AC_CHECK_FUNCS(dladdr)
+AC_CHECK_HEADERS(dlfcn.h)
+
+# HPUX 9 and 10
+AC_CHECK_FUNCS(shl_get)
+AC_CHECK_HEADERS(dl.h)
+
+# HPUX 11
+AC_CHECK_LIB(dl, dlget)
+AC_CHECK_FUNCS(dl)
+
+# AIX 4 and 5
+AC_CHECK_HEADERS(sys/ldr.h)
+AC_CHECK_FUNCS(loadquery)#
+# configure.in fragment for sshpk (crypto library)
+#
+# Author: Tatu Ylonen <ylo@ssh.fi>
+#
+#  Copyright:
+#          Copyright (c) 2002, 2003 SFNT Finland Oy.
+#                    All rights reserved
+#
+
+dnl 
+AC_MSG_CHECKING(whether to include the RSA algorithm)
+AC_ARG_WITH(rsa,
+[  --without-rsa           Do not use RSA.],
+[ case "$withval" in
+  no)
+    AC_MSG_RESULT(no)
+    ssh_do_ac_define_with_rsa="no"
+    ;;
+  *)
+    AC_MSG_RESULT(yes)
+    ssh_do_ac_define_with_rsa="yes"
+    ;;
+  esac ],
+  AC_MSG_RESULT(yes)
+  ssh_do_ac_define_with_rsa="yes"
+)
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+if test "$ssh_do_ac_define_with_rsa" = "yes" ; then
+  MSG_WITH_RSA="yes"
+  AC_DEFINE(WITH_RSA)
+else
+  MSG_WITH_RSA="no"
+fi
+
+dnl 
+#
+# configure.in fragment for ipsec/quicksec/fastpath
+#
+# Copyright:
+#       Copyright (c) 2002, 2003, 2004 SFNT Finland Oy.
+#       All rights reserved
+#
+
+use_fastpath="software"
+
+AC_MSG_CHECKING([which fastpath to use])
+
+FASTPATH_CONFIGURED_SRCS=
+FASTPATH_CONFIGURED_OBJS=
+FASTPATH_CONFIGURED_INCLUDES=
+FASTPATH_CONFIGURED_DIRECTORY=
+
+AC_ARG_WITH(fastpath,
+    [  --with-fastpath=NAME    Specify the QuickSec fastpath to use.],
+    [ use_fastpath="$withval" ]
+[ case "$use_fastpath" in
+  software)
+	;;
+
+  scp51x0)
+
+	FASTPATH_CONFIGURED_SRCS='$(FASTPATH_SCP51X0_SRCS)'
+	FASTPATH_CONFIGURED_OBJS='$(FASTPATH_SCP51X0_OBJS)'
+	FASTPATH_CONFIGURED_INCLUDES='$(FASTPATH_SCP51X0_INCLUDES)'
+	FASTPATH_CONFIGURED_DIRECTORY='scp51x0'
+	AC_DEFINE(FASTPATH_ACCELERATOR_CONFIGURED)
+        AC_DEFINE(FASTPATH_PROVIDES_LRU_FLOWS)
+	AC_DEFINE(FASTPATH_PROVIDES_FLOW)
+	AC_DEFINE(FASTPATH_PROVIDES_TRD)
+	AC_DEFINE(FASTPATH_PROVIDES_NH)
+	AC_DEFINE(FASTPATH_IS_SCP51X0)
+        SSH_QS_BUILD_UNIFIED_USERMODE_TRUE="#"
+        SSH_QS_BUILD_UNIFIED_USERMODE_FALSE=""
+	;;
+
+dnl 
+  caviumocteon)
+
+	FASTPATH_CONFIGURED_SRCS='$(FASTPATH_OCTEON_SRCS)'
+	FASTPATH_CONFIGURED_OBJS='$(FASTPATH_OCTEON_OBJS)'
+	FASTPATH_CONFIGURED_INCLUDES='$(FASTPATH_OCTEON_INCLUDES)'
+	FASTPATH_CONFIGURED_DIRECTORY='caviumocteon'
+	AC_DEFINE(FASTPATH_ACCELERATOR_CONFIGURED)
+	AC_DEFINE(FASTPATH_PROVIDES_FLOW)
+	AC_DEFINE(FASTPATH_PROVIDES_TRD)
+	AC_DEFINE(FASTPATH_PROVIDES_NH)
+	AC_DEFINE(FASTPATH_IS_OCTEON)
+        SSH_QS_BUILD_UNIFIED_USERMODE_TRUE="#"
+        SSH_QS_BUILD_UNIFIED_USERMODE_FALSE=""
+	;;
+dnl 
+
+  *)
+        AC_MSG_ERROR([Invalid fastpath type $use_fastpath])
+	;;
+  esac]
+)
+
+AC_SUBST(FASTPATH_CONFIGURED_SRCS)
+AC_SUBST(FASTPATH_CONFIGURED_OBJS)
+AC_SUBST(FASTPATH_CONFIGURED_INCLUDES)
+AC_SUBST(FASTPATH_CONFIGURED_DIRECTORY)
+
+AC_MSG_RESULT($use_fastpath)
+
+QS_FASTPATH="$use_fastpath"
+AC_SUBST(QS_FASTPATH)
+
+QS_FASTPATH_SRCS="\$(FASTPATH_`echo $use_fastpath | tr '[a-z]' '[A-Z]'`_SRCS)"
+AC_SUBST(QS_FASTPATH_SRCS)
+# -*- sh -*-
+#
+# configure.tail - last fragment of top-level configure.in
+#
+# Copyright:
+#         Copyright (c) 2002-2005 SFNT Finland Oy.
+#         All rights reserved.
+#
+
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+
+AC_SUBST(AR)
+AC_SUBST(RANLIB)
+AC_SUBST(PACKAGE)
+AC_SUBST(VERSION)
+
+AC_SUBST(IPSEC_ARCH_ROUTE)
+AC_SUBST(IPSEC_ARCH_INTC)
+
+# If purify is enabled, add it to CC at this point. But only CC, not KERN_CC...
+if test "x$with_purify" != "x"; then
+  CC="$with_purify $CC"
+  AC_DEFINE(WITH_PURIFY)
+  PURIFY="$with_purify"
+  AC_SUBST(PURIFY)
+fi
+
+dnl Setup VxWorks relinking flag
+if test "X$vx_suffix" != "X"
+  then
+	LDFLAGS="-Wl,-i ${LDFLAGS}"
+fi
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+
+if test "x$build_profile" = "x"; then
+  if ! test -r $srcdir/sshdistdefs.h; then
+    AC_MSG_ERROR(build profile (--enable-profile=ARG) not specified.)
+  fi
+else
+  if ! test -r $srcdir/sshdistdefs-$build_profile.h; then
+    AC_MSG_ERROR(Cannot find $srcdir/sshdistdefs-$build_profile.h)
+  fi
+
+  if test -r $srcdir/sshdistdefs.h; then
+    if ! cmp -s $srcdir/sshdistdefs-$build_profile.h $srcdir/sshdistdefs.h; then
+      cp $srcdir/sshdistdefs-$build_profile.h $srcdir/sshdistdefs.h
+    fi
+  else
+    cp $srcdir/sshdistdefs-$build_profile.h $srcdir/sshdistdefs.h
+  fi
+fi
+
+AC_OUTPUT(Makefile
+Makefile.grandlib_final.pre
+include/Makefile
+lib/Makefile
+lib/zlib/Makefile
+lib/sshmath/Makefile
+lib/sshmath/tests/Makefile
+lib/sshutil/Makefile
+lib/sshutil/sshadt/Makefile
+lib/sshutil/sshcore/Makefile
+lib/sshutil/ssheloop/Makefile
+lib/sshutil/sshfsm/Makefile
+lib/sshutil/sshfsm/tutorial/Makefile
+lib/sshutil/sshmisc/Makefile
+lib/sshutil/sshnet/Makefile
+lib/sshutil/sshaudit/Makefile
+lib/sshutil/sshpacketstream/Makefile
+lib/sshutil/sshstream/Makefile
+lib/sshutil/sshsysutil/Makefile
+lib/sshutil/sshstrutil/Makefile
+lib/sshutil/sshtestutil/Makefile
+lib/sshutil/tests/Makefile
+lib/sshapputil/Makefile
+lib/sshapputil/tests/Makefile
+lib/sshcrypto/Makefile
+lib/sshcrypto/sshcryptocore/Makefile
+lib/sshcrypto/sshcipher/Makefile
+lib/sshcrypto/sshhash/Makefile
+lib/sshcrypto/sshmac/Makefile
+lib/sshcrypto/sshpk/Makefile
+lib/sshcrypto/sshrandom/Makefile
+lib/sshcrypto/tests/Makefile
+lib/sshcryptoaux/Makefile
+lib/sshcryptoaux/tests/Makefile
+lib/sshasn1/Makefile
+lib/sshasn1/tests/Makefile
+lib/sshcert/Makefile
+lib/sshcert/tests/Makefile
+lib/sshpkcs/Makefile
+lib/sshpkcs/tests/Makefile
+lib/sshenroll/Makefile
+lib/sshenroll/tests/Makefile
+lib/sshvalidator/Makefile
+lib/sshvalidator/tests/Makefile
+lib/sshvalidator/tests/fips-tests/Makefile
+lib/sshldap/Makefile
+lib/sshldap/tests/Makefile
+lib/sshexternalkey/Makefile
+lib/sshexternalkey/tests/Makefile
+lib/sshhttp/Makefile
+lib/sshhttp/tests/Makefile
+lib/sshtls/Makefile
+lib/sshtls/tests/Makefile
+lib/sshxml/Makefile
+lib/sshxml/tests/Makefile
+lib/sshradius/Makefile
+lib/sshsim/Makefile
+lib/ssheap/Makefile
+lib/ssheap/tests/Makefile
+build/Makefile
+build/xml-compress/Makefile
+apps/Makefile
+apps/cryptutils/Makefile
+apps/certutils/Makefile
+apps/ldaputils/Makefile
+apps/caviumocteon/Makefile
+apps/perfutils/Makefile
+apps/winceutils/Makefile
+winconf/Makefile
+filter_distdefs/Makefile
+ipsec/Makefile
+ipsec/include/Makefile
+ipsec/lib/Makefile
+ipsec/lib/sshisakmp/Makefile
+ipsec/lib/sshisakmp/tests/Makefile
+ipsec/lib/sshikev2/Makefile
+ipsec/lib/sshikev2/tests/Makefile
+ipsec/lib/sshl2tp/Makefile
+ipsec/lib/sshl2tp/tests/Makefile
+ipsec/lib/sshppp/Makefile
+ipsec/lib/sshppp/tests/Makefile
+ipsec/interceptor/Makefile
+ipsec/interceptor/tests/Makefile
+ipsec/interceptor/bsd/Makefile
+ipsec/interceptor/linux/Makefile
+ipsec/interceptor/windows/Makefile
+ipsec/interceptor/windows/winim/Makefile
+ipsec/interceptor/windows/winim/install/Makefile
+ipsec/interceptor/windows/winim/install/winnt/Makefile
+ipsec/interceptor/windows/winim/install/wince/Makefile
+ipsec/interceptor/windows/ndisfilter/Makefile
+ipsec/interceptor/windows/vnic/Makefile
+ipsec/interceptor/windows/vnic/ndis5_0/Makefile
+ipsec/interceptor/caviumocteon/Makefile
+ipsec/interceptor/caviumocteon/linux/Makefile
+ipsec/interceptor/caviumocteon/se/Makefile
+ipsec/quicksec/Makefile
+ipsec/quicksec/engine/Makefile
+ipsec/quicksec/fastpath/Makefile
+ipsec/quicksec/fastpath/software/Makefile
+ipsec/quicksec/fastpath/caviumocteon/Makefile
+ipsec/quicksec/appgw/Makefile
+ipsec/quicksec/policymanager/Makefile
+ipsec/quicksec/apps/Makefile
+ipsec/quicksec/unified-kernel/Makefile
+ipsec/quicksec/unified-usermode/Makefile
+ipsec/quicksec/usermode/Makefile
+ipsec/quicksec/kernel/Makefile
+ipsec/quicksec/tests/Makefile
+ipsec/quicksec/tests/usermode/Makefile
+ipsec/quicksec/samples/Makefile
+interceptor/Makefile
+interceptor/include/Makefile
+interceptor/usermode/Makefile
+interceptor/libkernelutil/Makefile
+interceptor/linux/Makefile
+interceptor/windows/Makefile
+interceptor/windows/ndisfilter/Makefile
+interceptor/windows/winim/Makefile
+interceptor/windows/vnic/Makefile
+interceptor/windows/vnic/ndis5_0/Makefile
+ipsec/hwaccel/Makefile
+ipsec/hwaccel/none/Makefile
+ipsec/hwaccel/safenet1x41/Makefile
+ipsec/hwaccel/safenetwludm/Makefile
+ipsec/hwaccel/ocf/Makefile
+ipsec/hwaccel/safenet_pe/Makefile
+ipsec/util/Makefile)
+
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 
+dnl 

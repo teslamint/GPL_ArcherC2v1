@@ -1,0 +1,46 @@
+# -*-makefile-*-
+
+Makefile.grandlib : Makefile
+	@pwd=`pwd`;
+	(echo "GRANDLIB = $(GRANDLIB)"; \
+	 cat $(top_srcdir)/Makefile.grandlib.pre | \
+	   sed 's!@SUBDIRS@!$(SUBDIRS)!g' | \
+	   sed 's!@TOP_BUILDDIR@!$(top_builddir)!g' | \
+	   sed 's!@TOP_SRCDIR@!$(top_srcdir)!g'; \
+	 echo; \
+	 for d in "" $(SUBDIRS); \
+	 do \
+		if test "$$d" != ""; \
+		then \
+			echo "grandlib_objs: $$d/grandlib_objs"; \
+			echo; \
+		fi; \
+	 done;) > Makefile.grandlib
+
+grandlib : Makefile.grandlib
+	@for d in . $(SUBDIRS); \
+	do \
+	  if test "$$d" != "."; \
+	  then \
+	    (cd $$d; $(MAKE) grandlib); \
+	  fi; \
+	done; \
+	$(MAKE) -f Makefile.grandlib make-final-make-file
+
+clean-generic: clean-grandlib
+
+clean-grandlib:
+	if test -f Makefile.grandlib_final; \
+	then $(MAKE) \
+		LIBTOOLLDFLAGS="$(LIBTOOLLDFLAGS)" \
+		-f Makefile.grandlib_final clean; fi
+	-rm -f grandlib_objs Makefile.grandlib Makefile.grandlib_final
+
+all-local: make-grandlib
+
+make-grandlib: grandlib
+	@$(MAKE) AR="$(AR)" RANLIB="$(RANLIB)" \
+		LIBTOOLLDFLAGS="$(LIBTOOLLDFLAGS)" \
+		top_builddir="$(top_builddir)" -f Makefile.grandlib_final
+
+.PHONY: grandlib clean-grandlib make-grandlib

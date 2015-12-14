@@ -1,0 +1,27 @@
+# -*- makefile -*-
+#
+# ipsec/quicksec/apps/Makefile.fragment
+#
+# Also, see Makefile.am for list of extra distrubuted files, like tools
+# and platform main's
+#
+
+QUICKSECPM_CONF_LIB_SRCS = \
+	quicksecpm_xmlconf.c \
+	quicksecpm_xmlconf.h \
+	quicksecpm_xmlconf_alg.c \
+	quicksecpm_xmlconf_http.c \
+	quicksecpm_xmlconf_i.h \
+	quicksecpm_audit.c \
+	quicksecpm_audit.h \
+	quicksec.dtd \
+	quicksec.dtd \
+	quicksec_dtd.c
+
+
+
+
+
+
+
+QUICKSECPM_CONF_LIB_INCLUDES =

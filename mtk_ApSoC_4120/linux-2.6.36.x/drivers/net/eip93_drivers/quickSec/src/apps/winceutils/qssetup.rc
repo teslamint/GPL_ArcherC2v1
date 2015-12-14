@@ -1,0 +1,24 @@
+/*
+ *
+ * qssetup.rc
+ *
+ *  Copyright:
+ *          Copyright (c) 2008 SFNT Finland Oy.
+ *               All rights reserved.
+ *
+ * Quicksec Install/Uninstall utility for Windows CE.
+ *
+ */
+
+
+#ifdef _WIN32_WCE
+
+#include "qssetup.h"
+
+/* String Table */
+STRINGTABLE 
+BEGIN
+    IDS_TITLE "QSSetup"
+END
+
+#endif /* _WIN32_WCE */

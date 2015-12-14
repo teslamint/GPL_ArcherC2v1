@@ -1,0 +1,177 @@
+#
+#   Copyright (c) 2000, 2001	    Dmitry K. Butskoj
+#				    <buc@citadel.stu.neva.ru>
+#   License:  GPL/LGPL		
+#
+#   See COPYING/COPYING.LIB for the status of this software.
+#
+
+#
+#   Common rule and variable definitions.
+#   This file should be included by main and by per-target Makefiles.
+#
+
+
+ifndef srcdir
+$(error srcdir variable not defined)
+endif
+
+include $(srcdir)/Make.defines
+
+# deannotated by yangcaiyong. 24Jul12
+#CC = $(CROSS)gcc
+#AS = $(CROSS)as
+#LD = $(CROSS)ld
+#DEPEND = $(CROSS)gcc -MM -MG
+#AR = $(CROSS)ar
+#RANLIB = $(CROSS)ranlib
+# end. ycy.
+INSTALL = cp
+SHARCC = $(CC)
+
+ifndef NAME
+NAME = $(notdir $(srcdir))
+endif
+
+
+ifndef subdirs
+ifeq ($(TARGET),.MAIN)
+# for better performance...
+subdirs = $(patsubst %/,%,$(filter %/,$(wildcard */)))
+else
+subdirs = $(patsubst $(srcdir)/%/,%,$(filter %/,$(wildcard $(srcdir)/*/)))
+endif
+endif
+
+MAKE = make --no-print-directory -r
+override MAKE := $(MAKE) srcdir=$(srcdir) subdirs="$(subdirs)"
+
+INCLUDEDIRS += $(filter include%, $(subdirs))
+LIBDIRS += $(filter lib%, $(subdirs))
+MODDIRS += $(filter mod%, $(subdirs))
+EXEDIRS = $(filter-out tmp% $(INCLUDEDIRS) $(LIBDIRS) $(MODDIRS), $(subdirs))
+
+LIBDIRS := $(filter-out $(LIBLAST),$(LIBDIRS)) $(filter $(LIBDIRS),$(LIBLAST))
+
+
+includes = $(foreach dir, $(INCLUDEDIRS) $(LIBDIRS), $(srcdir)/$(dir))
+libraries = $(foreach dir, $(LIBDIRS), $(srcdir)/$(dir))
+
+#CFLAGS =
+IFLAGS =
+LDFLAGS = -s
+# added by yangcaiyong. 24Jul12
+CFLAGS += -I$(OS_LIB_PATH)/include -DINCLUDE_TRACEROUTE_DIAG -D__LINUX_OS_FC__ -DCMM_MSG
+LDFLAGS += -L$(OS_LIB_PATH) -los -lpthread -lrt
+# added end, ycy.
+
+#ifeq ($(findstring gcc,$(CC)),gcc)
+
+#override CFLAGS := -O2 -Wall $(CFLAGS)
+
+C_INCLUDE_PATH = $(subst $(empty) ,:,$(includes))
+export C_INCLUDE_PATH
+
+#else
+
+#override CFLAGS := -O $(CFLAGS)
+
+#override IFLAGS := $(patsubst %,-I%,$(includes))
+
+#endif
+
+
+_libs := $(foreach lib,$(filter lib%,$(LIBDIRS)),-L$(srcdir)/$(lib))
+_libs += $(strip $(foreach lib,$(LIBDIRS),\
+		    $(if $(filter lib%,$(lib)),\
+			$(patsubst lib%,-l%,$(lib)),\
+			$(wildcard $(srcdir)/$(lib)/$(lib).so \
+					$(srcdir)/$(lib)/$(lib).a))))
+
+#.LIBPATTERNS = lib%.so lib%.a
+vpath lib%.so $(libraries)
+vpath lib%.a $(libraries)
+
+#LIBS =
+override LIBS := $(_libs) -lm $(LIBS)
+
+LIBDEPS = $(filter-out -L%,$(LIBS))
+
+
+INDENT = true
+
+
+#
+#	SUBDIRS	    STUFF
+#
+
+ifneq ($(TARGET),.MAIN)
+
+obj := o
+ifeq ($(shared),shared)
+ifneq ($(PIC),no)
+ifeq ($(filter $(TARGET),$(LIBDIRS) $(MODDIRS) .MODULE),$(TARGET))
+obj := lo
+endif
+endif
+endif
+
+sources = $(wildcard *.c)
+OBJS = $(sources:.c=.$(obj))
+
+
+.PHONY: all depend clean syntax protoize force
+
+dummy: all
+
+
+clean:
+	rm -f *.o *.a *.lo *.so $(TARGET) core a.out
+
+ifneq ($(sources),)
+
+depend: $(sources)
+	$(DEPEND) $(CFLAGS) $(IFLAGS) $^ >.depend
+
+syntax:
+	$(CC) $(CFLAGS) $(IFLAGS) $(SFLAGS) -S -o /dev/null $(sources)
+endif
+
+%.o: %.c
+	$(CC) $(CFLAGS) $(IFLAGS) -c $*.c
+
+%.lo: %.c
+	$(CC) -fPIC $(CFLAGS) $(IFLAGS) -o $*.lo -c $*.c
+
+%.o: %.s
+	$(AS) -o $*.o $*.s
+
+%.o: %.S
+	$(CC) -traditional $(IFLAGS) -c $*.c
+
+# include if it present only...
+ifeq (.depend, $(wildcard .depend))
+include .depend
+endif
+
+endif
+
+#
+#  ...end of SUBDIRS STUFF
+#
+
+
+#  install stuff
+prefix ?= /tmp/$(NAME)
+exec_prefix = $(prefix)
+bindir = $(exec_prefix)/bin
+sbindir = $(exec_prefix)/sbin
+libdir = $(exec_prefix)/lib
+libexecdir = $(exec_prefix)/libexec
+mandir = $(prefix)/man
+infodir = $(prefix)/info
+sysconfdir = $(prefix)/etc
+includedir = $(prefix)/include
+datadir = $(prefix)/share
+localstatedir = $(prefix)/var
+sharedstatedir = $(prefix)/com

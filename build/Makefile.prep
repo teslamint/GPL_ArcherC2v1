@@ -1,0 +1,30 @@
+build_dir=$(pwd)
+
+	echo prepare the xz tool...
+	cd $build_dir/../mtk_ApSoC_4120/tools/toolchain && \
+	tar -jxf xz-5.0.3.tar.bz2 && cd xz-5.0.3/ && \
+	./configure --prefix=$build_dir/../mtk_ApSoC_4120/tools/toolchain/xz-5.0.3/inst --disable-xz --disable-xzdec --disable-lzmadec \
+	--disable-lzmainfo --disable-lzma-links --disable-scripts --enable-shared=no && \
+	make clean && \
+	make all && \
+	make install
+
+	echo prepare the lzma tool...
+	test -e $build_dir/../mtk_ApSoC_4120/tools/lzma || (cd $build_dir/../mtk_ApSoC_4120/tools/toolchain/ && \
+	tar -zxf lzma-4.32.7.tar.gz && cd lzma-4.32.7/ && \
+	./configure --enable-shared=no && \
+	make clean && make && \
+	cp -rf src/lzma/lzma $build_dir/../mtk_ApSoC_4120/tools/)
+
+	echo prepare the squashfs 4.2...
+	(test -e $build_dir/../mtk_ApSoC_4120/tools/mksquashfs4.2 && \
+	test -e $build_dir/../mtk_ApSoC_4120/tools/unsquashfs) || \
+	(cd $build_dir/../mtk_ApSoC_4120/tools/toolchain/ && \
+	tar -jxf squashfs4.2.tar.bz2 && cd squashfs4.2/squashfs-tools && \
+	cp -rf $build_dir/../mtk_ApSoC_4120/tools/toolchain/xz-5.0.3/inst/lib/liblzma.* ./ && \
+	cp -rf $build_dir/../mtk_ApSoC_4120/tools/toolchain/xz-5.0.3/inst/include/* ./ && \
+	make clean && \
+	make all && \
+	cp -rf mksquashfs $build_dir/../mtk_ApSoC_4120/tools/mksquashfs4.2 && \
+	cp -rf unsquashfs $build_dir/../mtk_ApSoC_4120/tools/)
+	cd $build_dir && make env_build

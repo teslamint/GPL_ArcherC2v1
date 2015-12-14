@@ -1,0 +1,171 @@
+.\"  -*- nroff -*-
+.\"
+.\" ssh-ldapclient.1
+.\"
+.\" Author:	Tero Kivinen <kivinen@ssh.fi>
+.\"
+.\" Copyright (c) 2002, 2003 SFNT Finland Oy.
+.\" All rights reserved
+.\"
+.TH SSH-LDAPCLIENT 1 "March 31, 1999" "SSH-LDAPCLIENT" "SSH-LDAPCLIENT"
+
+.SH NAME
+ssh-ldapclient \- Fetch data from the ldap server.
+
+.SH SYNOPSIS
+.B ssh-ldapclient
+[\c
+.B \-f
+[:\c
+.I pbh\c
+:]\c
+.I filename_to_write_%d_%s_%d\c
+]
+[\c
+.BI \-d \ debug_options\fR\c
+]
+[\c
+.BI \-s \ ldap_server_hostname\fR\c
+]
+[\c
+.BI \-p \ ldap_server_port\fR\c
+]
+[\c
+.BI \-u \ username\fR\c
+]
+[\c
+.BI \-P \ password\fR\c
+]
+[\c
+.BI \-S \ socks_url\fR\c
+]
+[\c
+.BI \-a \ attribute,attribute,...\fR\c
+]
+[\c
+.BI \-D \ never | searching | base | always\fR\c
+]
+[\c
+.BI \-c \ base | single | subtree\fR\c
+]
+.I base_dn
+.I search search ...
+.br
+
+.SH DESCRIPTION 
+.LP
+.B Ssh-ldapclient
+searches entries from the ldap server and either stores them to disk (
+.B \-f
+option given), or prints them to screen. 
+.LP
+If the
+.B \-f
+option is given then the entries are stored in the disk so that each
+node and attribute are stored in the separate file. The objects can be
+stored to disk in three different format. If the filename doesn't
+start with colon (:) then entries are stored in the raw binary format
+to the file. If it starts with colon, format character and another
+colon, then the value is stored to the file, which name is given after
+the second colon, and the format character gives the format in which
+the data is stored. The format character can be one of the \'\c
+.B p\c
+\', \'\c
+.B b\c
+\', or \'\c
+.B h\c
+\'.
+.LP
+The format character of \'\c
+.B p\c
+\' means that the file is stored in pem encoded object (base 64 encoded).
+The format character of \'\c
+.B b\c
+\' means object is stored in binary file, and \'\c
+.B h\c
+\' means that the file is stored in the same format that the
+.B hexl
+program uses.
+.LP
+The base distinguished name must be given as a first argument, and all
+arguments after that are search patterns used to search data from the
+ldap server. See RFC 1960 for the description of the string
+representation of ldap search filters.
+
+.SH OPTIONS
+.TP
+.BI \-a \ attribute,attribute,...\fR\c
+Specifies which attributes are retrieved from the ldap server. The
+default value is to fetch all attributes. 
+.ne 3
+.TP
+.BI \-c \ base | single | whole\fR\c
+Specifies the scope of the ldap search. This value defaults to
+\fR"\fBsubtree\fR".
+.ne 3
+.TP
+.BI \-d \ debug_options\fR\c
+Print extensive debug information to stderr. debug_level is
+either a number, from 0 to 99, where 99 specifies that all debug
+information should be displayed, or a comma-separated list of
+assignments \fR"\fBModulePattern=debug_level\fR".
+.ne 3
+.TP
+.BI \-D \ never | searching | base | always\fR\c
+Specifies the alias dereference value for the ldap search. This value
+defaults to \fR"\fBnever\fR". 
+.ne 3
+.TP
+.BI \-p \ ldap_server_port\fR\c
+Port number of the ldap server. This value defaults to \fR"\fB389\fR".
+.ne 3
+.TP
+.BI \-P \ password\fR\c
+Password used when creating connection to the ldap server. Some of the
+ldap servers require authentication via username and password before
+allowing retrieving data from the ldap server. This defaults to
+anonymous bind. 
+.ne 3
+.TP
+.BI \-s \ ldap_server_hostname\fR\c
+Host name of the ldap server where to connect. This value defaults to
+\fR"\fBldap\fR".
+.ne 3
+.TP
+.BI \-S \ socks_url\fR\c
+If SOCKS is used, it is configured with this option.
+The format of the option is
+.I socks://username@socks_server:port/network/netmask,network/netmask ...
+for example by setting environment variable 
+.B SSH_SOCKS_SERVER
+to
+.I socks://mylogin@socks.ssh.fi:1080/203.123.0.0/16,198.74.23.0/24
+uses host 
+.I socks.ssh.fi
+port
+.I 1080
+as your SOCKS server if connection is attempted outside of
+networks 
+.I 203.123.0.0
+(16 bit domain) and
+.I 198.74.23.0
+(8 bit domain) which are connected directly.
+.ne 3
+.TP
+.BI \-u \ username\fR\c
+Username used when creating connection to the ldap server. Some of the
+ldap servers require authentication via username and password before
+allowing retrieving data from the ldap server. This defaults to
+anonymous bind. 
+.ne 3
+
+.SH AUTHORS
+.LP
+
+
+SFNT Finland Oy.
+
+For more information, see http://www.safenet-inc.com
+
+.SH SEE ALSO
+.BR ssh-ldapadd (1)

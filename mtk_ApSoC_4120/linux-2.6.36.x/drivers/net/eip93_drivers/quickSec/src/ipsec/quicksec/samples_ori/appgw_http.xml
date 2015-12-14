@@ -1,0 +1,135 @@
+<?xml version="1.0"?>
+<!DOCTYPE quicksec PUBLIC "quicksec:dtd" "quicksec.dtd">
+<quicksec>
+  <policy>
+    <service name="http">
+      <appgw id="alg-http@ssh.com">
+
+        <!-- Configuration syntax for APPGW HTTP:
+
+        The http appgw configuration consists of a set of clauses,
+        a set of pages and a set of rules.
+
+        A rule matches a set of clauses against a HTTP request header,
+        if all clauses match, then the rule is triggered.
+
+        The actions supported by a rule are "pass","cut" and "block":
+         - pass simply allows the request and generates a log event.
+         - cut terminates the TCP connection
+         - block returns an alternative page defined previously.
+
+        Defining a HTTP ALG configuration:
+
+        <alg-http [precedence=<integer>]
+                  [redirect-dst=<ipaddr>] [redirect-port=<port>]>
+
+        <rule1/>
+        ...
+        <ruleN/>
+
+        <page1/>
+        ...
+        <pageM/>
+
+        <rule1/>
+        ...
+        <ruleP/>
+
+        <alg-http/>
+
+        The configuration of the HTTP ALG is contained within an <alg-http>
+        element. The precedence attribute specifies the default precedence
+        of the first rule with an undefined precedence within the element.
+        It defaults to a high value sufficient for any sane use.
+
+        The redirect-dst and redirect-port attributes define a HTTP ALG
+        redirection. If they are both defined, then all traffic routed
+        to the HTTP ALG is redirected to the destination <ipaddr:port>.
+
+        Defining a clause:
+
+        <clause name=<name> [regex=<regex>] [host=<hostname>]
+                            [min_url_length=<integer>]/>
+
+        The regex is matched against all header lines in the request, if
+        one matches the regex is considered matched.
+
+        The hostname is compared against the contents of the HTTP/1.1 "Host:"
+        header or the "host" field of an absolute URL in HTTP/1.0 or
+        HTTP/0.9 requests. If in this case the URL is not absolute, then
+        the destination IP address is used. If the destination host is an
+        IPv4 address, then it is transformed into the traditional "a.b.c.d"
+        notation. The comparison compares only upto the string <hostname>,
+        any other characters in the request host field are ignored.
+
+        The min_url_length defines a minimum length for the url.
+
+        If all defined conditions are matched, then the clause is satisfied.
+
+        Defining a page:
+
+        <page name=<name> [type=<content_type>] [code=<code>]
+                          [body=<message_body>] [header=<header>]
+
+        The page defines a HTTP response for use with the "block" action.
+        The code defaults to 404. If header is not defined, then
+        type defaults to "text/html". If header is defined, then
+        type is left undefined (and no Content-Type: header is
+        by default added to the HTTP response). If the attribute
+        'header' is defined, then the content is added verbatim
+        into the header of the HTTP response (assuming the response
+        is HTTP/1.0 or HTTP/1.1). The 'body' attribute defaults to a
+        newline character.
+
+        Defining a rule:
+
+        <rule name=<name> [action=<action>]
+                          [clauses="<clause1> ... <clauseN>"]
+                          [page=<page>]
+                          [precedence=<integer>]
+
+        A rule is defined by a name, an action (either "cut", "block" or
+        "pass") and a set of clauses. All clauses must be satisfied for the
+        rule to be triggered. If action is "block" then the page_name must
+        be defined to be a page previously defined using the page statement.
+        All clauses and pages referenced in a rule must be defined prior
+        to the definition of the rule. The action parameter defaults to
+        "pass". The clauses parameter defaults to empty. The precedence
+        value defaults to one less than the precedence of the
+        previous which did not have a precedence explicitly specified.
+
+        All rules are considered in order of precedence.
+
+        The example below forbids access for any request containing
+        the "Host:\ .*somehost" header and logs all other requests also.
+
+        -->
+
+        <alg-http>
+          <clause name="c1" regex="^Host: .*somehost.*"/>
+
+          <page name="p1" code="404" type="text/html" body="<html><head><title>Access blocked</title></head><body><h1>Access blocked</h1><p>Access blocked by HTTP APPGW.</body></html>" />
+
+          <rule name="r1" action="block" page="p1" clauses="c1"/>
+          <rule name="r2" action="pass"/>
+        </alg-http>
+
+        <!-- End of example -->
+
+      </appgw>
+    </service>
+    <rule service="http" log="connections">
+      <src>ipv4(tcp,0.0.0.0/0)</src>
+      <dst>ipv4(tcp:80,0.0.0.0/0)</dst>
+    </rule>
+    <rule>
+      <src>ipv4(0.0.0.0/0)</src>
+      <dst>ipv4(0.0.0.0/0)</dst>
+    </rule>
+    <rule>
+      <src>ipv4(0.0.0.0/0)</src>
+      <dst>ipv4(0.0.0.0/0)</dst>
+      <local-stack direction="from"/>
+    </rule>
+  </policy>
+</quicksec>

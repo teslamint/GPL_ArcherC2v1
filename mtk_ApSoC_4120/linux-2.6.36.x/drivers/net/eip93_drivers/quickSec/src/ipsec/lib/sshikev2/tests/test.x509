@@ -1,0 +1,129 @@
+%
+%  Test file for X.509 v3 certificate and v2 crl generation
+%  
+%  Run this with 'ssh-certmake -e latin1 test.x509'
+%
+
+% CA certificate of our little certificate hierarchy.
+
+Certificate ::= {
+  OutputFile   ::= "test-ca-1.ca"
+
+  SerialNumber ::= 0
+  SubjectName  ::= <C=FI,O=SafeNet\, Inc., CN=Test CA>
+  IssuerName   ::= <C=FI,O=SafeNet\, Inc., CN=Test CA>
+  Validity     ::= {
+    NotBefore  ::= "2003/06/30/19:30:00" 
+    NotAfter   ::= "2013/01/01/12:00:00"
+  }
+  PublicKeyInfo ::= {
+    Size ::= 1024
+    Type ::= rsaEncryption
+    PrivateKeyFile ::= "test-ca-1.prv"
+    % InputPrivateKeyFile ::= "test-ca-1.prv"
+  }
+  Signature ::= {
+    SelfSigned
+%    SignatureAlgorithm ::= dsaWithSHA-1
+    SignatureAlgorithm ::= sha1WithRSAEncryption
+  }
+  Extensions ::= {
+    SubjectAltNames ::= {
+      IP    ::= 1.2.3.4
+      EMAIL ::= test-ca@safenet-inc.com
+    }
+    ExtendedKeyUsage ::= {
+      ServerAuth
+      ClientAuth
+      CodeSigning
+      EmailProtection
+      TimeStamping
+      IkeIntermediate
+    }
+    BasicConstraints ::= {
+      CA
+      PathLength ::= 0
+    }
+    KeyUsage ::= {
+      DigitalSignature
+      KeyCertSign
+      CRLSign
+    }
+
+    AuthKeyIdentifier ::= {
+      KeyIdentifier ::= "MyIdentifier/100"
+    }
+    SubjectKeyIdentifier ::= {
+       KeyIdentifier ::= "MyIdentifier/100"
+    }
+    PolicyConstraints ::= {
+      Require ::= 10
+      Inhibit ::= 10
+    }
+  }
+}
+
+Certificate ::= {
+  OutputFile   ::= "test-user-1.crt"
+
+  SerialNumber ::= 1
+  SubjectName  ::= <C=FI,O=SafeNet\, Inc., CN=test user 1>
+  IssuerName   ::= <C=FI,O=SafeNet\, Inc., CN=Test CA>
+  Validity     ::= {
+    NotBefore  ::= "2003 Jul 30th, 19:30:00"
+    NotAfter   ::= "2013 Dec 1st,  12:00:00"
+  }
+  PublicKeyInfo ::= {
+    Size ::= 1024 
+    Type ::= rsaEncryption
+    PrivateKeyFile ::= "test-user-1.prv"
+  }
+  Signature ::= {
+%    SignatureAlgorithm ::= dsaWithSHA-1
+    SignatureAlgorithm ::= sha1WithRSAEncryption
+    IssuerKeyFile ::= "test-ca-1.prv"
+  }
+  Extensions ::= {
+    SubjectAltNames ::= {
+      EMAIL ::= test-user-1@safenet-inc.com
+    }
+    KeyUsage ::= {
+      DigitalSignature
+      KeyEncipherment
+    }
+  }
+}
+
+Certificate ::= {
+  OutputFile   ::= "test-user-2.crt"
+
+  SerialNumber ::= 2
+  SubjectName  ::= <C=FI,O=SafeNet\, Inc., CN=Test User 2>
+  IssuerName   ::= <C=FI,O=SafeNet\, Inc., CN=Test CA>
+  Validity     ::= {
+    NotBefore  ::= "2003 Jul 30th, 19:30:00"
+    NotAfter   ::= "2013 Dec 1st,  12:00:00"
+  }
+  PublicKeyInfo ::= {
+    Size ::= 1024 
+    Type ::= rsaEncryption
+    PrivateKeyFile ::= "test-user-2.prv"
+  }
+  Signature ::= {
+%    SignatureAlgorithm ::= dsaWithSHA-1
+    SignatureAlgorithm ::= sha1WithRSAEncryption
+    IssuerKeyFile ::= "test-ca-1.prv"
+  }
+  Extensions ::= {
+    SubjectAltNames ::= {
+      EMAIL ::= test-user-2@safenet-inc.com
+    }
+    KeyUsage ::= {
+      DigitalSignature
+      KeyEncipherment
+    }
+  }
+}
+
+
+

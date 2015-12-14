@@ -1,0 +1,191 @@
+diff -aur quicksec-server-4.4+quicksec-client-4.4/ipsec/interceptor/linux/linux_internal.h quicksec-server-4.4+quicksec-client-4.4-new/ipsec/interceptor/linux/linux_internal.h
+--- quicksec-server-4.4+quicksec-client-4.4/ipsec/interceptor/linux/linux_internal.h	2008-03-16 12:42:43.000000000 +0530
++++ quicksec-server-4.4+quicksec-client-4.4-new/ipsec/interceptor/linux/linux_internal.h	2008-03-16 20:38:47.550848312 +0530
+@@ -764,4 +764,8 @@
+ 
+ 
+ 
++#ifdef ETH_PACKET_HOOK
++  int ssh_ibm_packet_hook(struct sk_buff *skb);
++#endif /* ETH_PACKET_HOOK */
++
+ #endif /* LINUX_INTERNAL_H */
+diff -aur quicksec-server-4.4+quicksec-client-4.4/ipsec/interceptor/linux/linux_ip_glue.c quicksec-server-4.4+quicksec-client-4.4-new/ipsec/interceptor/linux/linux_ip_glue.c
+--- quicksec-server-4.4+quicksec-client-4.4/ipsec/interceptor/linux/linux_ip_glue.c	2008-03-16 12:42:42.000000000 +0530
++++ quicksec-server-4.4+quicksec-client-4.4-new/ipsec/interceptor/linux/linux_ip_glue.c	2008-03-16 21:24:36.137999552 +0530
+@@ -20,6 +20,7 @@
+ #endif /* SSH_LINUX_INTERCEPTOR_IPV6 */
+ 
+ #define SSH_DEBUG_MODULE "SshInterceptorIpGlue"
++#include "safenet_405ex_gpio.h"
+ 
+ /* Notifier, notifies when interfaces change. */
+ static struct notifier_block ssh_interceptor_notifier_netdev;
+@@ -254,6 +255,53 @@
+ 
+ /************* Utility macros **********************************************/
+ 
++#ifdef ETH_PACKET_HOOK
++int ssh_ibm_packet_hook(struct sk_buff *skb)
++{
++  SshInterceptor interceptor;
++  SshInterceptorInternalPacket packet;
++  SshInterceptorProtocol protocol;
++ 
++  if (skb->protocol == __constant_htons(ETH_P_IP))
++    protocol = SSH_PROTOCOL_IP4;
++#ifdef SSH_LINUX_INTERCEPTOR_IPV6
++  else if (skb->protocol == __constant_htons(ETH_P_IPV6))
++    protocol = SSH_PROTOCOL_IP6;
++#endif /* SSH_LINUX_INTERCEPTOR_IPV6 */
++  else
++    {
++      return 1;
++    }
++
++  SSH_ASSERT(in_irq() == 0);
++  SSH_ASSERT(in_softirq());
++
++  interceptor = ssh_interceptor_context->sub;
++  packet = ssh_interceptor_packet_alloc_header(interceptor,
++                                               SSH_PACKET_FROMADAPTER
++                                               |SSH_PACKET_IP4HDRCKSUMOK,
++                                               protocol,
++                                               skb->dev->ifindex,
++					       SSH_INTERCEPTOR_INVALID_IFNUM,
++                                               skb,
++                                               FALSE, TRUE, TRUE);
++
++  if (packet == NULL)
++    {
++      return 1;
++    }
++
++#ifdef DEBUG_LIGHT
++  packet->skb->dev = NULL;
++#endif /* DEBUG_LIGHT */
++
++  safenet_linux_gpio_out_high(6);
++  
++  SSH_LINUX_INTERCEPTOR_PACKET_CALLBACK(interceptor, packet);
++  return 0;
++}
++#endif /* ETH_PACKET_HOOK */
++ 
+ /************* Utility functions ********************************************/
+ 
+ 
+@@ -588,7 +636,7 @@
+   spin_unlock_bh(&interceptor->statistics_lock);
+ #endif /* DEBUG_LIGHT */
+ 
+-
++  /*
+   SSH_DEBUG(SSH_D_HIGHSTART,
+             ("incoming packet 0x%08x, len %d proto 0x%x [%s] iface %d [%s]",
+              skbp, skbp->len, ntohs(skbp->protocol),
+@@ -599,7 +647,7 @@
+ 
+   SSH_ASSERT(in_irq() == 0);
+   SSH_ASSERT(in_softirq());
+-
++  */
+ #ifndef SSH_IPSEC_IP_ONLY_INTERCEPTOR
+   if (unlikely(protocol == SSH_PROTOCOL_ETHERNET))
+     {
+@@ -2311,9 +2359,9 @@
+ 
+ 
+ 
+-
+-
+-
++  if(!safenet_linux_gpio_init())
++    return FALSE;
++  
+   /* Verify that the hooks haven't been initialized yet. */
+   if (ssh_interceptor_context->hooks_installed)
+     {
+@@ -2413,7 +2461,7 @@
+ 
+ 
+ 
+-
+-
++  safenet_linux_gpio_uninit();
++  
+   return TRUE;
+ }
+diff -aur quicksec-server-4.4+quicksec-client-4.4/ipsec/interceptor/linux/linux_main.c quicksec-server-4.4+quicksec-client-4.4-new/ipsec/interceptor/linux/linux_main.c
+--- quicksec-server-4.4+quicksec-client-4.4/ipsec/interceptor/linux/linux_main.c	2008-03-16 12:42:42.000000000 +0530
++++ quicksec-server-4.4+quicksec-client-4.4-new/ipsec/interceptor/linux/linux_main.c	2008-03-16 20:38:47.575844512 +0530
+@@ -24,6 +24,10 @@
+ #ifndef SSH_LINUX_KBUILD_COMPILATION
+ #include <linux/vermagic.h>
+ 
++#ifdef ETH_PACKET_HOOK
++  #include <linux/../../drivers/net/ibm_emac/ibm_emac_core.h>
++#endif /* ETH_PACKET_HOOK */
++
+ MODULE_INFO(vermagic, VERMAGIC_STRING);
+ 
+ static const char
+@@ -122,6 +126,10 @@
+   interceptor->callback_context = callback_context;
+   interceptor->global = ssh_interceptor_context;
+ 
++#ifdef ETH_PACKET_HOOK
++  ibm_emac_register_callback(ssh_ibm_packet_hook);
++#endif /* ETH_PACKET_HOOK */
++
+   /* Return the global interceptor object. */
+   *interceptor_return = (void *) interceptor;
+ 
+@@ -290,6 +298,10 @@
+ 
+   SSH_TIMEOUT_QUEUE_UNLOCK();
+ 
++#ifdef ETH_PACKET_HOOK
++  ibm_emac_register_callback(NULL);
++#endif /* ETH_PACKET_HOOK */
++
+   /* Route callback is currently not used. */
+   interceptor->route_callback = NULL_FNPTR;
+ 
+diff -aur quicksec-server-4.4+quicksec-client-4.4/ipsec/interceptor/linux/linux_packet_internal.h quicksec-server-4.4+quicksec-client-4.4-new/ipsec/interceptor/linux/linux_packet_internal.h
+--- quicksec-server-4.4+quicksec-client-4.4/ipsec/interceptor/linux/linux_packet_internal.h	2008-03-16 12:42:43.000000000 +0530
++++ quicksec-server-4.4+quicksec-client-4.4-new/ipsec/interceptor/linux/linux_packet_internal.h	2008-03-16 20:38:47.579843904 +0530
+@@ -57,8 +57,10 @@
+ #define SSH_INTERCEPTOR_PACKET_HARD_HEAD_ROOM 20
+ #endif /* !SSH_IPSEC_IP_ONLY_INTERCEPTOR */
+ 
++
+ #define SSH_INTERCEPTOR_PACKET_HEAD_ROOM \
+-  (SSH_INTERCEPTOR_PACKET_HARD_HEAD_ROOM+64)
+-#define SSH_INTERCEPTOR_PACKET_TAIL_ROOM (30)
++  (SSH_INTERCEPTOR_PACKET_HARD_HEAD_ROOM+32)
++#define SSH_INTERCEPTOR_PACKET_TAIL_ROOM (96)
++
+ 
+ #endif
+diff -aur quicksec-server-4.4+quicksec-client-4.4/ipsec/ipsec_params.h quicksec-server-4.4+quicksec-client-4.4-new/ipsec/ipsec_params.h
+--- quicksec-server-4.4+quicksec-client-4.4/ipsec/ipsec_params.h	2008-03-16 12:41:12.000000000 +0530
++++ quicksec-server-4.4+quicksec-client-4.4-new/ipsec/ipsec_params.h	2008-03-16 21:00:48.344057224 +0530
+@@ -129,7 +129,7 @@
+ #endif /* SSH_INTERCEPTOR_MAX_PACKETS */
+ 
+ /** Define this if statistics should be collected. */
+-#define SSH_IPSEC_STATISTICS
++/* #define SSH_IPSEC_STATISTICS */
+ 
+ /** Define this if you want internal routing in the engine. */
+ /* #define SSH_IPSEC_INTERNAL_ROUTING */
+@@ -268,6 +268,8 @@
+    On linux platform this should always be set. */
+ #define SSH_IPSEC_SEND_IS_SYNC 1
+ #endif /* not unified usermode */
++#undef SSH_IPSEC_SEND_IS_SYNC
++
+ 
+ #ifdef VXWORKS
+ /* Leaving SEND_IPSEC_SEND_IS_SYNC undefined for VxWorks generally

@@ -1,0 +1,14 @@
+# -*- makefile -*-
+#
+#
+HWACCEL_SAFENET_1X41_SRCS = safenet1x41.c \
+                            sshtlsaccel.h \
+                            safenet1x41_params.h
+
+
+HWACCEL_SAFENET_1X41_OBJS = safenet1x41.o
+HWACCEL_SAFENET_1X41_INCLUDES = \
+	@SAFENETFLAGS@ \
+	-I$(top_srcdir)/ipsec/hwaccel \
+	-I$(top_srcdir)/ipsec/hwaccel/safenet1x41 \
+	-I$(top_srcdir)/ipsec/hwaccel/safenet1x41/hdrs

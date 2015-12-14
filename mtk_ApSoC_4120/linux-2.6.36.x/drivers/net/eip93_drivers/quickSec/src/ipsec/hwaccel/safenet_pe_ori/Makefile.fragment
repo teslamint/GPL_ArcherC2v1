@@ -1,0 +1,19 @@
+# -*- makefile -*-
+#
+#
+
+
+HWACCEL_SAFENET_PE_PEC_SRCS = safenet_la.c safenet_pe_pec.c safenet_la_utils.c
+HWACCEL_SAFENET_PE_PEC_OBJS = safenet_la.o safenet_pe_pec.o safenet_la_utils.o
+
+
+
+
+
+
+
+HWACCEL_SAFENET_PE_INCLUDES = \
+        @SAFENETFLAGS@ \
+        -I$(top_srcdir)/ipsec/hwaccel \
+        -I$(top_srcdir)/ipsec/hwaccel/safenet_pe \
+        -I$(top_srcdir)/ipsec/hwaccel/safenet_pe/hdrs

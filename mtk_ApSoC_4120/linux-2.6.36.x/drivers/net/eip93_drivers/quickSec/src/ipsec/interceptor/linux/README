@@ -1,0 +1,265 @@
+README for Quicksec Linux Interceptor
+-------------------------------------
+
+
+Supported Kernel Versions
+
+
+The Quicksec linux interceptor is designed for 2.6 series of kernel.org 
+kernels.
+
+The kernel version specific changes are mapped to per feature #defines in 
+`linux_versions.h'. Rest of the interceptor source code uses these feature
+#defines to handle the changed functionality.
+
+Distribution specific kernels are not directly supported.
+
+
+Interceptor Design
+
+
+General
+
+The top level SSH_IPSEC_IP_ONLY_INTERCEPTOR #define controls the operation of
+the interceptor. The IP level interceptor does not intercept ARP packets, and 
+does not expect engine to do layer 2 encapsulation for packets that are being 
+sent. Media level interceptor passes inbound ARP packets to engine and sends 
+the L2 encapsulated packets directly to network.
+
+The ssh_interceptor_send() of the Linux interceptor is synchronous, which means
+that the top level #define SSH_IPSEC_SEND_IS_SYNC must be set in 
+`ipsec_params.h'.
+
+Packet Interception
+
+The interceptor module uses the linux kernel's netfilter infrastructure for
+intercepting IPv4, IPv6, and ARP packets.
+
+For inbound traffic, the module attaches hook functions to NF_IP_PRE_ROUTING,
+NF_IP6_PRE_ROUTING, and NF_ARP_IN netfilter hooks. For outbound traffic, the 
+module attaches hook functions to NF_IP_POST_ROUTING, and NF_IP6_POST_ROUTING 
+netfilter hooks. All hook functions return NF_STOLEN, indicating that the 
+traversal of the netfilter hooks is not continued for that packet.
+
+By default the priority of the hook functions is NF_IP_PRI_FIRST, meaning that 
+the interceptor will be the first module to receive the packets in each 
+netfilter hook. The order of traversal of the interceptor module and possibly
+other netfilter modules may be fine tuned by giving the priority for each of 
+the interceptor's hook functions as a module parameter.
+
+The netfilter interoperability #defines SSH_LINUX_NF_PRE_ROUTING_BEFORE_ENGINE
+and SSH_LINUX_NF_POST_ROUTING_BEFORE_ENGINE control the visibility of the 
+packet to other netfilter modules in the PRE_ROUTING and POST_ROUTING hooks.
+
+Packet Sending
+
+Both media and IP level interceptors use the netfilter infrastructure to send
+packets to the stack. The packet is sent via the PRE_ROUTING netfilter hook
+such that the packet is not seen by the interceptor's hook or any netfilter 
+hook with higher priority than the interceptor's hook. The #define 
+SSH_LINUX_NF_PRE_ROUTING_AFTER_ENGINE controls whether the packet is visible to
+lower priority netfilter hooks. See 'linux_nf_params.h' for details.
+
+The media level interceptor sends packets directly to network by calling 
+dev_queue_xmit(). Packets are not visible in the POST_ROUTING hook.
+
+The IP level interceptor uses the netfilter infrastructure to send packets to
+network. The packet is sent via the POST_ROUTING netfilter hook such that the
+packet is not seen by the interceptor's hook or any netfilter hook function
+with higher priority than the interceptor's hook. The #define
+SSH_LINUX_NF_POST_ROUTING_AFTER_ENGINE controls whether the packet is visible 
+to lower priority netfilter modules in POST_ROUTING hook, and the #define 
+SSH_LINUX_NF_FORWARD_AFTER_ENGINE controls whether forwarded packets are 
+visible to netfilter modules in the FORWARD hook. See 'linux_nf_params.h' for 
+details.
+
+Interface Information
+
+The interceptor registers notification handlers for receiving events about 
+changes in the linux kernels device list and changed IPv4 and IPv6 addresses.
+
+Routing
+
+The interceptor utilises linux kernel's policy routing mechanisms to perform
+route lookups for flows and packets. This requires that the sysctl variables
+`net.ipv4.ip_forward', `net.ipv4.conf.all.forwarding', and 
+`net.ipv6.conf.all.forwarding' must be set to value 1. Otherwise the built-in 
+sanity checks in the linux kernel's routing code will cause the route lookup to
+fail. The sysctl variable `net.ipv4.conf.all.rp_filter' may need to be set to 
+value 0 to disable linux kernel ingress filtering. This is needed at least in 
+the remote access server scenario if the remote access address pool is a 
+subnet of the private network but the packets arrive encrypted through the 
+public interface.
+
+Interceptor API
+
+The interceptor implements the kernel timeout, memory allocation, mutual 
+exclusion, and other parts of the interceptor API.
+
+Virtual Adapters
+
+The linux interceptor implements the virtual adapter API. Due to limitations
+of the ioctl calls on linux, the function ssh_virtual_adapter_configure() is
+not able to configure more than 1 IP address. Due to this the Policy Manager 
+configures the virtual adapter on linux platforms using the usermode 
+sshnetconfig library.
+
+
+Tcpdump / libpcap Interaction
+
+
+The packets are captured by tcpdump at a level below the Quicksec interceptor.
+This results into that tcpdump sees inbound packets before Quicksec engine 
+processing and outbound packets after Quicksec engine processing. In other 
+words the packets appear to tcpdump as they are on wire.
+
+
+Netfilter Intercompatibility
+
+
+Interaction with the linux kernel's netfilter modules is controlled
+by #defines in `linux_nf_params.h', and the interceptor module's netfilter 
+priority (`in_priority', `out_priority', `in6_priority' and `out6_priority' 
+given as module parameter).
+
+The interceptor will lose MAC address information when intercepting inbound
+packets. Any MAC filtering should be performed before the packet is processed
+in the Quicksec engine.
+
+
+Ethernet Bridging Compatibility
+
+
+Ethernet bridging and the Quicksec interceptor may coexist in the kernel, if
+the iptables support is disabled from the ethernet bridging module. See 
+`Known Issues' below for instructions on how to disable iptables support from
+the ethernet bridging module.
+
+
+Compatibility with Other Linux Kernel Network Modules
+
+
+IPIP, GRE and SIT encapsulation drivers are compatible with Quicksec 
+interceptor. Due to their design, the packet will be processed twice by the 
+engine; once before and once after encapsulation/decapsulation.
+
+
+Compatibility with Network Interface Features
+
+
+TCP RX and TX checksum offloading is supported.
+
+TCP segmentation offloading (NETIF_F_TSO) and large UDP send offloading 
+(NETIF_F_UFO) interface features are not supported. If a device is up (IFF_UP) 
+and has NETIF_F_TSO or NETIF_F_UFO feature enabled, the interceptor will turn 
+this feature off and issue a warning during module loading. Neither of these 
+features should not be enabled while the interceptor module is loaded.
+
+
+Suspend / Resume
+
+
+Quicksec does not include extra code to handle suspend, hibernate and resume
+power management events on linux.
+
+Usually there is a usermode daemon (for example apmd), which handles tasks such
+as network interface configuration during suspend/resume. In such a system the 
+following tasks need to be performed by the daemon on resume:
+- Quicksec Policy Manager needs to signalled to reroute all flows if any 
+  interface index has changed.
+- Quicksec virtual adapter's state (and addresses) need to be restored.
+
+
+Code Layout
+
+linux_internal.h		Internal defines and declarations
+linux_mutex_internal.h		Kernel mutex internals
+linux_nf_internal.h		Netfilter internals
+linux_nf_params.h		Netfilter tunable parameters
+linux_packet_internal.h		Packet internals
+linux_params.h			Tunable parameters
+linux_versions.h		Linux version defines
+linux_virtual_adapter_internal.h Virtual adapter internals
+platform_interceptor.h		Platform dependent part of Interceptor API
+platform_kernel_alloc.h		Platform dependent part of kernel alloc API
+platform_kernel_mutex.h		Platform dependent part of kernel mutex API
+
+linux_debug.c			Debug frontend
+linux_hook_magic.c		Netfilter hook preparation/initialization
+linux_iface.c			Interface handling
+linux_ioctl.c			Ioctl module
+linux_ip_glue.c			Packet interception and sending
+linux_ipm.c			Engine <-> Policy manager communication API
+linux_kernel_alloc.c		Kernel memory allocation API implementation
+linux_main.c			General module initialization/uninitialization
+linux_misc.c			Miscellaneous utility functions
+linux_mutex.c			Kernel mutex API implementation
+linux_octeon_intercept.c	Octeon packet interception
+linux_packet.c			Packet allocation and manipulation
+linux_pcihw.c			HW accelerator support
+linux_procfs.c			Procfs frontend
+linux_route.c			Routing
+linux_timeout.c			Kernel timeout API implementation
+linux_virtual_adapter.c		Virtual adapter implementation
+
+
+Installation
+
+See INSTALL for installation instructions.
+
+The kbuild/ subdirectory has an example makefile for generating a linux kernel 
+kbuild makefile. To use kbuild, configure and compile the source tree as usual
+and then do:
+
+# cd ipsec/interceptor/linux
+# make kbuild/Makefile
+# cd kbuild
+# make
+
+
+Known Issues
+
+
+Kernel crash on SMP machines during module unloading
+
+Linux kernel notifier_call_chain() lacks proper locking to protect against
+changes in notifier list. The bug is present in all linux 2.4 and 2.6 kernel 
+versions (latest version being linux-2.6.22).
+
+This bug may cause a kernel crash on SMP machines if the quicksec interceptor 
+module is unloaded while the kernel is processing an interface event.
+
+4K Stacks
+
+Quicksec interceptor and engine are designed for 8K stack size. 4K stack size 
+may limit the usability of other netfilter modules or higher level protocol 
+modules.
+
+Ethernet Bridging with Iptables Support
+
+Quicksec interceptor is incompatible with the ethernet bridging module's 
+iptables support, which is present in kernel versions 2.6.0 and later. 
+
+In linux kernel version 2.6.0 iptables support is always enabled, and therefore
+ethernet bridging is not compatible with the Quicksec interceptor in 
+linux-2.6.0.
+
+In linux kernel versions 2.6.1 and later, the iptables support must be disabled
+from ethernet bridging module using the sysctl interface:
+# sysctl -w net.bridge.bridge-nf-call-arptables=0
+# sysctl -w net.bridge.bridge-nf-call-iptables=0
+# sysctl -w net.bridge.bridge-nf-call-ip6tables=0
+# sysctl -w net.bridge.bridge-nf-filter-vlan-tagged=0
+
+Compilation on Red Hat Enterprise Linux
+
+The default CFLAGS and KERN_CFLAGS set by the configure script do not produce a
+working binary quicksec.ko module on Red Hat Enterprise Linux. To solve this 
+problem, the correct kernel specific CFLAGS and KERN_CFLAGS must be given to 
+the configure script before compiling the quicksec engine and interceptor.
+
+Kernel crash during unloading of IPIP and IPGRE modules
+
+A kernel crash may occur while unloading the linux IPIP or IPGRE module, if
+Quicksec is using the IPIP or IPGRE virtual device. This behaviour has been 
+seen on linux-2.6.9, but not on linux-2.6.15.

@@ -1,0 +1,25 @@
+make[1]: Entering directory `/home/user/socsw/treychen_hc/63165_Crypto_PQA0124/tclinux_phoenix/modules/eip93_drivers/cryptoEngine/V-Driver_93/build'
+make ARCH=mips CROSS_COMPILE=mips-linux-uclibc- -C /home/user/socsw/treychen_hc/63165_Crypto_PQA0124/tclinux_phoenix/linux SUBDIRS=/home/user/socsw/treychen_hc/63165_Crypto_PQA0124/tclinux_phoenix/modules/eip93_drivers/cryptoEngine/V-Driver_93/build modules
+make[2]: Entering directory `/home/user/socsw/treychen_hc/63165_Crypto_PQA0124/tclinux_phoenix/linux'
+  CC [M]  /home/user/socsw/treychen_hc/63165_Crypto_PQA0124/tclinux_phoenix/modules/eip93_drivers/cryptoEngine/V-Driver_93/build/../../Kit/EIP93_SL/src/eip93_sl.o
+  CC [M]  /home/user/socsw/treychen_hc/63165_Crypto_PQA0124/tclinux_phoenix/modules/eip93_drivers/cryptoEngine/V-Driver_93/build/../../Kit/EIP93_SL/src/eip93_arm.o
+  CC [M]  /home/user/socsw/treychen_hc/63165_Crypto_PQA0124/tclinux_phoenix/modules/eip93_drivers/cryptoEngine/V-Driver_93/build/../../Kit/EIP93_SL/src/eip93_dhm.o
+  CC [M]  /home/user/socsw/treychen_hc/63165_Crypto_PQA0124/tclinux_phoenix/modules/eip93_drivers/cryptoEngine/V-Driver_93/build/../../Kit/Log/src/log.o
+  CC [M]  /home/user/socsw/treychen_hc/63165_Crypto_PQA0124/tclinux_phoenix/modules/eip93_drivers/cryptoEngine/V-Driver_93/build/../../Kit/RingHelper/src/ringhelper.o
+  CC [M]  /home/user/socsw/treychen_hc/63165_Crypto_PQA0124/tclinux_phoenix/modules/eip93_drivers/cryptoEngine/V-Driver_93/build/../../Kit/DriverFramework/src/LinuxKernel_PCI/hwpal_device.o
+  CC [M]  /home/user/socsw/treychen_hc/63165_Crypto_PQA0124/tclinux_phoenix/modules/eip93_drivers/cryptoEngine/V-Driver_93/build/../../Kit/DriverFramework/src/LinuxKernel_PCI/hwpal_dma_resource.o
+  CC [M]  /home/user/socsw/treychen_hc/63165_Crypto_PQA0124/tclinux_phoenix/modules/eip93_drivers/cryptoEngine/V-Driver_93/build/../../Kit/DMABuf/src/kmalloc/adapter_dmabuf.o
+  CC [M]  /home/user/socsw/treychen_hc/63165_Crypto_PQA0124/tclinux_phoenix/modules/eip93_drivers/cryptoEngine/V-Driver_93/build/../src/adapter_linuxkernelmodule.o
+  CC [M]  /home/user/socsw/treychen_hc/63165_Crypto_PQA0124/tclinux_phoenix/modules/eip93_drivers/cryptoEngine/V-Driver_93/build/../src/adapter_addrtrans.o
+  CC [M]  /home/user/socsw/treychen_hc/63165_Crypto_PQA0124/tclinux_phoenix/modules/eip93_drivers/cryptoEngine/V-Driver_93/build/../src/adapter_eip93.o
+  CC [M]  /home/user/socsw/treychen_hc/63165_Crypto_PQA0124/tclinux_phoenix/modules/eip93_drivers/cryptoEngine/V-Driver_93/build/../src/adapter_global.o
+  CC [M]  /home/user/socsw/treychen_hc/63165_Crypto_PQA0124/tclinux_phoenix/modules/eip93_drivers/cryptoEngine/V-Driver_93/build/../src/adapter_pec_eip93_dhm.o
+  CC [M]  /home/user/socsw/treychen_hc/63165_Crypto_PQA0124/tclinux_phoenix/modules/eip93_drivers/cryptoEngine/V-Driver_93/build/../src/adapter_pec_eip93_arm.o
+  CC [M]  /home/user/socsw/treychen_hc/63165_Crypto_PQA0124/tclinux_phoenix/modules/eip93_drivers/cryptoEngine/V-Driver_93/build/../src/adapter_interrupts_km.o
+  LD [M]  /home/user/socsw/treychen_hc/63165_Crypto_PQA0124/tclinux_phoenix/modules/eip93_drivers/cryptoEngine/V-Driver_93/build/vdriver_93_k.o
+  Building modules, stage 2.
+  MODPOST 1 modules
+  CC      /home/user/socsw/treychen_hc/63165_Crypto_PQA0124/tclinux_phoenix/modules/eip93_drivers/cryptoEngine/V-Driver_93/build/vdriver_93_k.mod.o
+  LD [M]  /home/user/socsw/treychen_hc/63165_Crypto_PQA0124/tclinux_phoenix/modules/eip93_drivers/cryptoEngine/V-Driver_93/build/vdriver_93_k.ko
+make[2]: Leaving directory `/home/user/socsw/treychen_hc/63165_Crypto_PQA0124/tclinux_phoenix/linux'
+make[1]: Leaving directory `/home/user/socsw/treychen_hc/63165_Crypto_PQA0124/tclinux_phoenix/modules/eip93_drivers/cryptoEngine/V-Driver_93/build'

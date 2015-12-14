@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE quicksec PUBLIC "quicksec:dtd" "quicksec.dtd">
+<!--
+The format of the SOCKSIFY ALG config data is:
+
+  <!ELEMENT alg-socksify (server?,connect?)>
+
+  <!ELEMENT server      EMPTY>
+  <!ATTLIST server
+            address     CDATA   #REQUIRED
+            port        CDATA   "1080"
+            version     CDATA   "4"
+            user-name   CDATA   #IMPLIED
+            password    CDATA   #IMPLIED>
+
+  <!ELEMENT connect     EMPTY>
+  <!ATTLIST connect
+            address     CDATA   #REQUIRED
+            port        CDATA   #IMPLIED>
+
+-->
+<quicksec>
+  <policy>
+    <!-- TCP service. -->
+    <service name="tcp"/>
+
+    <!-- SOCKSIFY application gateway. -->
+    <service name="socksify">
+      <appgw id="alg-socksify@ssh.com">
+        <!-- Configuration data for SOCKSIFY application gateway. -->
+        <alg-socksify>
+          <server address="10.1.254.253" port="1080"/>
+          <!-- <connect address="195.20.116.10"/> -->
+        </alg-socksify>
+      </appgw>
+    </service>
+
+    <!-- Pass traffic to private office networks. -->
+    <rule service="tcp">
+      <src>ipv4(tcp,172.30.4.189)</src>
+      <dst>ipv4(tcp,172.30.4.167)</dst>
+    </rule>
+
+    <!-- Pass everything else in plain-text. -->
+    <rule>
+      <src>ipv4(0.0.0.0/0)</src>
+      <dst>ipv4(0.0.0.0/0)</dst>
+    </rule>
+  </policy>
+</quicksec>

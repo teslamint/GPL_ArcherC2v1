@@ -1,0 +1,106 @@
+;-------------------------------------------------------------------------
+; QSFilter.INF -- SafeNet QuickSec packet interceptor driver for
+;                 Windows Vista.
+;
+; Copyright (c) 2006 - 2009 SFNT Finland Oy.  All rights reserved.
+;-------------------------------------------------------------------------
+[version]
+Signature   	= "$Windows NT$"
+Class     	= NetService
+ClassGUID  	= {4D36E974-E325-11CE-BFC1-08002BE10318}
+Provider    	= %Sfnt%
+DriverVer	= 09/25/2009,5.1.0.0
+CatalogFile	= qsfilter.cat
+
+[Manufacturer]
+%Sfnt%=SFNT,NTx86.6.0,NTamd64.6.0
+
+[SFNT.NTx86.6.0]
+%QuickSec_Desc%=Install, SFNT_QuickSec
+
+[SFNT.NTamd64.6.0]
+%QuickSec_Desc%=Install, SFNT_QuickSec
+
+;-------------------------------------------------------------------------
+; Installation Section
+;-------------------------------------------------------------------------
+[Install]
+AddReg=Inst_Ndi
+Characteristics=0x40000
+NetCfgInstanceId="{1f6466bb-6e61-4626-bed7-c09c7708ad22}"
+Copyfiles = quicksec.copyfiles.sys
+
+[SourceDisksNames]
+1=%QuickSec_Desc%,"",,
+
+[SourceDisksFiles]
+qsfilter.sys=1
+
+[DestinationDirs]
+DefaultDestDir=12
+quicksec.copyfiles.sys=12
+
+[quicksec.copyfiles.sys]
+qsfilter.sys,,,2
+
+
+;-------------------------------------------------------------------------
+; Ndi installation support
+;-------------------------------------------------------------------------
+[Inst_Ndi]
+HKR, Ndi,Service,,"QuickSec"
+HKR, Ndi,CoServices,0x00010000,"QuickSec"
+HKR, Ndi,HelpText,,%QuickSec_HelpText%
+HKR, Ndi,FilterClass,, Custom
+HKR, Ndi,FilterType,0x00010001,0x00000002
+HKR, Ndi\Interfaces,UpperRange,,"noupper"
+HKR, Ndi\Interfaces,LowerRange,,"nolower"
+HKR, Ndi\Interfaces, FilterMediaTypes,,"ethernet wan nolower ppip wlan"
+HKR, Ndi,FilterRunType, 0x00010001, 1 ;this filter must run before any protocol can bind to the below miniport 
+
+;-------------------------------------------------------------------------
+; Service installation support
+;-------------------------------------------------------------------------
+[Install.Services]
+AddService=QuickSec,,QuickSec_Service_Inst
+
+[QuickSec_Service_Inst]
+DisplayName     = %QuickSec_Desc%
+ServiceType     = 1 ;SERVICE_KERNEL_DRIVER
+StartType       = 1 ;SERVICE_SYSTEM_START
+ErrorControl    = 1 ;SERVICE_ERROR_NORMAL
+ServiceBinary   = %12%\qsfilter.sys
+LoadOrderGroup  = NDIS
+Description     = %QuickSec_Desc%
+AddReg          = Install.add_Reg
+
+[Install.add_reg]
+;
+; Debug trace. Uncomment (and modify) these when you want to install QuickSec with debug tracing enabled.
+;
+; HKLM,System\CurrentControlSet\Services\QuickSec\Parameters,TraceEnable,0x00010001,1
+; HKLM,System\CurrentControlSet\Services\QuickSec\Parameters,TraceString,0x00010000,"*Interceptor*=99,*Engine*=99"
+; HKLM,System\CurrentControlSet\Services\QuickSec\Parameters,TraceDirectory,0x00010000,"\??\C:\temp\"
+; HKLM,System\CurrentControlSet\Services\QuickSec\Parameters,TraceMaxSize,0x00010001,100
+;
+; Event logging.
+;
+HKLM,System\CurrentControlSet\Services\EventLog\System\QuickSec,EventMessageFile,0x00020000,"%%SystemRoot%%\System32\netevent.dll;%%SystemRoot%%\System32\Drivers\qsfilter.sys"
+HKLM,System\CurrentControlSet\Services\EventLog\System\QuickSec,TypesSupported,0x00010001,7
+
+[Install.Remove.Services]
+DelService=QuickSec,0x200
+DelReg = Install.del_reg
+
+[Install.del_reg]
+HKLM,System\CurrentControlSet\Services\EventLog\System\QuickSec
+
+[Strings]
+Sfnt = "SafeNet"
+QuickSec_Desc = "SafeNet QuickSec"
+QuickSec_HelpText = "SafeNet QuickSec packet interceptor driver"
+
+
+
+
+

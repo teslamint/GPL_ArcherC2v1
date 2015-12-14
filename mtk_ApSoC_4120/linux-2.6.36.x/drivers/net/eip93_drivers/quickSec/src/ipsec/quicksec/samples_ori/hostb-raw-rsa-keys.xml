@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE quicksec PUBLIC "quicksec:dtd" "quicksec.dtd">
+
+
+<!-- Peer-to-peer setup with hosta using certificate and hostb using PSK. -->
+<!-- Related: hosta-raw-rsa-keys.xml -->
+<quicksec>
+  <params>
+    <!-- Authentication domain specifies IKE authentication
+         parameters -->
+    <auth-domain>
+      <!-- Raw RSA public key, see hosta-raw-rsa-keys.xml for -->
+      <!-- instructions on how to generate this public key.   -->
+      <public-key file="rawrsa.pub"></public-key>
+    </auth-domain>
+  </params>
+  <policy>
+
+    <tunnel name="host-to-host">
+      <!-- local identity sent to the remote IKE peer -->
+      <identity id-type="email" id="b@safenet-inc.com">
+        <!-- local shared secret -->
+        <local-secret>very-bad-secret</local-secret>
+      </identity>
+    </tunnel>
+
+    <rule to-tunnel="host-to-host">
+      <src>ipv4(172.30.4.167)</src>
+      <dst>ipv4(172.30.4.189)</dst>
+    </rule>
+
+    <rule from-tunnel="host-to-host">
+      <src>ipv4(172.30.4.189)</src>
+      <dst>ipv4(172.30.4.167)</dst>
+    </rule>
+
+    <rule>
+      <src>ipv4(0.0.0.0/0)</src>
+      <dst>ipv4(0.0.0.0/0)</dst>
+    </rule>
+  </policy>
+</quicksec>

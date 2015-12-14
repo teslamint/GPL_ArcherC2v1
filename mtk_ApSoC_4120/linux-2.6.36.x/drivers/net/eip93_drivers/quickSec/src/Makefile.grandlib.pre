@@ -1,0 +1,23 @@
+# -*-makefile-*-
+
+all : grandlib_objs
+
+grandlib_objs: Makefile
+	@rm -f grandlib_objs;
+	@for d in "" @SUBDIRS@; \
+	do \
+	  if test "$$d" != ""; \
+	  then \
+	    cat $$d/grandlib_objs | sed "s!^!$$d/!" >> grandlib_objs; \
+	  fi; \
+	done;
+
+make-final-make-file : Makefile.grandlib_final
+
+Makefile.grandlib_final : grandlib_objs
+	(echo 'all : $(GRANDLIB)'; \
+	 cat grandlib_objs | sed 's!^!$(GRANDLIB): !'; \
+	 cat @TOP_BUILDDIR@/Makefile.grandlib_final.pre | \
+	 sed 's!@GRANDLIB@!$(GRANDLIB)!g';) > Makefile.grandlib_final;
+
+.PHONY : make-final-make-file all

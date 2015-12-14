@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE quicksec PUBLIC "quicksec:dtd" "quicksec.dtd">
+<quicksec>
+  <params>
+      <auth-domain>
+        <remote-secret id-type="email" 
+                       id="a@safenet-inc.com">foo</remote-secret>
+      </auth-domain>
+  </params>
+  <policy>
+
+    <tunnel name="host-to-host" 
+            flags="cfgmode auto">
+      <identity id-type="email" 
+                id="b@safenet-inc.com">
+        <local-secret>bar</local-secret>
+      </identity>
+      <peer>172.30.4.251</peer>
+    </tunnel>
+
+    <rule to-tunnel="host-to-host">
+      <src>ipv4(192.168.200.0/24)</src>
+      <dst>ipv4(0.0.0.0/0)</dst>
+      <local-stack direction="from"/>
+    </rule>
+
+    <rule>
+      <src>ipv4(0.0.0.0/0)</src>
+      <dst>ipv4(0.0.0.0/0)</dst>
+    </rule>
+  </policy>
+</quicksec>

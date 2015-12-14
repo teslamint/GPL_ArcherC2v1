@@ -1,0 +1,963 @@
+# Makefile.in generated automatically by automake 1.4-p6 from Makefile.am
+
+# Copyright (C) 1994, 1995-8, 1999, 2001 Free Software Foundation, Inc.
+# This Makefile.in is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+#
+# Makefile.am.raw
+#
+# Copyright:
+#       Copyright (c) 2002-2004 SFNT Finland Oy.
+#       All rights reserved.
+#
+# Automakefile for QuickSec combined user-mode engine and policy manager
+#
+
+
+# -*- makefile -*-
+#
+#
+
+
+# -*- makefile -*-
+#
+#
+
+
+# -*- makefile -*-
+#
+#
+
+
+# -*- makefile -*-
+#
+#
+
+
+# -*- makefile -*-
+#
+#
+
+
+# -*- makefile -*-
+#
+#
+
+
+# -*- makefile -*-
+#
+# interceptor/libkernelutil/Makefile.fragment
+#
+
+
+# -*- makefile -*-
+#
+# interceptor/libkernelutil/Makefile.fragment
+#
+
+
+# -*- makefile -*-
+#
+# ipsec/util/Makefile.fragment
+#
+
+
+# -*- makefile -*-
+#
+# ipsec/quicksec/engine/Makefile.fragment
+#
+
+
+
+# -*- makefile -*-
+#
+# ipsec/quicksec/fastpath/software/Makefile.fragment
+#
+
+
+# -*- makefile -*-
+#
+# ipsec/quicksec/fastpath/caviumocteon/Makefile.fragment
+#
+
+
+# -*- makefile -*-
+#
+# ipsec/quicksec/policymanager/Makefile.fragment
+#
+# Also, see Makefile.am for list of extra distrubuted files, like tools
+# and platform main's
+#
+
+# core modules
+
+
+# -*- makefile -*-
+#
+# ipsec/quicksec/apps/Makefile.fragment
+#
+# Also, see Makefile.am for list of extra distrubuted files, like tools
+# and platform main's
+#
+
+
+# -*- makefile -*-
+#
+# ipsec/quicksec/appgw/Makefile.fragment
+#
+
+
+SHELL = @SHELL@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+libdir = @libdir@
+infodir = @infodir@
+mandir = @mandir@
+includedir = @includedir@
+oldincludedir = /usr/include
+
+DESTDIR =
+
+pkgdatadir = $(datadir)/@PACKAGE@
+pkglibdir = $(libdir)/@PACKAGE@
+pkgincludedir = $(includedir)/@PACKAGE@
+
+top_builddir = ../../..
+
+ACLOCAL = @ACLOCAL@
+AUTOCONF = @AUTOCONF@
+AUTOMAKE = @AUTOMAKE@
+AUTOHEADER = @AUTOHEADER@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@ $(AM_INSTALL_PROGRAM_FLAGS)
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+transform = @program_transform_name@
+
+NORMAL_INSTALL = :
+PRE_INSTALL = :
+POST_INSTALL = :
+NORMAL_UNINSTALL = :
+PRE_UNINSTALL = :
+POST_UNINSTALL = :
+build_alias = @build_alias@
+build_triplet = @build@
+host_alias = @host_alias@
+host_triplet = @host@
+target_alias = @target_alias@
+target_triplet = @target@
+ADDR_MODEL = @ADDR_MODEL@
+AR = @AR@
+AV_ALG_INCLUDES = @AV_ALG_INCLUDES@
+AV_ALG_LIBS = @AV_ALG_LIBS@
+BUILD_CC = @BUILD_CC@
+CC = @CC@
+COPY_INCLUDE = @COPY_INCLUDE@
+ENGINE_ASM_OBJS = @ENGINE_ASM_OBJS@
+FASTPATH_CONFIGURED_DIRECTORY = @FASTPATH_CONFIGURED_DIRECTORY@
+FASTPATH_CONFIGURED_INCLUDES = @FASTPATH_CONFIGURED_INCLUDES@
+FASTPATH_CONFIGURED_OBJS = @FASTPATH_CONFIGURED_OBJS@
+FASTPATH_CONFIGURED_SRCS = @FASTPATH_CONFIGURED_SRCS@
+GRANDLIBARCMD = @GRANDLIBARCMD@
+GRANDLIBRANLIBCMD = @GRANDLIBRANLIBCMD@
+HWACCEL_CONFIGURED_DIRECTORY = @HWACCEL_CONFIGURED_DIRECTORY@
+HWACCEL_CONFIGURED_INCLUDES = @HWACCEL_CONFIGURED_INCLUDES@
+HWACCEL_CONFIGURED_OBJS = @HWACCEL_CONFIGURED_OBJS@
+HWACCEL_CONFIGURED_SRCS = @HWACCEL_CONFIGURED_SRCS@
+HWACCEL_VPATH = @HWACCEL_VPATH@
+IPSEC_ARCH_INTC = @IPSEC_ARCH_INTC@
+IPSEC_ARCH_ROUTE = @IPSEC_ARCH_ROUTE@
+KERN_CC = @KERN_CC@
+KERN_CFLAGS = @KERN_CFLAGS@
+KERN_LDFLAGS = @KERN_LDFLAGS@
+KERN_LIBS = @KERN_LIBS@
+LD = @LD@
+LIBS = @LIBS@
+LN_S = @LN_S@
+M4 = @M4@
+MAKEINFO = @MAKEINFO@
+MATH_CONF_OBJS = @MATH_CONF_OBJS@
+NM_PATH = @NM_PATH@
+OCTEONFLAGS = @OCTEONFLAGS@
+OCTEON_OBJS = @OCTEON_OBJS@
+OCTEON_SRCS = @OCTEON_SRCS@
+OCTEON_VPATH = @OCTEON_VPATH@
+PACKAGE = @PACKAGE@
+PERL = @PERL@
+PURIFY = @PURIFY@
+QS_ADDRSPACE = @QS_ADDRSPACE@
+QS_EXTRALIBS = @QS_EXTRALIBS@
+QS_FASTPATH = @QS_FASTPATH@
+QS_FASTPATH_CRYPTO_ASM_LNSRC = @QS_FASTPATH_CRYPTO_ASM_LNSRC@
+QS_FASTPATH_CRYPTO_ASM_OBJS = @QS_FASTPATH_CRYPTO_ASM_OBJS@
+QS_FASTPATH_SRCS = @QS_FASTPATH_SRCS@
+QUICKSEC_ASM_OBJS = @QUICKSEC_ASM_OBJS@
+QUICKSEC_CONF_OBJS = @QUICKSEC_CONF_OBJS@
+RANLIB = @RANLIB@
+ROUTE_CONFIGURED_SRCS = @ROUTE_CONFIGURED_SRCS@
+RXP_PLATFORM_NAME = @RXP_PLATFORM_NAME@
+SAFENETFLAGS = @SAFENETFLAGS@
+SAFENET_UDM_OBJS = @SAFENET_UDM_OBJS@
+SAFENET_UDM_SRCS = @SAFENET_UDM_SRCS@
+SAFENET_UDM_VPATH = @SAFENET_UDM_VPATH@
+SSHCIPHER_CONF_OBJS = @SSHCIPHER_CONF_OBJS@
+SSHHASH_CONF_OBJS = @SSHHASH_CONF_OBJS@
+SSH_ENGINE_KERNEL_TARGET = @SSH_ENGINE_KERNEL_TARGET@
+SSH_ENGINE_USERMODE_TARGET = @SSH_ENGINE_USERMODE_TARGET@
+SSH_INTERCEPTOR_CPPFLAGS = @SSH_INTERCEPTOR_CPPFLAGS@
+SSH_INTERCEPTOR_ETHER_OBJS = @SSH_INTERCEPTOR_ETHER_OBJS@
+SSH_INTERCEPTOR_KERNEL_TARGETS = @SSH_INTERCEPTOR_KERNEL_TARGETS@
+SSH_INTERCEPTOR_MACHINE_DIR = @SSH_INTERCEPTOR_MACHINE_DIR@
+SSH_INTERCEPTOR_MACHINE_SUBDIR = @SSH_INTERCEPTOR_MACHINE_SUBDIR@
+SSH_INTERCEPTOR_NONETHER_OBJS = @SSH_INTERCEPTOR_NONETHER_OBJS@
+SSH_INTERCEPTOR_OBJS = @SSH_INTERCEPTOR_OBJS@
+SSH_INTERCEPTOR_SYMCHECK = @SSH_INTERCEPTOR_SYMCHECK@
+SSH_INTERCEPTOR_TARGETS = @SSH_INTERCEPTOR_TARGETS@
+SSH_IPM_MACHINE_OBJS = @SSH_IPM_MACHINE_OBJS@
+SSH_KB_LINUX_CONFIG_HEADER = @SSH_KB_LINUX_CONFIG_HEADER@
+SSH_KB_LINUX_KERNEL_INCLUDE = @SSH_KB_LINUX_KERNEL_INCLUDE@
+THREAD_OBJS = @THREAD_OBJS@
+THREAD_SYSTEM_OBJS = @THREAD_SYSTEM_OBJS@
+VERSION = @VERSION@
+
+AUTODIST_OPTIONS = lnsrcs lnsrcs lnsrcs lnsrcs lnsrcs lnsrcs lnsrcs
+AUTOMAKE_OPTIONS = 1.0 foreign dist-zip no-dependencies
+WINCONF_OPTIONS =  	  vpath=..;../engine;../fastpath;../fastpath/scp51x0;../fastpath/caviumocteon;../fastpath/software;../policymanager;../apps;../appgw;../../../interceptor/libkernelutil;../../util;../../hwaccel/none;../../../interceptor/usermode
+
+
+# VPATH must not contain extra spaces
+VPATH = $(top_srcdir)/ipsec/quicksec/engine:$(top_srcdir)/ipsec/quicksec/fastpath/@QS_FASTPATH@:$(top_srcdir)/ipsec/quicksec/fastpath/software:$(top_srcdir)/ipsec/quicksec/policymanager:$(top_srcdir)/ipsec/quicksec/apps:$(top_srcdir)/ipsec/quicksec/appgw:$(top_srcdir)/interceptor/libkernelutil:$(top_srcdir)/ipsec/util:$(top_srcdir)/ipsec/hwaccel/none:$(top_srcdir)/ipsec/hwaccel/@HWACCEL_CONFIGURED_DIRECTORY@:$(top_srcdir)/interceptor/usermode
+
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@DEFS = -DQUICKSEC -DSSH_BUILD_IPSEC
+
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@noinst_LIBRARIES = libengine.a 	           libfastpath-software.a 		   libfastpath.a libkernel.a         	   libaccelerator.a 		   libipsecpm.a 		   libpmconf.a 		   libappgw.a 
+
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@libengine_a_SOURCES = 	$(ENGINE_IMPL_SRCS) 	$(ROUTE_SRCS)       
+
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@libfastpath_software_a_SOURCES = $(FASTPATH_SOFTWARE_SRCS)
+
+# Fastpath alternative implementations
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@libfastpath_a_SOURCES = 
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@libfastpath_a_LIBADD = @FASTPATH_CONFIGURED_OBJS@
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@libfastpath_a_DEPENDENCIES = @FASTPATH_CONFIGURED_OBJS@
+
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@libkernel_a_SOURCES = 	$(VIRTUAL_ADAPTER_SRCS)         virtual_adapter.c                       ip_cksum.c                              ip_cksum.h                              ip_cksum_packet.c                       ip_interfaces.c                         ip_interfaces.h                         packet_utils.c
+
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@libipsecpm_a_SOURCES = 	$(PM_LIB_SRCS)
+
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@libappgw_a_SOURCES = $(APPGW_LIB_SRCS)
+
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@libpmconf_a_SOURCES = $(QUICKSECPM_CONF_LIB_SRCS)
+
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@libaccelerator_a_SOURCES = $(HWACCEL_NONE_SRCS)
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@libaccelerator_a_LIBADD = 
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@libaccelerator_a_DEPENDENCIES = 
+
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@bin_PROGRAMS = quicksecpm
+
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@quicksecpm_SOURCES = 	quicksecpm.c 		        quicksecpm_i.h 			quicksecpm_unix.c 		eng_pm_api_pm.c	        	engine_pm_api_util.c 		ip_interfaces.c 	        quicksec_dtd.c 			usermodeinterceptor.c   	usermode_packet.c       	usermode_util.c
+
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@quicksecpm_SOURCES_windelta = 	-quicksecpm_unix.c 		+quicksecpm_windows.c 	
+
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@quicksecpm_DEPENDENCIES = libengine.a 			  libfastpath-software.a 			  libkernel.a         		  libaccelerator.a 			  libipsecpm.a 			  libfastpath.a 			  libpmconf.a 			  libappgw.a
+
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@quicksecpm_LDADD =        $(top_builddir)/ipsec/quicksec/unified-usermode/libpmconf.a        $(top_builddir)/ipsec/quicksec/unified-usermode/libappgw.a        $(top_builddir)/ipsec/quicksec/unified-usermode/libipsecpm.a        $(top_builddir)/ipsec/quicksec/unified-usermode/libengine.a        $(top_builddir)/ipsec/quicksec/unified-usermode/libipsecpm.a        $(top_builddir)/ipsec/quicksec/unified-usermode/libfastpath-software.a        $(top_builddir)/ipsec/quicksec/unified-usermode/libfastpath.a        $(top_builddir)/ipsec/quicksec/unified-usermode/libkernel.a        $(top_builddir)/ipsec/quicksec/unified-usermode/libaccelerator.a        $(top_builddir)/ipsec/lib/libsshipsec.a        @AV_ALG_LIBS@        $(top_builddir)/lib/libssh.a
+
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@EXTRA_PROGRAMS = tinypm 			clientpm
+
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@tinypm_SOURCES = 	tinypm.c			eng_pm_api_pm.c		engine_pm_api_util.c 		ip_interfaces.c 		usermodeinterceptor.c   	usermode_packet.c       	usermode_util.c
+
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@tinypm_DEPENDENCIES = $(noinst_QUICKSECPM_LIBRARIES)
+
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@clientpm_SOURCES = 	clientpm.c			eng_pm_api_pm.c		engine_pm_api_util.c 		ip_interfaces.c 		usermodeinterceptor.c   	usermode_packet.c       	usermode_util.c
+
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@clientpm_DEPENDENCIES = $(noinst_QUICKSECPM_LIBRARIES)
+
+LDADD =         $(top_builddir)/ipsec/quicksec/unified-usermode/libpmconf.a        $(top_builddir)/ipsec/quicksec/unified-usermode/libappgw.a        $(top_builddir)/ipsec/quicksec/unified-usermode/libipsecpm.a        $(top_builddir)/ipsec/quicksec/unified-usermode/libengine.a        $(top_builddir)/ipsec/quicksec/unified-usermode/libipsecpm.a        $(top_builddir)/ipsec/quicksec/unified-usermode/libfastpath-software.a       $(top_builddir)/ipsec/quicksec/unified-usermode/libfastpath.a        $(top_builddir)/ipsec/quicksec/unified-usermode/libkernel.a        $(top_builddir)/ipsec/quicksec/unified-usermode/libaccelerator.a        $(top_builddir)/ipsec/lib/libsshipsec.a        @AV_ALG_LIBS@        $(top_builddir)/lib/libssh.a
+
+
+HWACCEL_INCLUDES = @HWACCEL_CONFIGURED_INCLUDES@
+
+HWACCEL_INCLUDES_windelta = -@HWACCEL_CONFIGURED_INCLUDES@
+
+INCLUDES =  	-DUSERMODE_ENGINE 	-DSSH_IPSEC_UNIFIED_ADDRESS_SPACE 	-DINTERCEPTOR_PROVIDES_INTERFACE_INFORMATION 	-DINTERCEPTOR_PROVIDES_IP_ROUTING 	-DINTERCEPTOR_PROVIDES_VIRTUAL_ADAPTERS 	$(USERMODE_INTERCEPTOR_INCLUDES) 	$(PM_LIB_INCLUDES) $(APPGW_LIB_INCLUDES) 	$(HWACCEL_INCLUDES) $(HWACCEL_NONE_INCLUDES) 	$(VIRTUAL_ADAPTER_INCLUDES) $(IPSEC_UTIL_INCLUDES) 	$(ENGINE_INCLUDES) $(FASTPATH_INCLUDES) 	$(ROUTE_INCLUDES) $(KERNEL_UTIL_INCLUDES)
+
+
+HWACCEL_SAFENET_1X41_SRCS = safenet1x41.c                             sshtlsaccel.h                             safenet1x41_params.h
+
+
+HWACCEL_SAFENET_1X41_OBJS = safenet1x41.o
+HWACCEL_SAFENET_1X41_INCLUDES =  	@SAFENETFLAGS@ 	-I$(top_srcdir)/ipsec/hwaccel 	-I$(top_srcdir)/ipsec/hwaccel/safenet1x41 	-I$(top_srcdir)/ipsec/hwaccel/safenet1x41/hdrs
+
+
+HWACCEL_SAFENET_WLUDM_SRCS = safenet_wludm.c
+HWACCEL_SAFENET_WLUDM_OBJS = safenet_wludm.o
+HWACCEL_SAFENET_WLUDM_INCLUDES =      -D__FORCE_DWORD_ALIGNMENT -DWLUDM_PLATFORM_LINUX     -DWLUDM_DEVICE_OMAP_REV1 -DCGX_PLATFORM_LINUX     -I$(top_srcdir)/ipsec/hwaccel     -I$(top_srcdir)/ipsec/hwaccel/safenetwludm     -I$(top_srcdir)/cgx/hdrs
+
+
+HWACCEL_OCF_SRCS = ocf.c
+HWACCEL_OCF_OBJS = ocf.o
+HWACCEL_OCF_INCLUDES =      -I$(top_srcdir)/ipsec/hwaccel     -I$(top_srcdir)/ipsec/hwaccel/ocf
+
+
+HWACCEL_SAFENET_PE_PEC_SRCS = safenet_la.c safenet_pe_pec.c safenet_la_utils.c
+HWACCEL_SAFENET_PE_PEC_OBJS = safenet_la.o safenet_pe_pec.o safenet_la_utils.o
+
+HWACCEL_SAFENET_PE_INCLUDES =          @SAFENETFLAGS@         -I$(top_srcdir)/ipsec/hwaccel         -I$(top_srcdir)/ipsec/hwaccel/safenet_pe         -I$(top_srcdir)/ipsec/hwaccel/safenet_pe/hdrs
+
+
+HWACCEL_NONE_SRCS = hwaccel_none.c
+HWACCEL_NONE_OBJS = hwaccel_none.o
+HWACCEL_NONE_INCLUDES = -I$(top_srcdir)/ipsec/hwaccel
+
+KERNEL_UTIL_SRCS =  	kernel_alloc.c 	kernel_encode.c 	kernel_encode.h 	packet_utils.c
+
+
+KERNEL_UTIL_INCLUDES =  	-I$(top_srcdir)/interceptor/libkernelutil
+
+
+KERNEL_UTIL_LNSRCS =  	kernel_alloc.c 	kernel_encode.c 	packet_utils.c
+
+
+KERNEL_UTIL_HDR_LNSRCS =  	kernel_encode.h
+
+
+USERMODE_INTERCEPTOR_INCLUDES =  	-I$(top_srcdir)/interceptor/usermode
+
+
+USERMODE_INTERCEPTOR_SRCS =  	usermode_packet.c 	usermode_util.c 	usermodeforwarder.c 	usermodeforwarder.h 	usermodeinterceptor.c 	usermodeinterceptor.h 	virtual_adapter.c 	platform_kernel_alloc.h 	platform_kernel_mutex.h
+
+
+USERMODE_INTERCEPTOR_KERNEL_LNSRCS =  	usermodeforwarder.c
+
+
+USERMODE_INTERCEPTOR_USER_LNSRCS =  	virtual_adapter.c 	usermode_packet.c 	usermode_util.c 	usermodeinterceptor.c
+
+
+IPSEC_UTIL_SRCS =          ip_cksum.c                              ip_cksum.h                              ip_cksum_packet.c                       ip_interfaces.c                         ip_interfaces.h
+
+
+IPSEC_UTIL_INCLUDES = -I$(top_srcdir)/ipsec/util
+
+PLATFORM_UTILITY_LNSRCS =  	sshencodetypes.c             sshrand.c             sshustr.c             sshmatch.c            sshmemcmp.c           sshdebug.c            sshfatal.c            sshsnprintf.c         sshenum.c             sshinetbits.c           sshinetether.c          sshinethash.c           sshinetmapped.c         sshinetmask.c           sshinetmerge.c          sshinetprint.c          sshinetproto.c          sshinetrender.c         sshinetencode.c
+
+
+PLATFORM_UTILITY_INCLUDES =  	-I$(top_srcdir)/lib/sshutil/sshcore		-I$(top_srcdir)/lib/sshutil/sshnet
+
+
+VIRTUAL_ADAPTER_SRCS =          virtual_adapter_arp.c                   virtual_adapter_internal.h              virtual_adapter_misc.c                  virtual_adapter_util.c
+
+VIRTUAL_ADAPTER_INCLUDES = -I$(top_srcdir)/ipsec/util
+
+ROUTE_SRCS_SOLARIS = iproute.c iproute.h
+
+ROUTE_SRCS_WINDOWS = iproute.c iproute.h
+
+ROUTE_SRCS_DEFAULT = 
+
+ROUTE_SRCS = @ROUTE_CONFIGURED_SRCS@
+ROUTE_INCLUDES = -I$(top_srcdir)/ipsec/util
+
+ROUTE_SRCS_windelta =  	-@ROUTE_CONFIGURED_SRCS@
+
+
+# Actual engine source files on this directory
+ENGINE_IMPL_SRCS =          core_pm_shared.h                        ipsec_pm_shared.h                       quicksec_pm_shared.h                    engine_pm_api.h                         engine_pme.h                            engine_fastpath.h                       engine_fastpath_types.h                 engine_fastpath_util.h                  engine_internal.h                       engine_arp.h                            engine_arp.c                            engine_pmtu.c                   	engine_packet_handler.c                 engine_audit.c                          engine_flow_id.c                        engine_flows.c                          engine_next_hop.c                       engine_transform.c                      engine_icmp.h                           engine_icmp.c                           engine_init.c                   	engine_alloc.c                          engine_interfaces.c                     engine_mediatypes.c                     engine_nat.c                            engine_pm_api_marshal.h                 engine_pm_api_engine.c                  engine_pm_api_util.c                    engine_pme.c                            engine_route.c                          engine_rule_execute.c                   engine_rule_lookup.c                    engine_rule_lookup.h                    engine_rule_lookup_list.c               engine_rule_lookup_tree.c               engine_rules.c                          engine_udp.h                            engine_udp.c                            engine_tcp.h                            engine_tcp.c                            engine_tcp_rst.c                        engine_timeout.c                        engine_trigger.c                        engine_audit_pkt.c                      engine_rate_limit.c                     engine_random.c                         engine_natt_keepalive.c                 engine_asyncop.c			engine_pm_api_tcp_encaps.c		engine_pm_api_tcp_encaps.h	        version.h                               versioni.h
+
+
+ENGINE_OTHER_LNSRCS =           sshaudit.c          sshinetcalc.c          sshmp-xuint.c
+
+
+ENGINE_SRCS =  	$(ENGINE_IMPL_SRCS) 	$(ENGINE_OTHER_LNSRCS)
+
+
+ENGINE_INCLUDES =  	-I$(top_srcdir)/ipsec				-I$(top_srcdir)/ipsec/include			-I$(top_builddir)/ipsec/include			-I$(top_srcdir)/ipsec/quicksec			-I$(top_srcdir)/interceptor/include		-I$(top_srcdir)/ipsec/quicksec/engine 		-I$(top_srcdir)/include				-I$(top_builddir)/include			-I$(top_srcdir)/lib/sshcrypto			-I$(top_srcdir)/lib/sshcrypto/sshcipher		-I$(top_srcdir)/lib/sshcrypto/sshhash		-I$(top_srcdir)/lib/sshcrypto/sshmac		-I$(top_srcdir)/lib/zlib			-I$(top_srcdir)/interceptor/@SSH_INTERCEPTOR_MACHINE_DIR@ 	-I$(top_srcdir)/interceptor/@SSH_INTERCEPTOR_MACHINE_DIR@/@SSH_INTERCEPTOR_MACHINE_SUBDIR@ 	-I$(top_srcdir)/ipsec/interceptor/@SSH_INTERCEPTOR_MACHINE_DIR@ 	-I$(top_srcdir)/ipsec/interceptor/@SSH_INTERCEPTOR_MACHINE_DIR@/@SSH_INTERCEPTOR_MACHINE_SUBDIR@
+
+
+ENGINE_INCLUDES_windelta =  	--I$(top_srcdir)/interceptor/@SSH_INTERCEPTOR_MACHINE_DIR@ 	--I$(top_srcdir)/interceptor/@SSH_INTERCEPTOR_MACHINE_DIR@/@SSH_INTERCEPTOR_MACHINE_SUBDIR@ 	--I$(top_srcdir)/ipsec/interceptor/@SSH_INTERCEPTOR_MACHINE_DIR@ 	--I$(top_srcdir)/ipsec/interceptor/@SSH_INTERCEPTOR_MACHINE_DIR@/@SSH_INTERCEPTOR_MACHINE_SUBDIR@ 	+-I$(top_srcdir)/interceptor/windows
+
+#
+# ipsec/quicksec/fastpath/Makefile.fragment
+#
+# See configure.in.inc; it defines QS_FASTPATH and QS_FASTPATH_SRCS
+#
+
+FASTPATH_INCLUDES =  	@FASTPATH_CONFIGURED_INCLUDES@ 	-I$(top_srcdir)/ipsec/quicksec/fastpath/@QS_FASTPATH@ 	-I$(top_srcdir)/ipsec/quicksec/fastpath/software 	-I$(top_srcdir)/ipsec/quicksec/fastpath
+
+
+FASTPATH_INCLUDES_windelta =  	-@FASTPATH_CONFIGURED_INCLUDES@ 	--I$(top_srcdir)/ipsec/quicksec/fastpath/@QS_FASTPATH@ 	+-I$(top_srcdir)/ipsec/quicksec/fastpath/software	
+
+
+######################################################################
+# BEGIN: Software fastpath
+#
+# Fastpath source files from outside of ipsec directory hierarchy
+
+FASTPATH_SOFT_CRYPTO_LNSRCS =  	des.c 	        rijndael.c         mode-gcm.c         blowfish.c         md5.c 	        sha.c 	        sha256.c 	        sha512.c 	        hmac.c 	        xcbc-mac.c 	        mscapi-hash.c         mscapi-cipher.c         octeon-hash.c         octeon-cipher.c 
+
+
+FASTPATH_SOFT_COMPRESSION_LNSRCS =  	deflate.c		infblock.c		infcodes.c		inftrees.c		inffast.c		inflate.c		infutil.c		zutil.c			trees.c			adler32.c	
+
+
+FASTPATH_SOFT_CRYPTO_ASM_LNSRCS =          des386.S 		        blowfish386.S 	        md5_386.S 		
+
+
+FASTPATH_SOFT_CRYPTO_ASM_OBJS =  	des386.o 		blowfish386.o 		md5_386.o	
+
+
+FASTPATH_SOFTWARE_SHARED_SRCS =  	$(FASTPATH_SOFT_CRYPTO_LNSRCS) 	   	@QS_FASTPATH_CRYPTO_ASM_LNSRC@ 	           engine_fastpath.c 	          engine_fragment.c                 fastpath_icmp.c                   fastpath_udp.c            	fastpath_tcp.c            	fastpath_alloc.c          	fastpath_init.c           	fastpath_fragmagic.c      	fastpath_mediatypes.c     	fastpath_packet_pullup.c  	fastpath_utils.c          engine_transform_in.c             engine_transform_out.c            engine_transform_utils.c          engine_transform_nat.c    	$(FASTPATH_SOFT_COMPRESSION_LNSRCS)		engine_transform_ipcomp.c		engine_ipcomp_glue.h			engine_tcp_encaps.c	  	engine_tcp_encaps.h
+
+
+FASTPATH_SOFTWARE_SRCS =  	$(FASTPATH_SOFTWARE_SHARED_SRCS)   	fastpath_flows.c                   	fastpath_flow_id.c                 	engine_fastpath_impl.c             	engine_fastpath_impl.h             	fastpath_swi.h
+
+
+FASTPATH_SOFTWARE_SRCS_windelta =  	-@QS_FASTPATH_CRYPTO_ASM_LNSRC@
+
+
+FASTPATH_OCTEON_COMMON_SRCS =  	octeon_se_fastpath_flow_lookup.c 	octeon_se_fastpath_shared.h 	octeon_se_fastpath_params.h
+
+
+FASTPATH_OCTEON_SRCS =  	octeon_accel_fastpath.c 	octeon_accel_fastpath_internal.h 	octeon_fastpath_impl.h 	$(FASTPATH_OCTEON_COMMON_SRCS)
+
+
+FASTPATH_OCTEON_OBJS =  	octeon_accel_fastpath.o 	octeon_se_fastpath_flow_lookup.o	
+
+
+SE_FASTPATH_SRCS =  	octeon_se_fastpath.c 	octeon_se_fastpath_init.c 	octeon_se_fastpath_transform_in.c 	octeon_se_fastpath_transform_out.c 	octeon_se_fastpath_internal.h 	octeon_se_fastpath_transform.c 	octeon_se_fastpath_transform_i.h 	octeon_se_fastpath_frag.c 	octeon_se_fastpath_inline.h 	executive-config.h 	$(FASTPATH_OCTEON_COMMON_SRCS)
+
+
+FASTPATH_OCTEON_INCLUDES =  	-I$(top_srcdir)/ipsec/quicksec/fastpath/caviumocteon
+
+
+SE_FASTPATH_OCTEON_INCLUDES =  	-I$(top_srcdir)/ipsec/quicksec/fastpath/caviumocteon
+
+
+PM_CORE_LIB_SRCS =  	ipsec_pm_low.h                  	quicksec_pm_shared.h            	util_dnsresolver.c			util_dnsresolver.h		        core_pm.h                               core_pm_shared.h                        eng_pm_api_pm.h                         eng_pm_api_pm.c                         eng_rules.c                             eng_upcall.c                            ipsec_pm_shared.h                       pad_authorization.c                     quicksec_pm.h			        quicksec_pm_low.h                       quicksecpm_internal.h                   spd_internal.h                          spd_ike.c                               spd_main.c                      	spd_batch_st.c			        spd_config_st.c                 	spd_iface_st.c			        spd_ike_init.c                          spd_main_st.h                           spd_main_st.c                   	spd_shutdown_st.c		        spd_rules.c                             spd_services.c                          util.c                                  util_algorithms.c                       util_alloc.c                            util_render.c                           util_tables.c                           util_internal.h                         util_asyncop.c                          util_audit.c                            util_servers.c                          util_statistics.c
+
+
+# ipsec modules
+PM_IPSEC_LIB_SRCS =          ipsec_pm_shared.h               	ipsec_internal.h                        pad_auth_passwd.c                       pad_auth_passwd.h                       pad_auth_domain.c                       pad_auth_domain.h                       sad_ike.c                               spd_ike_psk.c                           sad_ike_common_st.c                     sad_ike_initiator_st.c                  sad_ike_i_negotiation_st.c              spd_ike_delete.c                        spd_rule_lookup.c                       spd_ike.c                               pad_ike.c                               util_dpd.c                              util_ike_id.c                           util_ike_cfgmode.c                      util_ike_confutils.c                    util_ike_sautils.c              	util_tcpencap.c                 	util_tcpencap.h                 	util_peer.c                             ras_cfgmode_client_store.c              util_l2tp.c                             util_ek.c                               util_ek_st.c                            pad_auth_radius.c                       pad_auth_radius.h                	rac_virtual_ip_internal.h	         rac_virtual_ip.c                         rac_virtual_ip_st.c                      util_nameserver.c                        util_nameserver.h                        util_connection.c                        util_connection.h                	util_virtual_adapter.c                   rac_virtual_ip_cfgmode_st.c              rac_virtual_ip_l2tp_st.c                 ras.c                                   ras_internal.h                          ras_legacy_auth_server.c                util_l2tp_lns_st.c                      pad_authorization_local.h               pad_authorization_local.c               pad_ike_eap.c                           sad_ike_spis.c                          sad_ike.h                               ipsec_pm.h                      	ipsec_pm_low.h                          util_algorithms.c                       util_algorithms_internal.h              util_compat.c                           util_ike_tsutils.c                      util_ike_spis.c                         util_unknown_spis.c                     util_linearize.c                        sad_sa_handler.c                        sad_sa_handler_manual.c                 sad_sa_handler_st.c                     ras_addrpool.h                          ras_addrpool.c                          spd_tunnels.c                   	spd_tunnels_ike.c                       util_ipsec.c                            util_ike_ipsec.c                        util_cm.h                               util_cm.c                               util_cm_access.c                        util_cm_notify.c                        util_ike_certs.c                        pad_ike_certs.c                         pad_ike_certs_mscapi.c                  util_mscapi.h                           util_mscapi.c                   	sad_mobike.c                    	sad_mobike_st.c                 
+
+
+# Firewall specific modules
+PM_FIREWALL_LIB_SRCS =          nat_internal.h                         firewall_pm.h                           firewall_internal.h             	appgw_api.h                     	appgw_st.c                      	appgw.c
+
+
+PM_LIB_SRCS = $(PM_CORE_LIB_SRCS)     	      $(PM_FIREWALL_LIB_SRCS) 	      $(PM_IPSEC_LIB_SRCS)    
+
+
+PM_LIB_INCLUDES =  	-I$(top_srcdir)/ipsec/quicksec/policymanager 	-I$(top_srcdir)/ipsec/quicksec/engine 	-I$(top_srcdir)/ipsec/quicksec 	-I$(top_srcdir)/interceptor/include 	-I$(top_srcdir)/ipsec/include 	-I$(top_builddir)/ipsec/include 	-I$(top_srcdir)/ipsec 	-I$(top_srcdir)/ipsec 	-I$(top_srcdir)/include 	-I$(top_builddir)/include
+
+
+QUICKSECPM_CONF_LIB_SRCS =  	quicksecpm_xmlconf.c 	quicksecpm_xmlconf.h 	quicksecpm_xmlconf_alg.c 	quicksecpm_xmlconf_http.c 	quicksecpm_xmlconf_i.h 	quicksecpm_audit.c 	quicksecpm_audit.h 	quicksec.dtd 	quicksec.dtd 	quicksec_dtd.c
+
+
+QUICKSECPM_CONF_LIB_INCLUDES = 
+
+APPGW_LIB_SRCS =  	wins_packet.c 	appgw_cifs.c 	appgw_cifs_internal.h 	appgw_cifs_st_msds.c 	appgw_cifs_st_nbt.c 	appgw_cifs_st_parser.c 	appgw_cifs_st_request.c 	appgw_cifs_st_response.c 	appgw_dns.c 	appgw_dns.h 	appgw_dns_config.c 	appgw_ftp.c 	appgw_ftp.h 	appgw_http.c 	appgw_http.h 	appgw_http_config.c 	appgw_http_internal.h 	appgw_http_state.c 	appgw_netbios_dgm.c 	appgw_pass_through_tcp.c 	appgw_pass_through_tcp.h 	appgw_sip.c 	appgw_sip.h 	appgw_sip_config.c 	appgw_sip_packet.c 	appgw_sip_ports.c 	appgw_socksify.c 	appgw_socksify.h 	appgw_wins.c 	appgw_wins_internal.h 	dce_rpc_pdu.c 	dce_rpc_pdu.h 	appgw_av.h 	appgw_av.c 	wins_packet.c 	wins_packet.h
+
+
+APPGW_LIB_INCLUDES =  	-I$(top_srcdir)/ipsec/quicksec/appgw 	@AV_ALG_INCLUDES@ 	-I$(top_srcdir)/ipsec/quicksec/policymanager
+
+mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+CONFIG_HEADER = ../../../sshconf.h
+CONFIG_CLEAN_FILES = 
+LIBRARIES =  $(noinst_LIBRARIES)
+
+CPPFLAGS = @CPPFLAGS@
+LDFLAGS = @LDFLAGS@
+libengine_a_LIBADD = 
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@libengine_a_OBJECTS =  engine_arp.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_pmtu.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_packet_handler.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_audit.o engine_flow_id.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_flows.o engine_next_hop.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_transform.o engine_icmp.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_init.o engine_alloc.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_interfaces.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_mediatypes.o engine_nat.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_pm_api_engine.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_pm_api_util.o engine_pme.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_route.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_rule_execute.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_rule_lookup.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_rule_lookup_list.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_rule_lookup_tree.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_rules.o engine_udp.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_tcp.o engine_tcp_rst.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_timeout.o engine_trigger.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_audit_pkt.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_rate_limit.o engine_random.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_natt_keepalive.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_asyncop.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_pm_api_tcp_encaps.o
+libfastpath_software_a_LIBADD = 
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@libfastpath_software_a_OBJECTS =  \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@des.o rijndael.o mode-gcm.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@blowfish.o md5.o sha.o sha256.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@sha512.o hmac.o xcbc-mac.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@mscapi-hash.o mscapi-cipher.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@octeon-hash.o octeon-cipher.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_fastpath.o engine_fragment.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@fastpath_icmp.o fastpath_udp.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@fastpath_tcp.o fastpath_alloc.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@fastpath_init.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@fastpath_fragmagic.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@fastpath_mediatypes.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@fastpath_packet_pullup.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@fastpath_utils.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_transform_in.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_transform_out.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_transform_utils.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_transform_nat.o deflate.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@infblock.o infcodes.o inftrees.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@inffast.o inflate.o infutil.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@zutil.o trees.o adler32.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_transform_ipcomp.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_tcp_encaps.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@fastpath_flows.o fastpath_flow_id.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_fastpath_impl.o
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@libfastpath_a_OBJECTS = 
+libkernel_a_LIBADD = 
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@libkernel_a_OBJECTS =  \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@virtual_adapter_arp.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@virtual_adapter_misc.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@virtual_adapter_util.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@virtual_adapter.o ip_cksum.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@ip_cksum_packet.o ip_interfaces.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@packet_utils.o
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@libaccelerator_a_OBJECTS =  \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@hwaccel_none.o
+libipsecpm_a_LIBADD = 
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@libipsecpm_a_OBJECTS =  \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@util_dnsresolver.o eng_pm_api_pm.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@eng_rules.o eng_upcall.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@pad_authorization.o spd_ike.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@spd_main.o spd_batch_st.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@spd_config_st.o spd_iface_st.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@spd_ike_init.o spd_main_st.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@spd_shutdown_st.o spd_rules.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@spd_services.o util.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@util_algorithms.o util_alloc.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@util_render.o util_tables.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@util_asyncop.o util_audit.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@util_servers.o util_statistics.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@appgw_st.o appgw.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@pad_auth_passwd.o pad_auth_domain.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@sad_ike.o spd_ike_psk.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@sad_ike_common_st.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@sad_ike_initiator_st.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@sad_ike_i_negotiation_st.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@spd_ike_delete.o spd_rule_lookup.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@spd_ike.o pad_ike.o util_dpd.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@util_ike_id.o util_ike_cfgmode.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@util_ike_confutils.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@util_ike_sautils.o util_tcpencap.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@util_peer.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@ras_cfgmode_client_store.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@util_l2tp.o util_ek.o util_ek_st.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@pad_auth_radius.o rac_virtual_ip.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@rac_virtual_ip_st.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@util_nameserver.o util_connection.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@util_virtual_adapter.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@rac_virtual_ip_cfgmode_st.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@rac_virtual_ip_l2tp_st.o ras.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@ras_legacy_auth_server.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@util_l2tp_lns_st.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@pad_authorization_local.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@pad_ike_eap.o sad_ike_spis.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@util_algorithms.o util_compat.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@util_ike_tsutils.o util_ike_spis.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@util_unknown_spis.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@util_linearize.o sad_sa_handler.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@sad_sa_handler_manual.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@sad_sa_handler_st.o ras_addrpool.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@spd_tunnels.o spd_tunnels_ike.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@util_ipsec.o util_ike_ipsec.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@util_cm.o util_cm_access.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@util_cm_notify.o util_ike_certs.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@pad_ike_certs.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@pad_ike_certs_mscapi.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@util_mscapi.o sad_mobike.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@sad_mobike_st.o
+libpmconf_a_LIBADD = 
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@libpmconf_a_OBJECTS =  \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@quicksecpm_xmlconf.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@quicksecpm_xmlconf_alg.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@quicksecpm_xmlconf_http.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@quicksecpm_audit.o quicksec_dtd.o
+libappgw_a_LIBADD = 
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@libappgw_a_OBJECTS =  wins_packet.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@appgw_cifs.o appgw_cifs_st_msds.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@appgw_cifs_st_nbt.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@appgw_cifs_st_parser.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@appgw_cifs_st_request.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@appgw_cifs_st_response.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@appgw_dns.o appgw_dns_config.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@appgw_ftp.o appgw_http.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@appgw_http_config.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@appgw_http_state.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@appgw_netbios_dgm.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@appgw_pass_through_tcp.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@appgw_sip.o appgw_sip_config.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@appgw_sip_packet.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@appgw_sip_ports.o appgw_socksify.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@appgw_wins.o dce_rpc_pdu.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@appgw_av.o wins_packet.o
+PROGRAMS =  $(bin_PROGRAMS)
+
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@tinypm_OBJECTS =  tinypm.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@eng_pm_api_pm.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_pm_api_util.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@ip_interfaces.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@usermodeinterceptor.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@usermode_packet.o usermode_util.o
+tinypm_LDADD = $(LDADD)
+tinypm_LDFLAGS = 
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@clientpm_OBJECTS =  clientpm.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@eng_pm_api_pm.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_pm_api_util.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@ip_interfaces.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@usermodeinterceptor.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@usermode_packet.o usermode_util.o
+clientpm_LDADD = $(LDADD)
+clientpm_LDFLAGS = 
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@quicksecpm_OBJECTS =  quicksecpm.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@quicksecpm_unix.o eng_pm_api_pm.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@engine_pm_api_util.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@ip_interfaces.o quicksec_dtd.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@usermodeinterceptor.o \
+@SSH_QS_BUILD_UNIFIED_USERMODE_TRUE@usermode_packet.o usermode_util.o
+quicksecpm_LDFLAGS = 
+CFLAGS = @CFLAGS@
+COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
+DIST_COMMON =  Makefile.am Makefile.in
+
+
+DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+
+TAR = tar
+GZIP_ENV = --best
+SOURCES = $(libengine_a_SOURCES) $(libfastpath_software_a_SOURCES) $(libfastpath_a_SOURCES) $(libkernel_a_SOURCES) $(libaccelerator_a_SOURCES) $(libipsecpm_a_SOURCES) $(libpmconf_a_SOURCES) $(libappgw_a_SOURCES) $(tinypm_SOURCES) $(clientpm_SOURCES) $(quicksecpm_SOURCES)
+OBJECTS = $(libengine_a_OBJECTS) $(libfastpath_software_a_OBJECTS) $(libfastpath_a_OBJECTS) $(libkernel_a_OBJECTS) $(libaccelerator_a_OBJECTS) $(libipsecpm_a_OBJECTS) $(libpmconf_a_OBJECTS) $(libappgw_a_OBJECTS) $(tinypm_OBJECTS) $(clientpm_OBJECTS) $(quicksecpm_OBJECTS)
+
+all: all-redirect
+.SUFFIXES:
+.SUFFIXES: .S .c .o .s
+$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) $(top_srcdir)/ipsec/hwaccel/Makefile.fragment $(top_srcdir)/ipsec/hwaccel/safenet1x41/Makefile.fragment $(top_srcdir)/ipsec/hwaccel/safenetwludm/Makefile.fragment $(top_srcdir)/ipsec/hwaccel/ocf/Makefile.fragment $(top_srcdir)/ipsec/hwaccel/safenet_pe/Makefile.fragment $(top_srcdir)/ipsec/hwaccel/none/Makefile.fragment $(top_srcdir)/interceptor/libkernelutil/Makefile.fragment $(top_srcdir)/interceptor/usermode/Makefile.fragment $(top_srcdir)/ipsec/util/Makefile.fragment $(top_srcdir)/ipsec/quicksec/engine/Makefile.fragment $(top_srcdir)/ipsec/quicksec/fastpath/Makefile.fragment $(top_srcdir)/ipsec/quicksec/fastpath/software/Makefile.fragment $(top_srcdir)/ipsec/quicksec/fastpath/caviumocteon/Makefile.fragment $(top_srcdir)/ipsec/quicksec/policymanager/Makefile.fragment $(top_srcdir)/ipsec/quicksec/apps/Makefile.fragment $(top_srcdir)/ipsec/quicksec/appgw/Makefile.fragment
+	cd $(top_srcdir) && $(AUTOMAKE) --foreign ipsec/quicksec/unified-usermode/Makefile
+
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) \
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+
+mostlyclean-noinstLIBRARIES:
+
+clean-noinstLIBRARIES:
+	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+
+distclean-noinstLIBRARIES:
+
+maintainer-clean-noinstLIBRARIES:
+
+.c.o:
+	$(COMPILE) -c $<
+
+.s.o:
+	$(COMPILE) -c $<
+
+.S.o:
+	$(COMPILE) -c $<
+
+mostlyclean-compile:
+	-rm -f *.o core *.core
+
+clean-compile:
+
+distclean-compile:
+	-rm -f *.tab.c
+
+maintainer-clean-compile:
+
+libengine.a: $(libengine_a_OBJECTS) $(libengine_a_DEPENDENCIES)
+	-rm -f libengine.a
+	$(AR) cru libengine.a $(libengine_a_OBJECTS) $(libengine_a_LIBADD)
+	$(RANLIB) libengine.a
+
+libfastpath-software.a: $(libfastpath_software_a_OBJECTS) $(libfastpath_software_a_DEPENDENCIES)
+	-rm -f libfastpath-software.a
+	$(AR) cru libfastpath-software.a $(libfastpath_software_a_OBJECTS) $(libfastpath_software_a_LIBADD)
+	$(RANLIB) libfastpath-software.a
+
+libfastpath.a: $(libfastpath_a_OBJECTS) $(libfastpath_a_DEPENDENCIES)
+	-rm -f libfastpath.a
+	$(AR) cru libfastpath.a $(libfastpath_a_OBJECTS) $(libfastpath_a_LIBADD)
+	$(RANLIB) libfastpath.a
+
+libkernel.a: $(libkernel_a_OBJECTS) $(libkernel_a_DEPENDENCIES)
+	-rm -f libkernel.a
+	$(AR) cru libkernel.a $(libkernel_a_OBJECTS) $(libkernel_a_LIBADD)
+	$(RANLIB) libkernel.a
+
+libaccelerator.a: $(libaccelerator_a_OBJECTS) $(libaccelerator_a_DEPENDENCIES)
+	-rm -f libaccelerator.a
+	$(AR) cru libaccelerator.a $(libaccelerator_a_OBJECTS) $(libaccelerator_a_LIBADD)
+	$(RANLIB) libaccelerator.a
+
+libipsecpm.a: $(libipsecpm_a_OBJECTS) $(libipsecpm_a_DEPENDENCIES)
+	-rm -f libipsecpm.a
+	$(AR) cru libipsecpm.a $(libipsecpm_a_OBJECTS) $(libipsecpm_a_LIBADD)
+	$(RANLIB) libipsecpm.a
+
+libpmconf.a: $(libpmconf_a_OBJECTS) $(libpmconf_a_DEPENDENCIES)
+	-rm -f libpmconf.a
+	$(AR) cru libpmconf.a $(libpmconf_a_OBJECTS) $(libpmconf_a_LIBADD)
+	$(RANLIB) libpmconf.a
+
+libappgw.a: $(libappgw_a_OBJECTS) $(libappgw_a_DEPENDENCIES)
+	-rm -f libappgw.a
+	$(AR) cru libappgw.a $(libappgw_a_OBJECTS) $(libappgw_a_LIBADD)
+	$(RANLIB) libappgw.a
+
+mostlyclean-binPROGRAMS:
+
+clean-binPROGRAMS:
+	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
+
+distclean-binPROGRAMS:
+
+maintainer-clean-binPROGRAMS:
+
+install-binPROGRAMS: $(bin_PROGRAMS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(bindir)
+	@list='$(bin_PROGRAMS)'; for p in $$list; do \
+	  if test -f $$p; then \
+	    echo "  $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`"; \
+	     $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`; \
+	  else :; fi; \
+	done
+
+uninstall-binPROGRAMS:
+	@$(NORMAL_UNINSTALL)
+	list='$(bin_PROGRAMS)'; for p in $$list; do \
+	  rm -f $(DESTDIR)$(bindir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`; \
+	done
+
+tinypm: $(tinypm_OBJECTS) $(tinypm_DEPENDENCIES)
+	@rm -f tinypm
+	$(LINK) $(tinypm_LDFLAGS) $(tinypm_OBJECTS) $(tinypm_LDADD) $(LIBS)
+
+clientpm: $(clientpm_OBJECTS) $(clientpm_DEPENDENCIES)
+	@rm -f clientpm
+	$(LINK) $(clientpm_LDFLAGS) $(clientpm_OBJECTS) $(clientpm_LDADD) $(LIBS)
+
+quicksecpm: $(quicksecpm_OBJECTS) $(quicksecpm_DEPENDENCIES)
+	@rm -f quicksecpm
+	$(LINK) $(quicksecpm_LDFLAGS) $(quicksecpm_OBJECTS) $(quicksecpm_LDADD) $(LIBS)
+
+tags: TAGS
+
+ID: $(HEADERS) $(SOURCES) $(LISP)
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	here=`pwd` && cd $(srcdir) \
+	  && mkid -f$$here/ID $$unique $(LISP)
+
+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) $(LISP)
+	tags=; \
+	here=`pwd`; \
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
+	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags  $$unique $(LISP) -o $$here/TAGS)
+
+mostlyclean-tags:
+
+clean-tags:
+
+distclean-tags:
+	-rm -f TAGS ID
+
+maintainer-clean-tags:
+
+distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
+
+subdir = ipsec/quicksec/unified-usermode
+
+distdir: $(DISTFILES)
+	@for file in $(DISTFILES); do \
+	  d=$(srcdir); \
+	  if test -d $$d/$$file; then \
+	    cp -pr $$d/$$file $(distdir)/$$file; \
+	  else \
+	    test -f $(distdir)/$$file \
+	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
+	    || cp -p $$d/$$file $(distdir)/$$file || :; \
+	  fi; \
+	done
+info-am:
+info: info-am
+dvi-am:
+dvi: dvi-am
+check-am: all-am
+check: check-am
+installcheck-am:
+installcheck: installcheck-am
+install-exec-am: install-binPROGRAMS
+install-exec: install-exec-am
+
+install-data-am:
+install-data: install-data-am
+
+install-am: all-am
+	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+install: install-am
+uninstall-am: uninstall-binPROGRAMS
+uninstall: uninstall-am
+all-am: Makefile $(LIBRARIES) $(PROGRAMS)
+all-redirect: all-am
+install-strip:
+	$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install
+installdirs:
+	$(mkinstalldirs)  $(DESTDIR)$(bindir)
+
+
+mostlyclean-generic:
+
+clean-generic:
+
+distclean-generic:
+	-rm -f Makefile $(CONFIG_CLEAN_FILES)
+	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
+
+maintainer-clean-generic:
+mostlyclean-am:  mostlyclean-noinstLIBRARIES mostlyclean-compile \
+		mostlyclean-binPROGRAMS mostlyclean-tags \
+		mostlyclean-generic
+
+mostlyclean: mostlyclean-am
+
+clean-am:  clean-noinstLIBRARIES clean-compile clean-binPROGRAMS \
+		clean-tags clean-generic mostlyclean-am
+
+clean: clean-am
+
+distclean-am:  distclean-noinstLIBRARIES distclean-compile \
+		distclean-binPROGRAMS distclean-tags distclean-generic \
+		clean-am
+
+distclean: distclean-am
+
+maintainer-clean-am:  maintainer-clean-noinstLIBRARIES \
+		maintainer-clean-compile maintainer-clean-binPROGRAMS \
+		maintainer-clean-tags maintainer-clean-generic \
+		distclean-am
+	@echo "This command is intended for maintainers to use;"
+	@echo "it deletes files that may require special tools to rebuild."
+
+maintainer-clean: maintainer-clean-am
+
+.PHONY: mostlyclean-noinstLIBRARIES distclean-noinstLIBRARIES \
+clean-noinstLIBRARIES maintainer-clean-noinstLIBRARIES \
+mostlyclean-compile distclean-compile clean-compile \
+maintainer-clean-compile mostlyclean-binPROGRAMS distclean-binPROGRAMS \
+clean-binPROGRAMS maintainer-clean-binPROGRAMS uninstall-binPROGRAMS \
+install-binPROGRAMS tags mostlyclean-tags distclean-tags clean-tags \
+maintainer-clean-tags distdir info-am info dvi-am dvi check check-am \
+installcheck-am installcheck install-exec-am install-exec \
+install-data-am install-data install-am install uninstall-am uninstall \
+all-redirect all-am all installdirs mostlyclean-generic \
+distclean-generic clean-generic maintainer-clean-generic clean \
+mostlyclean distclean maintainer-clean
+
+
+kernel_encode.h kernel_alloc.c kernel_encode.c packet_utils.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/interceptor/libkernelutil/$@ .
+
+virtual_adapter.c usermode_packet.c usermode_util.c usermodeinterceptor.c usermodeforwarder.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/interceptor/usermode/$@ .
+
+sshencodetypes.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/lib/sshutil/sshstrutil/$@ .
+
+sshrand.c sshustr.c sshmatch.c sshmemcmp.c sshdebug.c sshfatal.c sshsnprintf.c sshenum.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/lib/sshutil/sshcore/$@ .
+
+sshinetbits.c sshinetether.c sshinethash.c sshinetmapped.c sshinetmask.c sshinetmerge.c sshinetprint.c sshinetproto.c sshinetrender.c sshinetencode.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/lib/sshutil/sshnet/$@ .
+
+sshinetcalc.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/lib/sshutil/sshnet/$@ .
+
+sshaudit.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/lib/sshutil/sshaudit/$@ .
+
+sshmp-xuint.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/lib/sshmath/$@ .
+
+ # -*- makefile -*-
+
+#
+# END: Software fastpath
+######################################################################
+
+des386.S blowfish386.S des.c rijndael.c mode-gcm.c blowfish.c mscapi-cipher.c octeon-cipher.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/lib/sshcrypto/sshcipher/$@ .
+
+deflate.c infblock.c infcodes.c inftrees.c inffast.c inflate.c infutil.c zutil.c trees.c adler32.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/lib/zlib/$@ .
+
+hmac.c xcbc-mac.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/lib/sshcrypto/sshmac/$@ .
+
+md5_386.S md5.c sha.c sha256.c sha512.c mscapi-hash.c octeon-hash.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/lib/sshcrypto/sshhash/$@ .
+
+#
+# END: caviumocteon fastpath
+######################################################################
+
+# Include lists of source files
+
+# Tell versions [3.59,3.63) of GNU make to not export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:

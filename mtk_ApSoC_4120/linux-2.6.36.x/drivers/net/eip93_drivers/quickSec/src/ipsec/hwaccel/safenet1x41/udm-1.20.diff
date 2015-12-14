@@ -1,0 +1,244 @@
+--- UDM1.20/114x/cgx/hdrs/std.h.orig	2005-09-26 10:42:50.000000000 +0300
++++ UDM1.20/114x/cgx/hdrs/std.h	2009-12-16 13:28:17.000000000 +0200
+@@ -736,7 +736,7 @@
+ 	/* Legacy definitions. */
+ 	#define GENERIC_CGX				1
+ 
+-	#include <vxworks.h>
++	#include <vxWorks.h>
+ 
+ 	/* Are we big or little endian? */
+ 	#if (_BYTE_ORDER == _BIG_ENDIAN)
+--- UDM1.20/114x/cgx/plugins/udm/driver/VxWorks/udm_target.c.orig	2005-09-26 10:42:48.000000000 +0300
++++ UDM1.20/114x/cgx/plugins/udm/driver/VxWorks/udm_target.c	2009-12-16 13:28:17.000000000 +0200
+@@ -79,7 +79,7 @@
+ * Header files.
+ ****************************************************************************************************/
+ 
+-#include <vxworks.h>
++#include <vxWorks.h>
+ #include <signal.h>
+ #include <stdio.h>
+ #include <string.h>
+@@ -88,9 +88,11 @@
+ #include <logLib.h>
+ #include <sysLib.h>
+ #include <taskLib.h>
+-#include <drv\pci\pciConfigLib.h>
+-#include <drv\pci\pciIntLib.h>
+-#include <drv\timer\timerDev.h>
++
++#include <drv/pci/pciConfigLib.h>
++#include <drv/pci/pciIntLib.h>
++#include <drv/timer/timerDev.h>
++
+ #include <iv.h>
+ 
+ #include "udm_target.h"
+--- UDM1.20/114x/cgx/plugins/udm/driver/VxWorks/udm_target.h.orig	2005-09-26 10:42:48.000000000 +0300
++++ UDM1.20/114x/cgx/plugins/udm/driver/VxWorks/udm_target.h	2009-12-16 13:28:17.000000000 +0200
+@@ -65,7 +65,7 @@
+ #ifndef __UDM_TARGET_H__
+ #define __UDM_TARGET_H__
+ 
+-#include <vxworks.h>
++#include <vxWorks.h>
+ #include <cacheLib.h>
+ #include <semLib.h>
+ #include <taskLib.h>
+@@ -92,6 +92,8 @@
+ 	SEM_ID bh_semaphore;						/* for bottom-half scheduling by top-half ISR */
+ } UDM_PLATFORM_PARAMS;
+ 
++#define udm_yield_kernel()			udm_delay (5)
++
+ /* Resources. */
+ typedef int									UDM_RESOURCE;
+ #define udm_resource_create(device)			((UDM_RESOURCE)1)
+@@ -100,8 +102,8 @@
+ #define udm_resource_unlock(device, rsc)	taskUnlock ()
+ 
+ #if ((CPU_FAMILY == I80X86) && (CPU >= PENTIUM))
+-	#include <arch\i86\regsI86.h>
+-	#include <arch\i86\pentiumLib.h>
++	#include <arch/i86/regsI86.h>
++	#include <arch/i86/pentiumLib.h>
+ 	#define udm_memory_barrier_write()		pentiumSerialize ()
+ #elif (CPU_FAMILY == MIPS)
+ 	#define udm_memory_barrier_write()		__asm__("sync")
+--- UDM1.20/184x+114x/cgx/hdrs/std.h.orig	2005-09-26 10:43:58.000000000 +0300
++++ UDM1.20/184x+114x/cgx/hdrs/std.h	2009-12-16 13:28:17.000000000 +0200
+@@ -736,7 +736,7 @@
+ 	/* Legacy definitions. */
+ 	#define GENERIC_CGX				1
+ 
+-	#include <vxworks.h>
++	#include <vxWorks.h>
+ 
+ 	/* Are we big or little endian? */
+ 	#if (_BYTE_ORDER == _BIG_ENDIAN)
+--- UDM1.20/184x+114x/cgx/plugins/udm/driver/VxWorks/readme.txt.orig	2005-09-26 10:43:54.000000000 +0300
++++ UDM1.20/184x+114x/cgx/plugins/udm/driver/VxWorks/readme.txt	2009-12-16 14:29:58.000000000 +0200
+@@ -7,6 +7,7 @@
+   All the source files from /cgx/plugins/udm/driver/generic
+   All the source files from /cgx/plugins/udm/driver/vxworks
+   (do not add any files from the BSP subdirectories)
++  cmd_parse.c from /cmd_parser
+ 
+ In your project Build Properties, add the following
+ items to your compiler command-line options:
+@@ -14,6 +15,7 @@
+   -I/cgx/plugins/udm/driver/vxworks
+   -I/cgx/hdrs
+   -I/cgx/modules/generic/hdrs
++  -I/cmd_parser/cmd_parse.h
+   -DCGX_PLATFORM_VXWORKS
+   -Wall
+   -ansi
+--- UDM1.20/184x+114x/cgx/plugins/udm/driver/VxWorks/udm_target.c.orig	2005-09-26 10:43:54.000000000 +0300
++++ UDM1.20/184x+114x/cgx/plugins/udm/driver/VxWorks/udm_target.c	2009-12-16 13:28:17.000000000 +0200
+@@ -79,7 +79,7 @@
+ * Header files.
+ ****************************************************************************************************/
+ 
+-#include <vxworks.h>
++#include <vxWorks.h>
+ #include <signal.h>
+ #include <stdio.h>
+ #include <string.h>
+@@ -88,9 +88,11 @@
+ #include <logLib.h>
+ #include <sysLib.h>
+ #include <taskLib.h>
+-#include <drv\pci\pciConfigLib.h>
+-#include <drv\pci\pciIntLib.h>
+-#include <drv\timer\timerDev.h>
++
++#include <drv/pci/pciConfigLib.h>
++#include <drv/pci/pciIntLib.h>
++#include <drv/timer/timerDev.h>
++
+ #include <iv.h>
+ 
+ #include "udm_target.h"
+--- UDM1.20/184x+114x/cgx/plugins/udm/driver/VxWorks/udm_target.h.orig	2005-09-26 10:43:54.000000000 +0300
++++ UDM1.20/184x+114x/cgx/plugins/udm/driver/VxWorks/udm_target.h	2009-12-16 13:28:17.000000000 +0200
+@@ -65,7 +65,7 @@
+ #ifndef __UDM_TARGET_H__
+ #define __UDM_TARGET_H__
+ 
+-#include <vxworks.h>
++#include <vxWorks.h>
+ #include <cacheLib.h>
+ #include <semLib.h>
+ #include <taskLib.h>
+@@ -92,6 +92,8 @@
+ 	SEM_ID bh_semaphore;						/* for bottom-half scheduling by top-half ISR */
+ } UDM_PLATFORM_PARAMS;
+ 
++#define udm_yield_kernel()			udm_delay (5)
++
+ /* Resources. */
+ typedef int									UDM_RESOURCE;
+ #define udm_resource_create(device)			((UDM_RESOURCE)1)
+@@ -100,8 +102,8 @@
+ #define udm_resource_unlock(device, rsc)	taskUnlock ()
+ 
+ #if ((CPU_FAMILY == I80X86) && (CPU >= PENTIUM))
+-	#include <arch\i86\regsI86.h>
+-	#include <arch\i86\pentiumLib.h>
++	#include <arch/i86/regsI86.h>
++	#include <arch/i86/pentiumLib.h>
+ 	#define udm_memory_barrier_write()		pentiumSerialize ()
+ #elif (CPU_FAMILY == MIPS)
+ 	#define udm_memory_barrier_write()		__asm__("sync")
+--- UDM1.20/184x+114x/cgx/plugins/udm/driver/generic/cmd_parse_target.c.orig	2005-09-26 10:43:54.000000000 +0300
++++ UDM1.20/184x+114x/cgx/plugins/udm/driver/generic/cmd_parse_target.c	2009-12-16 14:14:05.000000000 +0200
+@@ -41,8 +41,6 @@
+ #include "pktdscpi.h"
+ #include "sarecordpi.h"
+ 
+-int udm_verbose = 0;	/* turn on to debug print (may be use in macro debug_printf)*/
+-
+ /*****************************************************************************
+  *  CONSTANT DEFINITIONS
+  *****************************************************************************/
+--- UDM1.20/184x+114x/cgx/plugins/udm/driver/generic/udm_parse.c.orig	2005-09-26 10:43:54.000000000 +0300
++++ UDM1.20/184x+114x/cgx/plugins/udm/driver/generic/udm_parse.c	2009-12-16 14:13:50.000000000 +0200
+@@ -153,8 +153,6 @@
+ 
+ 
+ 
+-int udm_verbose = 0;	/* turn on to debug print (may be use in macro debug_printf)*/
+-
+ #ifndef UDM_CONFIG_BYPASS_CGX_PARSER
+ 
+ /****************************************************************************************************
+--- UDM1.20/184x/cgx/hdrs/std.h.orig	2005-09-26 10:42:04.000000000 +0300
++++ UDM1.20/184x/cgx/hdrs/std.h	2009-12-16 13:28:17.000000000 +0200
+@@ -736,7 +736,7 @@
+ 	/* Legacy definitions. */
+ 	#define GENERIC_CGX				1
+ 
+-	#include <vxworks.h>
++	#include <vxWorks.h>
+ 
+ 	/* Are we big or little endian? */
+ 	#if (_BYTE_ORDER == _BIG_ENDIAN)
+--- UDM1.20/184x/cgx/plugins/udm/driver/VxWorks/udm_target.c.orig	2005-09-26 10:42:04.000000000 +0300
++++ UDM1.20/184x/cgx/plugins/udm/driver/VxWorks/udm_target.c	2009-12-16 13:28:17.000000000 +0200
+@@ -79,7 +79,7 @@
+ * Header files.
+ ****************************************************************************************************/
+ 
+-#include <vxworks.h>
++#include <vxWorks.h>
+ #include <signal.h>
+ #include <stdio.h>
+ #include <string.h>
+@@ -88,9 +88,11 @@
+ #include <logLib.h>
+ #include <sysLib.h>
+ #include <taskLib.h>
+-#include <drv\pci\pciConfigLib.h>
+-#include <drv\pci\pciIntLib.h>
+-#include <drv\timer\timerDev.h>
++
++#include <drv/pci/pciConfigLib.h>
++#include <drv/pci/pciIntLib.h>
++#include <drv/timer/timerDev.h>
++
+ #include <iv.h>
+ 
+ #include "udm_target.h"
+--- UDM1.20/184x/cgx/plugins/udm/driver/VxWorks/udm_target.h.orig	2005-09-26 10:42:04.000000000 +0300
++++ UDM1.20/184x/cgx/plugins/udm/driver/VxWorks/udm_target.h	2009-12-16 13:28:17.000000000 +0200
+@@ -65,7 +65,7 @@
+ #ifndef __UDM_TARGET_H__
+ #define __UDM_TARGET_H__
+ 
+-#include <vxworks.h>
++#include <vxWorks.h>
+ #include <cacheLib.h>
+ #include <semLib.h>
+ #include <taskLib.h>
+@@ -92,6 +92,8 @@
+ 	SEM_ID bh_semaphore;						/* for bottom-half scheduling by top-half ISR */
+ } UDM_PLATFORM_PARAMS;
+ 
++#define udm_yield_kernel()			udm_delay (5)
++
+ /* Resources. */
+ typedef int									UDM_RESOURCE;
+ #define udm_resource_create(device)			((UDM_RESOURCE)1)
+@@ -100,8 +102,8 @@
+ #define udm_resource_unlock(device, rsc)	taskUnlock ()
+ 
+ #if ((CPU_FAMILY == I80X86) && (CPU >= PENTIUM))
+-	#include <arch\i86\regsI86.h>
+-	#include <arch\i86\pentiumLib.h>
++	#include <arch/i86/regsI86.h>
++	#include <arch/i86/pentiumLib.h>
+ 	#define udm_memory_barrier_write()		pentiumSerialize ()
+ #elif (CPU_FAMILY == MIPS)
+ 	#define udm_memory_barrier_write()		__asm__("sync")

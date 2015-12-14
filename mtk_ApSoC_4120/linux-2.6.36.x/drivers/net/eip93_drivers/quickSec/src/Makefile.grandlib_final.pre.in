@@ -1,0 +1,7 @@
+@GRANDLIB@: grandlib_objs
+	-rm -f @GRANDLIB@
+	@GRANDLIBARCMD@ @GRANDLIB@ `cat grandlib_objs`
+	@GRANDLIBRANLIBCMD@ @GRANDLIB@
+
+clean :
+	-rm -f @GRANDLIB@

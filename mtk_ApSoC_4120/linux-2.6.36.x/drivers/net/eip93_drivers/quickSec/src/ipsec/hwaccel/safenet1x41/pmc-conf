@@ -1,0 +1,61 @@
+#
+# Sample PMC Siera Platform Linux  configuration File
+#
+# Usage: source pmc-conf
+#
+# Note that in GNU autoconf terminology, the "host"
+# environment is called "build". In Autoconf, "host" is the
+# environment where the created binaries will be run. In this case,
+# "target" is the same as "host". All these must be set when
+# cross-compiling the toolkit.  Also, the environment variables CC,
+# AR, LD, RANLIB, and AS are needed for the "configure" script to
+# find the cross-compilation tools. Please set the path for cross compilation
+#
+# --with-kernel-headers must point to the "include" subdirectory
+# within the Platform Linux kernel sources and
+# --with-kernel-version must include all 3 parts of the version
+# number (i.e. "2.6" is not enough).
+#
+# Certain architectures require the gcc cflag and kernel flags e.g 
+# -march=xxxx and -mtune=xxxx be correctly defined. 
+# Otherwise compiler can complain about unsupported
+# assembler instuctions. 
+#
+# If hardware accelaration is desired, add to configure the option
+#
+# configure ... --with-hwaccel=safenet-1x41
+#
+# NOTE: Before loading the quicksec module quicksec.o
+# you must insmod the UDM module to load the driver for udm
+# and only after then the quicksec module
+#
+# Please specify the CROSS Compilation, Kernel headers, udm path and include paths
+# according to the environment.
+
+export PATH=$PATH:/opt/redhat/mips64linux-031001/H-i686-pc-linux-gnulibc2.2/bin/
+CC=mips64-linux-gnu-gcc
+AR=mips64-linux-gnu-ar
+LD=mips64-linux-gnu-ld
+NM=mips64-linux-gnu-nm
+RANLIB=mips64-linux-gnu-ranlib
+AS=mips64-linux-gnu-as
+
+export CC AR NM LD RANLIB AS
+
+
+export CFLAGS="-march=rm9000 -mabi=32 -mtune=rm9000"
+export LDFLAGS="-static"
+export KERN_CFLAGS="-fno-common -G 0 -march=rm9000 -mtune=rm9000 -fomit-frame-pointer -fno-pic -mabi=32 -mno-abicalls -mlong-calls -Wa,-mips4 -Wa,-32 -Wa,-march=RM9000 -Wa,--trap  -I/usr/mips/linux/sequoia/linux-2.6.12/include/asm/mach-sequoia -D__OPTIMIZE__ -I/usr/mips/linux/sequoia/linux-2.6.12/include/asm/mach-generic"
+export KERN_LDFLAGS="-fno-common -melf32btsmip"
+
+./configure --build=i686-pc-linux-gnu \
+            --disable-debug \
+            --host=mips-linux \
+            --target=mips-linux \
+            --with-kernel-version=2.6.12 \
+           --with-kernel-headers="/usr/mips/linux/sequoia/linux-2.6.12/include" \
+           --disable-emi-memory \
+           --with-hwaccel="safenet-1x41" \
+           --with-safenet-udm=/export/linux/mips-fs-be/root/sunil/udm-121/UDM_BUILD \
+           --enable-target-endian-swap \
+           --without-ipv6

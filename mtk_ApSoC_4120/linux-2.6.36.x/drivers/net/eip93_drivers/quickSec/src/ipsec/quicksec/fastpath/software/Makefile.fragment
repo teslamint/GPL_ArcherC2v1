@@ -1,0 +1,187 @@
+# -*- makefile -*-
+#
+# ipsec/quicksec/fastpath/software/Makefile.fragment
+#
+
+AUTODIST_OPTIONS += lnsrcs
+
+######################################################################
+# BEGIN: Software fastpath
+#
+# Fastpath source files from outside of ipsec directory hierarchy
+
+
+FASTPATH_SOFT_CRYPTO_LNSRCS = \
+	des.c 	\
+        rijndael.c\
+        mode-gcm.c\
+        blowfish.c\
+        md5.c 	\
+        sha.c 	\
+        sha256.c 	\
+        sha512.c 	\
+        hmac.c 	\
+        xcbc-mac.c 	\
+        mscapi-hash.c \
+        mscapi-cipher.c \
+        octeon-hash.c \
+        octeon-cipher.c 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FASTPATH_SOFT_COMPRESSION_LNSRCS = \
+	deflate.c	\
+	infblock.c	\
+	infcodes.c	\
+	inftrees.c	\
+	inffast.c	\
+	inflate.c	\
+	infutil.c	\
+	zutil.c		\
+	trees.c		\
+	adler32.c	
+
+
+
+
+
+
+
+
+
+
+
+
+FASTPATH_SOFT_CRYPTO_ASM_LNSRCS = \
+        des386.S 		\
+        blowfish386.S 	\
+        md5_386.S 		
+
+
+
+
+
+
+
+
+FASTPATH_SOFT_CRYPTO_ASM_OBJS = \
+	des386.o 	\
+	blowfish386.o 	\
+	md5_386.o	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FASTPATH_SOFTWARE_SHARED_SRCS =            \
+	$(FASTPATH_SOFT_CRYPTO_LNSRCS) 	   \
+	@QS_FASTPATH_CRYPTO_ASM_LNSRC@ 	   \
+        engine_fastpath.c 	  \
+        engine_fragment.c         \
+        fastpath_icmp.c           \
+        fastpath_udp.c            \
+	fastpath_tcp.c            \
+	fastpath_alloc.c          \
+	fastpath_init.c           \
+	fastpath_fragmagic.c      \
+	fastpath_mediatypes.c     \
+	fastpath_packet_pullup.c  \
+	fastpath_utils.c  \
+        engine_transform_in.c     \
+        engine_transform_out.c    \
+        engine_transform_utils.c  \
+        engine_transform_nat.c    \
+	$(FASTPATH_SOFT_COMPRESSION_LNSRCS)	\
+	engine_transform_ipcomp.c	\
+	engine_ipcomp_glue.h		\
+	engine_tcp_encaps.c	  \
+	engine_tcp_encaps.h
+
+
+
+
+
+
+
+FASTPATH_SOFTWARE_SRCS = 		   \
+	$(FASTPATH_SOFTWARE_SHARED_SRCS)   \
+	fastpath_flows.c                   \
+	fastpath_flow_id.c                 \
+	engine_fastpath_impl.c             \
+	engine_fastpath_impl.h             \
+	fastpath_swi.h
+
+FASTPATH_SOFTWARE_SRCS_windelta = \
+	-@QS_FASTPATH_CRYPTO_ASM_LNSRC@
+
+#
+# END: Software fastpath
+######################################################################
+
+des386.S blowfish386.S des.c rijndael.c mode-gcm.c blowfish.c mscapi-cipher.c octeon-cipher.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/lib/sshcrypto/sshcipher/$@ .
+
+deflate.c infblock.c infcodes.c inftrees.c inffast.c inflate.c infutil.c zutil.c trees.c adler32.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/lib/zlib/$@ .
+
+hmac.c xcbc-mac.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/lib/sshcrypto/sshmac/$@ .
+
+md5_386.S md5.c sha.c sha256.c sha512.c mscapi-hash.c octeon-hash.c:
+	-rm -f $@
+	$(LN_S) $(top_srcdir)/lib/sshcrypto/sshhash/$@ .
+
